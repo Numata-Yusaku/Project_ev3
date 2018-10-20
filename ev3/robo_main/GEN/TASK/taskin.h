@@ -1,0 +1,51 @@
+#ifndef	__TASKIN_H__
+#define	__TASKIN_H__
+
+/***** インクルード *****/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include "common.h"
+#include "task.h"
+
+/***** 定数 *****/
+#define	D_TASK_MSGID_INVALID		(0x00000000)
+
+/* ログ出力 */
+#if	(__VC_DEBUG__)
+#define	D_TASK_FILENAME_MSGLOG		"./OutData/msglog.csv"
+#else	/* __VC_DEBUG__ */
+#define	D_TASK_FILENAME_MSGLOG		"./msglog.csv"
+#endif	/* __VC_DEBUG__ */
+
+#define	D_TASK_LOGMODE				(D_TASK_MODE_ON)
+
+/***** 構造体 *****/
+/* 常駐領域 */
+typedef struct
+{
+	FILE*	fpMsgLog;
+}S_TASK;
+/***** 関数プロトタイプ *****/
+/* startup */
+void task_init_que( void );
+void task_sleep( int iCycle );
+
+/* global */
+void task_set_Global( void );
+S_TASK* task_get_Global( void );
+
+/* Message */
+int task_msgsend( int iTask, S_MSG_DATA* spPara );
+int task_msgrecv( int iTask, S_MSG_DATA* spPara );
+
+/* log */
+void task_msglog_open( void );
+void task_msglog( int iDir, int iTask, int iMsgId );
+
+/***** テーブル *****/
+
+
+#endif	/* __TASKIN_H__ */
