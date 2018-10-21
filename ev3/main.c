@@ -3,8 +3,9 @@
 #if (__VC_DEBUG__)
 int main(void)
 {
+	/* ‰Šú‰» */
 	MAIN_init();
-
+	
 	/* ƒXƒŒƒbƒh‚Ì¶¬ */
 	main_make_thread();
 	

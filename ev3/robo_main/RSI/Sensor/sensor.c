@@ -10,14 +10,13 @@ int RSI_sensor_config( int iPort, int iType )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_sensor_config( (sensor_port_t)iPort, (sensor_type_t)iType );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[SENSOR],Sensor Set,%d\n", iPort );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_sensor_config( (sensor_port_t)iPort, (sensor_type_t)iType );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -30,10 +29,10 @@ unsigned int RSI_sensor_get_type( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
+	printf("[SENSOR],Get Type,%d/%d\n", iPort, iRet );
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_sensor_get_type( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
-	printf("[SENSOR],Get Type,%d/%d\n", iPort, iRet );
 	
 	return iRet;	/* Ret：センサタイプ */
 }
@@ -46,14 +45,13 @@ int RSI_color_sensor_get_color( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_color_sensor_get_color( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Get Color@@,%d\n",iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_color_sensor_get_color( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：識別したカラー */
 }
@@ -68,14 +66,13 @@ unsigned char RSI_color_sensor_get_reflect( int iPort )
 	unsigned char ucRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	ucRet = ev3_color_sensor_get_reflect( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Color Reflect@@,%d\n",ucRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	ucRet = ev3_color_sensor_get_reflect( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return ucRet;	/* Ret：反射光の強さ(0-100) */
 }
@@ -88,14 +85,13 @@ unsigned char RSI_color_sensor_get_ambient( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_color_sensor_get_ambient( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Color Ambient@@,%d\n",iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_color_sensor_get_ambient( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -124,14 +120,13 @@ signed short RSI_gyro_sensor_get_angle( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_gyro_sensor_get_angle( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Gyro Angle@@,%d\n", iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_gyro_sensor_get_angle( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：角位置 */
 }
@@ -144,14 +139,13 @@ signed short RSI_gyro_sensor_get_rate( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_gyro_sensor_get_rate( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Gyro Rate@@,%d\n", iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_gyro_sensor_get_rate( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：角速度 */
 }
@@ -164,14 +158,13 @@ int RSI_gyro_sensor_reset( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_gyro_sensor_reset( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Gyro Reset@@\n");
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_gyro_sensor_reset( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -186,14 +179,13 @@ signed short RSI_ultrasonic_sensor_get_distance( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_ultrasonic_sensor_get_distance( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Distance@@,%d\n", iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_ultrasonic_sensor_get_distance( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：距離(%) */
 }
@@ -277,10 +269,6 @@ int RSI_touch_sensor_is_pressed( int iPort )
 	int iRet = D_RSI_FALSE;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_touch_sensor_is_pressed( (sensor_port_t)iPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	/* ログ出力抑制 */
@@ -289,6 +277,10 @@ int RSI_touch_sensor_is_pressed( int iPort )
 		fprintf( spRsi->fpRsiLog, "[SENSOR],Touch,%d\n", iRet );
 	}
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_touch_sensor_is_pressed( (sensor_port_t)iPort );
+#endif	/* __VC_DEBUG__ */
+	
 	
 	return iRet;	/* Ret：押下状態 */
 }

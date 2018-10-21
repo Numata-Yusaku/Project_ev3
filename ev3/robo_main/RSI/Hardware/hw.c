@@ -10,14 +10,13 @@ int RSI_hw_battery_current_mA( void )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = ev3_battery_current_mA();
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[BATTERY],mA,%d\n",iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = ev3_battery_current_mA();
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：バッテリーの電流(mA) */
 }
@@ -30,14 +29,13 @@ int RSI_hw_battery_voltage_mV( void )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	iRet = ev3_battery_voltage_mV();
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[BATTERY],mV,%d\n",iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = ev3_battery_voltage_mV();
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;	/* Ret：バッテリーの電圧(mV) */
 }
@@ -92,13 +90,13 @@ int RSI_hw_led_set_color( int iColor )
 	
 #if	(__VC_DEBUG__)
 	printf("[LED],Set Color,%d\n",iColor);
+#if	(D_RSI_LOGMODE)
+	S_RSI* spRsi = rsi_get_Global();
+	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
+#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_led_set_color( (ledcolor_t)iColor );
 #endif	/* __VC_DEBUG__ */
-#if	(D_RSI_LOGMODE)
-//	S_RSI* spRsi = rsi_get_Global();
-//	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
-#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：設定結果 */
 }
@@ -130,14 +128,13 @@ int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration 
 	
 #if	(__VC_DEBUG__)
 //	printf("\a");
+#if	(D_RSI_LOGMODE)
+	S_RSI* spRsi = rsi_get_Global();
+	fprintf( spRsi->fpRsiLog,"[SPK],Freq/Dur,%d,%d\n",usFrequency, siDuration );
+#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_speaker_play_tone( (uint16_t)usFrequency, (int32_t)siDuration );
 #endif	/* __VC_DEBUG__ */
-	
-#if	(D_RSI_LOGMODE)
-//	S_RSI* spRsi = rsi_get_Global();
-//	fprintf( spRsi->fpRsiLog,"[SPK],Freq/Dur,%d,%d\n",usFrequency, siDuration );
-#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }

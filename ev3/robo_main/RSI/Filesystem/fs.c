@@ -96,14 +96,13 @@ FILE* RSI_fs_serial_open_file( int iSerialPort )
 
 #if	(__VC_DEBUG__)
 	spFile = fopen( D_RSI_FS_SERIALPORT, "w+b" );
-#else	/* __VC_DEBUG__ */
-	spFile = ev3_serial_open_file( (serial_port_t)iSerialPort );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[FS],Serial Open\n" );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	spFile = ev3_serial_open_file( (serial_port_t)iSerialPort );
+#endif	/* __VC_DEBUG__ */
 	
 	return spFile;
 }
@@ -119,14 +118,13 @@ int RSI_fs_bluetooth_is_connected( void )
 
 #if	(__VC_DEBUG__)
 	iRet = D_RSI_TRUE;
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_bluetooth_is_connected();
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[FS],BT Connect,%d\n",iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_bluetooth_is_connected();
+#endif	/* __VC_DEBUG__ */
 	
 	return iRet;
 }
