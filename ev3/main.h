@@ -21,6 +21,8 @@
 #define D_MAIN_OK	(0)
 #define D_MAIN_NG	(-1)
 
+#define	D_MAIN_STARTUP_WAIT			(100)
+
 /***** 構造体 *****/
 
 /***** 関数プロトタイプ *****/

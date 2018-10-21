@@ -80,7 +80,8 @@ void MAIN_task(void)
 #if	(__VC_DEBUG__)
 		main_recv_cmd();
 #else	/* __VC_DEBUG__ */
-		main_recv_ButtonPressed();
+		/* 走行体ではメインタスクが不要 */
+		main_shutdown();
 #endif	/* __VC_DEBUG__ */
 	}			/* loop end */
 	
@@ -113,14 +114,6 @@ void main_recv( S_MSG_DATA* spRecv)
 
 void main_DispReady( void )
 {
-	/* 起動待ち */
-	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_RED );
-	TASK_sleep( 100 );
-	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_ORANGE );
-	TASK_sleep( 100 );
-	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_GREEN );
-	TASK_sleep( 100 );
-	
 	/* 画面初期化 */
 	RSI_lcd_fill_rect( 0, 0, 178, 128, 0 );
 	COMMON_lcd_draw_string((const char*)"INIT OK", 0, 10);
@@ -260,6 +253,7 @@ void main_recv_ButtonPressed( void )
 		}
 	}
 	
+	COMMON_lcd_draw_stringAndDec((const char*)"INIT OK", iKey , 10, 10);
 	return;
 }
 #endif	/* __VC_DEBUG__ */

@@ -12,7 +12,7 @@
 #define D_APP_PRIORITY_LOW			(11)
 
 /* ターゲットに依存する可能性のある定数の定義 */
-#define	D_APP_STACK_SIZE		(4096)	/* タスクのスタックサイズ */
+#define	D_APP_STACK_SIZE			(4096)	/* タスクのスタックサイズ */
 
 /* Tasks */
 extern void	Main_task(intptr_t exinf);

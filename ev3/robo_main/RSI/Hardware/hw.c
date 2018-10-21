@@ -92,7 +92,7 @@ int RSI_hw_led_set_color( int iColor )
 	printf("[LED],Set Color,%d\n",iColor);
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
+//	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
 #endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_led_set_color( (ledcolor_t)iColor );
