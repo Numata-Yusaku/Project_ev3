@@ -6,6 +6,7 @@ S_LT* gspLt = (S_LT*)NULL;
 /* startup */
 void lt_main( void )
 {
+	static int count = 0;
 	int			iRet		= D_LT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
 	
@@ -25,6 +26,8 @@ void lt_main( void )
 	/* LT_TASK */
 	while(1)
 	{
+		COMMON_lcd_draw_stringAndDec((const char*)"LT_task", count++ , 0, 60);
+
 		iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
 		if( ( D_TASK_OK == iRet ) &&
 			( E_MSGID_LT_INVALID != psRecvData->iMsgid) )

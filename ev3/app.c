@@ -11,12 +11,12 @@ void Main_task(intptr_t exinf )
 
 void Bluetooth_task( intptr_t exinf )
 {
-	BT_main();
+//	BT_main();
 	return;
 }
 
 void LineTrace_task( intptr_t exinf )
 {
-	LT_main();
+//	LT_main();
 	return;
 }

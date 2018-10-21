@@ -53,14 +53,14 @@ int RSI_hw_button_is_pressed( int iButton )
 	
 #if	(__VC_DEBUG__)
 	iRet = D_RSI_TRUE;
-#else	/* __VC_DEBUG__ */
-	iRet = (int)ev3_button_is_pressed( (button_t)iButton );
-#endif	/* __VC_DEBUG__ */
-	
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
 	fprintf( spRsi->fpRsiLog, "[BUTTON],Button/Pressed,%d,%d\n",iButton,iRet );
 #endif	/* D_RSI_LOGMODE */
+#else	/* __VC_DEBUG__ */
+	iRet = (int)ev3_button_is_pressed( (button_t)iButton );
+#endif	/* __VC_DEBUG__ */
+	
 	
 	return iRet;	/* Ret：ボタンの押下状態 */
 }
@@ -91,13 +91,13 @@ int RSI_hw_led_set_color( int iColor )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
+	printf("[LED],Set Color,%d\n",iColor);
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_led_set_color( (ledcolor_t)iColor );
 #endif	/* __VC_DEBUG__ */
-	printf("[LED],Set Color,%d\n",iColor);
 #if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
+//	S_RSI* spRsi = rsi_get_Global();
+//	fprintf( spRsi->fpRsiLog,"[LED],Set Color,%d\n",iColor );
 #endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：設定結果 */
@@ -135,8 +135,8 @@ int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration 
 #endif	/* __VC_DEBUG__ */
 	
 #if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[SPK],Freq/Dur,%d,%d\n",usFrequency, siDuration );
+//	S_RSI* spRsi = rsi_get_Global();
+//	fprintf( spRsi->fpRsiLog,"[SPK],Freq/Dur,%d,%d\n",usFrequency, siDuration );
 #endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */

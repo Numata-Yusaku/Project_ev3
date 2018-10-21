@@ -5,6 +5,7 @@ S_BT* gspBt = (S_BT*)NULL;
 /* startup */
 void bt_main( void )
 {
+	static int count = 0;
 	int iRet				= D_BT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
 	
@@ -24,6 +25,7 @@ void bt_main( void )
 	/* BT_TASK */
 	while(1)
 	{
+		COMMON_lcd_draw_stringAndDec((const char*)"BT_task", count++ , 0, 70);
 		iRet = TASK_msgrecv( E_TASK_TASKID_BT, psRecvData );
 		if( ( D_TASK_OK == iRet ) &&
 			( E_MSGID_BT_INVALID != psRecvData->iMsgid) )

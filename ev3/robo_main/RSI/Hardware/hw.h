@@ -55,15 +55,16 @@
 
 enum EN_RSI_HW_BUTTON
 {
-	E_RSI_HW_BUTTON_LEFT = 0,	/* 左ボタン */
-	E_RSI_HW_BUTTON_RIGHT,		/* 右ボタン */
-	E_RSI_HW_BUTTON_UP,			/* 上ボタン */
-	E_RSI_HW_BUTTON_DOWN,		/* 下ボタン */
-	E_RSI_HW_BUTTON_ENTER,		/* 中央ボタン */
-	E_RSI_HW_BUTTON_BACK,		/* 戻るボタン */
+	E_RSI_HW_BUTTON_LEFT = 0,		/* 左ボタン */
+	E_RSI_HW_BUTTON_RIGHT,			/* 右ボタン */
+	E_RSI_HW_BUTTON_UP,				/* 上ボタン */
+	E_RSI_HW_BUTTON_DOWN,			/* 下ボタン */
+	E_RSI_HW_BUTTON_ENTER,			/* 中央ボタン */
+	E_RSI_HW_BUTTON_BACK,			/* 戻るボタン */
 
 	/* ここより上に定義すること */
-	E_RSI_HW_BUTTON_TNUM,		/* ボタンの数 */
+	E_RSI_HW_BUTTON_TNUM,			/* ボタンの数 */
+	E_RSI_HW_BUTTON_INVALID = -1,	/* 無効値 */
 };
 
 enum EN_RSI_HW_LEDCOLOR

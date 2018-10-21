@@ -25,17 +25,21 @@ void main_make_thread( void )
 
 void MAIN_init( void )
 {
+	/* メイン起動 */
+	main_DispReady();
+	
 	/* TASK初期化 */
 	TASK_init();
 	
 	/* RSI初期化 */
 	RSI_init();
-
+	
 	return;
 }
 
 void MAIN_task(void)
 {
+	static int count = 0;
 	int iRet = D_MAIN_NG;
 	S_MSG_DATA* psRecvData = (S_MSG_DATA*)NULL;
 	
@@ -51,6 +55,8 @@ void MAIN_task(void)
 	/* MAIN_TASK */
 	while (1)	/* loop sta*/
 	{
+		COMMON_lcd_draw_stringAndDec((const char*)"MAIN_task", count++ , 0, 50);
+
 		/* MSG受信 */
 		iRet = TASK_msgrecv( E_TASK_TASKID_MAIN, psRecvData );
 		if ( ( D_TASK_OK == iRet) &&
@@ -69,11 +75,12 @@ void MAIN_task(void)
 			memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 		}
 		
-#if	(__VC_DEBUG__)
 		/* キー入力の監視 */
+#if	(__VC_DEBUG__)
 		main_recv_cmd();
+#else	/* __VC_DEBUG__ */
+		main_recv_ButtonPressed();
 #endif	/* __VC_DEBUG__ */
-		
 	}			/* loop end */
 	
 	return;
@@ -103,6 +110,23 @@ void main_recv( S_MSG_DATA* spRecv)
 	return;
 }
 
+void main_DispReady( void )
+{
+	/* 起動待ち */
+	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_RED );
+	TASK_sleep( 100 );
+	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_ORANGE );
+	TASK_sleep( 100 );
+	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_GREEN );
+	TASK_sleep( 100 );
+	
+	/* 画面初期化 */
+	RSI_lcd_fill_rect( 0, 0, 178, 128, 0 );
+	COMMON_lcd_draw_string((const char*)"INIT OK", 0, 10);
+	
+	return;
+}
+
 void main_shutdown( void )
 {
 #if	(__VC_DEBUG__)
@@ -117,15 +141,13 @@ void main_shutdown( void )
 void main_recv_cmd( void )
 {
 	int iKey = 0;
-//	F_MAIN_CMDRECVFUNCPTR pvRecvFunc = (F_MAIN_CMDRECVFUNCPTR)NULL;
 	
-
 	/* キー入力がある場合 */
 	if ( _kbhit() )
 	{
 		/* キーを取得 */
 		iKey = _getch();
-		switch(iKey)
+		switch( iKey )
 		{
 			case 'e':	/* アプリケーション終了 */
 				main_shutdown();
@@ -140,8 +162,12 @@ void main_recv_cmd( void )
 				main_rcv_cmd_T();
 				break;
 				
-			case 'B':	/* バックボタン押下 */
-				main_rcv_cmd_B();
+			case 'L':	/* 左ボタン押下 */
+				main_rcv_cmd_L();
+				break;
+				
+			case 'R':	/* 右ボタン押下 */
+				main_rcv_cmd_R();
 				break;
 				
 			case 'U':	/* 上ボタン押下 */
@@ -152,22 +178,87 @@ void main_recv_cmd( void )
 				main_rcv_cmd_D();
 				break;
 				
-			case 'L':	/* 左ボタン押下 */
-				main_rcv_cmd_L();
-				break;
-				
-			case 'R':	/* 右ボタン押下 */
-				main_rcv_cmd_R();
-				break;
-				
 			case 'C':	/* 中央ボタン押下 */
 				main_rcv_cmd_C();
+				break;
+				
+			case 'B':	/* バックボタン押下 */
+				main_rcv_cmd_B();
 				break;
 				
 			default:
 				break;
 		}
 	}	
+	return;
+}
+#else	/* __VC_DEBUG__ */
+void main_recv_ButtonPressed( void )
+{
+	int iKey =E_RSI_HW_BUTTON_INVALID;
+	
+	if( RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_LEFT ) )
+	{
+		iKey = E_RSI_HW_BUTTON_LEFT;
+	}
+	else if(RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_RIGHT ))
+	{
+		iKey = E_RSI_HW_BUTTON_RIGHT;
+	}
+	else if(RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_UP ))
+	{
+		iKey = E_RSI_HW_BUTTON_UP;
+	}
+	else if(RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_DOWN ))
+	{
+		iKey = E_RSI_HW_BUTTON_DOWN;
+	}
+	else if(RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_ENTER ))
+	{
+		iKey = E_RSI_HW_BUTTON_ENTER;
+	}
+	else if(RSI_hw_button_is_pressed( E_RSI_HW_BUTTON_BACK ))
+	{
+		iKey = E_RSI_HW_BUTTON_BACK;
+	}
+	
+	/* キー入力がある場合 */
+	if( E_RSI_HW_BUTTON_INVALID != iKey )
+	{
+		switch( iKey )
+		{
+			case E_RSI_HW_BUTTON_LEFT:	/* 左ボタン押下 */
+				main_rcv_cmd_L();
+				break;
+				
+			case E_RSI_HW_BUTTON_RIGHT:	/* 右ボタン押下 */
+				main_rcv_cmd_R();
+				break;
+				
+			case E_RSI_HW_BUTTON_UP:	/* 上ボタン押下 */
+				main_rcv_cmd_U();
+				break;
+				
+			case E_RSI_HW_BUTTON_DOWN:	/* 下ボタン押下 */
+				main_rcv_cmd_D();
+				break;
+				
+			case E_RSI_HW_BUTTON_ENTER:	/* 中央ボタン押下 */
+				main_rcv_cmd_C();
+				break;
+				
+			case E_RSI_HW_BUTTON_BACK:	/* バックボタン押下 */
+				main_rcv_cmd_B();
+				
+				/* T.B.D :デバッグのために強制脱出(LTが実装できたら削除)*/
+				main_shutdown();
+				break;
+				
+			default:
+				break;
+		}
+	}
+	
 	return;
 }
 #endif	/* __VC_DEBUG__ */

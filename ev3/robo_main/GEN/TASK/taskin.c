@@ -6,7 +6,7 @@ S_MSG_QUE pgQue[E_TASK_TASKID_NUM];
 /* startup */
 void task_init_que( void )
 {
-	memset( pgQue, 0x00, ( sizeof( S_MSG_QUE )* E_TASK_TASKID_NUM) );
+	memset( &pgQue, 0x00, ( sizeof( S_MSG_QUE )* E_TASK_TASKID_NUM) );
 	
 	return;
 }
@@ -17,7 +17,7 @@ void task_sleep( int iCycle )
 #if	(__VC_DEBUG__)
 	Sleep(iCycle);
 #else	/* __VC_DEBUG__ */
-	
+	tslp_tsk(iCycle);
 #endif	/* __VC_DEBUG__ */
 	return;
 }

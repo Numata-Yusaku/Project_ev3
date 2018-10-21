@@ -79,7 +79,7 @@ int RSI_lcd_draw_string( const char* str, signed int siXpoint, signed int siYpoi
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_lcd_draw_string( str, (int32_t)siXpoint, (int32_t)siYpoint );
 #endif	/* __VC_DEBUG__ */
-	printf("[LCD],%s,[%d %d]\n",str, siXpoint, siYpoint );
+//	printf("[LCD],%s,[%d %d]\n",str, siXpoint, siYpoint );
 	
 	return iRet;	/* RetÅFåãâ  */
 }

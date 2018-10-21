@@ -1,18 +1,18 @@
 #ifndef	__APP_H__
 #define	__APP_H__
 
-/* ターゲット依存の定義 */
+/* �^�[�Q�b�g�ˑ��̒�` */
 #include "target_test.h"
 
-/* タスクの優先度 */
-#define	D_APP_PRIORITY_MAIN			(5)	/* メインタスク(※優先度が最上位となること) */
+/* �^�X�N�̗D��x */
+#define	D_APP_PRIORITY_MAIN			(5)	/* ���C���^�X�N(���D��x���ŏ�ʂƂȂ邱��) */
 
 #define D_APP_PRIORITY_HIGH			(9)
 #define D_APP_PRIORITY_MID			(10)
 #define D_APP_PRIORITY_LOW			(11)
 
-/* ターゲットに依存する可能性のある定数の定義 */
-#define	D_APP_STACK_SIZE		(4096)	/* タスクのスタックサイズ */
+/* �^�[�Q�b�g�Ɉˑ�����\���̂���萔�̒�` */
+#define	D_APP_STACK_SIZE		(4096)	/* �^�X�N�̃X�^�b�N�T�C�Y */
 
 /* Tasks */
 extern void	Main_task(intptr_t exinf);
