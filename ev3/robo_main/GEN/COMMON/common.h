@@ -33,6 +33,7 @@
 void COMMON_lcd_draw_string( const char* str, signed int siXpoint, signed int siYpoint );
 void COMMON_lcd_draw_stringAndDec( const char* str, int iDecValue, signed int siXpoint, signed int siYpoint );
 void COMMON_lcd_draw_stringAndHex( const char* str, int iHexValue, signed int siXpoint, signed int siYpoint );
+void COMMON_lcd_draw_stringAndPoint( const char* str, void* iPointValue, signed int siXpoint, signed int siYpoint );
 
 /***** ÉeÅ[ÉuÉã *****/
 

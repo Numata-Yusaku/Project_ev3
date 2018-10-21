@@ -26,7 +26,7 @@
 #define		D_RSI_TMAX_FILENAME_LEN (255)
 
 /* ÉçÉOèoóÕ */
-#define	D_RSI_FILENAME_MSGLOG		"./OutData/RsiLog.csv"
+#define	D_RSI_FILENAME_MSGLOG		"OutData/RsiLog.csv"
 
 #define	D_RSI_LOGMODE				(D_RSI_TRUE)
 

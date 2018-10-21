@@ -15,7 +15,7 @@
 /*** APL ***/
 
 /***** íËêî *****/
-#define	D_RSI_FS_SERIALPORT		"./OutData/serial.txt"
+#define	D_RSI_FS_SERIALPORT		"OutData/serial.txt"
 
 enum EN_RSI_FS_SERIALPORT
 {

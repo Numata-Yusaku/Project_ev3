@@ -26,21 +26,20 @@ void main_make_thread( void )
 
 void MAIN_init( void )
 {
-	/* メイン起動 */
-	main_DispReady();
-	
 	/* TASK初期化 */
 	TASK_init();
 	
 	/* RSI初期化 */
 	RSI_init();
 	
+	/* ディスプレイ準備 */
+	main_DispReady();
+	
 	return;
 }
 
 void MAIN_task(void)
 {
-	static int count = 0;
 	int iRet = D_MAIN_NG;
 	S_MSG_DATA* psRecvData = (S_MSG_DATA*)NULL;
 	
@@ -56,8 +55,6 @@ void MAIN_task(void)
 	/* MAIN_TASK */
 	while (1)	/* loop sta*/
 	{
-		COMMON_lcd_draw_stringAndDec((const char*)"MAIN_task", count++ , 0, 50);
-
 		/* MSG受信 */
 		iRet = TASK_msgrecv( E_TASK_TASKID_MAIN, psRecvData );
 		if ( ( D_TASK_OK == iRet) &&

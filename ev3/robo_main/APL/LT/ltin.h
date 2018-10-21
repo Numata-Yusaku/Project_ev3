@@ -18,9 +18,9 @@
 #define	D_LT_TRUE			(1)
 #define	D_LT_FALSE			(0)
 
-#define	D_LT_FILENAME_STATUSLOG					"./OutData/StatusLog_Lt.csv"
-#define	D_LT_FILENAME_CALIBRATELOG				"./OutData/CalibrateLog.csv"
-#define	D_LT_FILENAME_SYSTEMLOG					"./OutData/SystemLog.csv"
+#define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
+#define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
+#define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
 
 /* ÉçÉOèoóÕ */
 #define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
