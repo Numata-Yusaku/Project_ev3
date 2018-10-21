@@ -33,6 +33,7 @@ void lt_log_Statuslog_open( void )
 	fprintf( spLt->fpStatusLog, "Status,");
 	
 	fprintf( spLt->fpStatusLog, "\n");
+	fflush( stdout );
 #endif	/* D_LT_LOGMODE_STATUS */
 	return;
 }
@@ -119,6 +120,7 @@ void lt_log_Systemlog_open( void )
 #endif	/* D_LT_LOGMODE_SYSTEM_BALANCECONTROL */
 	
 	fprintf( spLt->fpSystemLog, "\n");
+	fflush( stdout );
 #endif	/* D_LT_LOGMODE_SYSTEM */
 	return;
 }
@@ -208,6 +210,7 @@ void lt_log_set_Calibratelog( void )
 	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stWhite.iReflect);
 	
 	fprintf( spLt->fpCalirateLog, "\n");
+	fflush( stdout );
 #endif	/* D_LT_LOGMODE_CALIBRATE */
 	
 	return;
@@ -253,6 +256,7 @@ void lt_log_set_Systemlog( void )
 #endif	/* D_LT_LOGMODE_SYSTEM_BALANCECONTROL */
 	
 	fprintf( spLt->fpSystemLog, "\n");
+	fflush( stdout );
 #endif	/* D_LT_LOGMODE_SYSTEM */
 	
 	return;

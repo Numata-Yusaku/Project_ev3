@@ -105,7 +105,7 @@ enum EN_LT_STATUS
 	E_LT_STATUS_CALIBLATE_GYRO,		/* キャリブレーション中(ジャイロ) */
 	E_LT_STATUS_CALIBLATE_TAIL,		/* キャリブレーション中(尻尾) */
 	E_LT_STATUS_CALIBLATE_BLACK,	/* キャリブレーション中(黒) */
-	E_LT_STATUS_CALIBLATE_WHILE,	/* キャリブレーション中(白) */
+	E_LT_STATUS_CALIBLATE_WHITE,	/* キャリブレーション中(白) */
 	E_LT_STATUS_WAITING,			/* 待機中 */
 	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
 	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
@@ -272,6 +272,7 @@ void lt_proc_CalibrateGyro( void );
 void lt_proc_CalibrateTail( void );
 void lt_proc_CalibrateBlack( void );
 void lt_proc_CalibrateWhite( void );
+void lt_proc_Waiting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_Pause( void );

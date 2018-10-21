@@ -62,7 +62,33 @@ void lt_rcv_test_req( S_MSG_DATA* spRecv )
 
 void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 {
-	lt_Caliblate();
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+
+	switch( spLt->iStatus )
+	{
+		case E_LT_STATUS_CALIBLATE_GYRO:
+		case E_LT_STATUS_CALIBLATE_BLACK:
+		case E_LT_STATUS_CALIBLATE_WHITE:
+			lt_Caliblate();
+			break;
+			
+		case E_LT_STATUS_WAITING:
+			lt_send_staRunning_req( NULL );
+			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+			printf("[Button]Gooooooooooooo!!!\n");
+			break;
+		default:
+			/* フェール処理 */
+			break;
+	}
+
 	return;
 }
 

@@ -154,31 +154,39 @@ void lt_proc( void )
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_BLACK:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_BLACK", 0, 20);
 			lt_proc_CalibrateBlack();
 			/* ˆ—‚µ‚È‚¢ */
 			break;
 			
-		case E_LT_STATUS_CALIBLATE_WHILE:
+		case E_LT_STATUS_CALIBLATE_WHITE:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_WHITE", 0, 20);
 			lt_proc_CalibrateWhite();
 			break;
 			
 		case E_LT_STATUS_WAITING:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_WAITING", 0, 20);
+			lt_proc_Waiting();
 			/* ˆ—‚µ‚È‚¢ */
 			break;
 		
 		case E_LT_STATUS_RUN_STANDUP:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_STANDUP", 0, 20);
 			lt_proc_StandUp();
 			break;
 		
 		case E_LT_STATUS_RUN_PAUSE:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_PAUSE", 0, 20);
 			lt_proc_Pause();
 			break;
 		
 		case E_LT_STATUS_RUN_LOWSPEED:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_LOWSPEED", 0, 20);
 			lt_proc_LowSpeed();
 			break;
 		
 		case E_LT_STATUS_STOP:
+			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_STOP", 0, 20);
 			lt_proc_Stop();
 			break;
 		
@@ -318,6 +326,29 @@ void lt_proc_CalibrateWhite( void )
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_Caliblate();
+	}
+	
+	return;
+}
+
+void lt_proc_Waiting( void )
+{
+	
+	int isPressed = D_LT_FALSE;
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
+	if ( D_LT_TRUE == isPressed )
+	{
+		lt_send_staRunning_req( NULL );
+		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 	}
 	
 	return;
@@ -535,16 +566,10 @@ void lt_Caliblate( void )
 			lt_set_CalibrateBlack();
 			break;
 		
-		case E_LT_STATUS_CALIBLATE_WHILE:
+		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_set_CalibrateWhite();
 			printf("Goto The Start Ready ...\n");
 			lt_log_set_Calibratelog();
-			break;
-		
-		case E_LT_STATUS_WAITING:
-			lt_send_staRunning_req( NULL );
-			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
-			printf("[Button]Gooooooooooooo!!!\n");
 			break;
 		
 		default:
@@ -614,7 +639,7 @@ void lt_set_CalibrateBlack( void )
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_D4, D_LT_TONE_DURATION );
 		
 		/* ó‘Ô‘JˆÚ */
-		spLt->iStatus = E_LT_STATUS_CALIBLATE_WHILE;
+		spLt->iStatus = E_LT_STATUS_CALIBLATE_WHITE;
 	}
 	
 	return;

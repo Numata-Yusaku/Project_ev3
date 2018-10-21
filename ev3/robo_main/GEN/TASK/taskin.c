@@ -291,6 +291,7 @@ void task_msglog_open( void )
 	
 	/* ÉwÉbÉ_èoóÕ */
 	fprintf( fpMsgLog, "Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
+	fflush( stdout );
 #endif	/* D_TASK_LOGMODE */
 	
 	return;
