@@ -18,6 +18,9 @@
 #define	D_LT_TRUE			(1)
 #define	D_LT_FALSE			(0)
 
+/* Wait */
+#define	D_LT_CALIBRATEEND_WAIT					(100)
+
 #define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
 #define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
@@ -37,7 +40,7 @@
 
 /* êKîˆ */
 #define	D_LT_TAIL_CALIBRATE_DEGREES		(88)	/* êKîˆâÒì]äpìx */
-#define	D_LT_TAIL_CALIBRATE_SPEED		(100)	/* êKîˆâÒì]ë¨ìx */
+#define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* êKîˆâÒì]ë¨ìx */
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
 #define	D_LT_TAIL_STANDUP_BACK_DEGREES	(D_LT_TAIL_CALIBRATE_DEGREES + D_LT_TAIL_STANDUP_KICK_DEGREES)

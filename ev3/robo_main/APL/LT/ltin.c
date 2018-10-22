@@ -154,39 +154,31 @@ void lt_proc( void )
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_BLACK:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_BLACK", 0, 20);
 			lt_proc_CalibrateBlack();
 			/* 処理しない */
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_WHITE:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_WHITE", 0, 20);
 			lt_proc_CalibrateWhite();
 			break;
 			
 		case E_LT_STATUS_WAITING:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_WAITING", 0, 20);
 			lt_proc_Waiting();
-			/* 処理しない */
 			break;
 		
 		case E_LT_STATUS_RUN_STANDUP:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_STANDUP", 0, 20);
 			lt_proc_StandUp();
 			break;
 		
 		case E_LT_STATUS_RUN_PAUSE:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_PAUSE", 0, 20);
 			lt_proc_Pause();
 			break;
 		
 		case E_LT_STATUS_RUN_LOWSPEED:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_LOWSPEED", 0, 20);
 			lt_proc_LowSpeed();
 			break;
 		
 		case E_LT_STATUS_STOP:
-			RSI_lcd_draw_string((const char*)"E_LT_STATUS_STOP", 0, 20);
 			lt_proc_Stop();
 			break;
 		
@@ -244,7 +236,6 @@ void lt_proc_Idle( void )
 
 void lt_proc_CalibrateGyro( void )
 {
-	
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 	
@@ -569,7 +560,6 @@ void lt_Caliblate( void )
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_set_CalibrateWhite();
 			printf("Goto The Start Ready ...\n");
-			lt_log_set_Calibratelog();
 			break;
 		
 		default:
@@ -582,6 +572,7 @@ void lt_Caliblate( void )
 
 void lt_set_CalibrateGyro( void )
 {
+	int iGyro = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -594,8 +585,12 @@ void lt_set_CalibrateGyro( void )
 	/* ジャイロリセット */
 	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
 	
+	/* ジャイロを表示 */
+	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
+	RSI_lcd_draw_stringAndDec("Gyro:", iGyro, 0, 30 );
+	
 	/* データ設定 */
-	spLt->stCalibrateInfo.iGyro = 0;
+	spLt->stCalibrateInfo.iGyro = iGyro;
 	
 	/* 設定完了通知 */
 	RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_C4, D_LT_TONE_DURATION );
@@ -680,8 +675,15 @@ void lt_set_CalibrateWhite( void )
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION );
 		
+		/* キャリブレーションログ出力 */
+		lt_log_set_Calibratelog();
+		
+		/* すぐ状態遷移するとタッチセンサを検知してしまうのでWaitをかける */
+		TASK_sleep( D_LT_CALIBRATEEND_WAIT );
+		
 		/* 状態遷移 */
 		spLt->iStatus = E_LT_STATUS_WAITING;
+		
 	}
 	
 	return;
