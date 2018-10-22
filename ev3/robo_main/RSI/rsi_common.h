@@ -61,6 +61,7 @@ void RSI_init( void );
 void rsi_set_Global( void );
 S_RSI* rsi_get_Global( void );
 void rsi_rsilog_open( void );
+void rsi_set_rsilog( const char* cpClass, const char* cpInfo, int iData1, int iData2 );
 /***** ÉeÅ[ÉuÉã *****/
 
 

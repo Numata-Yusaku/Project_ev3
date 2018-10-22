@@ -10,13 +10,12 @@ int RSI_motor_config( int iPort,  int iType )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],Motor Set,%d\n", iPort );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_config( (motor_port_t)iPort, (motor_type_t)iType );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","Motor Set",iPort ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -45,13 +44,12 @@ int RSI_motor_get_counts( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],@@Counts@@,%d\n", iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_get_counts( (motor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","@@Counts@@",iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：角位置 */
 }
@@ -64,13 +62,12 @@ int RSI_motor_reset_counts( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],@@Counts Reset@@,%d\n",iPort );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_reset_counts( (motor_port_t) iPort);
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","@@Counts Reset@@",iPort ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -83,13 +80,12 @@ int RSI_motor_set_power( int iPort, int iPower )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],@@Set Power@@,%d,%d\n",iPort,iPower);
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_set_power( (motor_port_t)iPort, iPower );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","@@Set Power@@",iPort ,iPower );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -102,13 +98,12 @@ int RSI_motor_get_power( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],@@Get Power@@,%d,%d\n",iPort ,iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_get_power( (motor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","@@Get Power@@",iPort ,iRet );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：モータのパワー */
 }
@@ -121,13 +116,12 @@ int RSI_motor_stop( int iPort, int iBrake )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],@@Motor Stop@@\n");
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_stop( (motor_port_t)iPort, (bool_t)iBrake );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","@@Motor Stop@@",0 ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -140,13 +134,12 @@ int RSI_motor_rotate( int iPort, int iDegrees, signed int siSpeedAbs, int iBlock
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[MOTOR],Deg/SPD,%d,%d\n",iDegrees, siSpeedAbs );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_motor_rotate( (motor_port_t)iPort, iDegrees, (uint32_t)siSpeedAbs, (bool_t)iBlocking );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[MOTOR]","Deg/SPD",iDegrees ,siSpeedAbs );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }

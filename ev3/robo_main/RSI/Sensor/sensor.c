@@ -10,13 +10,12 @@ int RSI_sensor_config( int iPort, int iType )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[SENSOR],Sensor Set,%d\n", iPort );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_sensor_config( (sensor_port_t)iPort, (sensor_type_t)iType );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","Sensor Set",0 ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -45,13 +44,12 @@ int RSI_color_sensor_get_color( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Get Color@@,%d\n",iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_color_sensor_get_color( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Get Color@@",iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：識別したカラー */
 }
@@ -66,13 +64,12 @@ unsigned char RSI_color_sensor_get_reflect( int iPort )
 	unsigned char ucRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Color Reflect@@,%d\n",ucRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	ucRet = ev3_color_sensor_get_reflect( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Color Reflect@@",ucRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return ucRet;	/* Ret：反射光の強さ(0-100) */
 }
@@ -85,13 +82,12 @@ unsigned char RSI_color_sensor_get_ambient( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Color Ambient@@,%d\n",iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_color_sensor_get_ambient( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Color Ambient@@",iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -120,13 +116,12 @@ signed short RSI_gyro_sensor_get_angle( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog, "[SENSOR],@@Gyro Angle@@,%d\n", iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_gyro_sensor_get_angle( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Gyro Angle@@",iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：角位置 */
 }
@@ -139,13 +134,12 @@ signed short RSI_gyro_sensor_get_rate( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Gyro Rate@@,%d\n", iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_gyro_sensor_get_rate( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Gyro Rate@@",iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：角速度 */
 }
@@ -158,13 +152,12 @@ int RSI_gyro_sensor_reset( int iPort )
 	int iRet = D_RSI_OK;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Gyro Reset@@\n");
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_gyro_sensor_reset( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Gyro Reset@@", 0 ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -179,13 +172,12 @@ signed short RSI_ultrasonic_sensor_get_distance( int iPort )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
-#if	(D_RSI_LOGMODE)
-	S_RSI* spRsi = rsi_get_Global();
-	fprintf( spRsi->fpRsiLog,"[SENSOR],@@Distance@@,%d\n", iRet );
-#endif	/* D_RSI_LOGMODE */
 #else	/* __VC_DEBUG__ */
 	iRet = (int)ev3_ultrasonic_sensor_get_distance( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
+#if	(D_RSI_LOGMODE)
+	rsi_set_rsilog( "[SENSOR]","@@Distance@@", iRet ,0 );
+#endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* Ret：距離(%) */
 }

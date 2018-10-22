@@ -58,8 +58,36 @@ void rsi_rsilog_open( void )
 	spRsi->fpRsiLog = fpRsiLog;
 	
 	/* ƒwƒbƒ_o—Í */
-	fprintf( fpRsiLog, "Class,Info,Data\n");
+	fprintf( spRsi->fpRsiLog , "Class,Info,Data\n");
+	fflush( spRsi->fpRsiLog  );
 	
 #endif	/* D_RSI_LOGMODE */
 	return;
+}
+
+void rsi_set_rsilog( const char* cpClass, const char* cpInfo, int iData1, int iData2 )
+{
+	S_RSI* spRsi = (S_RSI*)NULL;
+	FILE* fpRsiLog = (FILE*)NULL;
+	
+	spRsi = rsi_get_Global();
+	if( (S_RSI*)NULL == spRsi )
+	{
+		return;
+	}
+	
+	if( (FILE*)NULL == spRsi->fpRsiLog )
+	{
+		return;
+	}
+	
+	fprintf( spRsi->fpRsiLog , cpClass );
+	fprintf( spRsi->fpRsiLog , "," );
+	
+	fprintf( spRsi->fpRsiLog , cpInfo );
+	fprintf( spRsi->fpRsiLog , "," );
+	
+	fprintf( spRsi->fpRsiLog , "\n" );
+	fflush( spRsi->fpRsiLog  );
+
 }

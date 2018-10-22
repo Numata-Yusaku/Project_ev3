@@ -290,8 +290,8 @@ void task_msglog_open( void )
 	spTask->fpMsgLog = fpMsgLog;
 	
 	/* ヘッダ出力 */
-	fprintf( fpMsgLog, "Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
-	fflush( stdout );
+	fprintf( spTask->fpMsgLog, "Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
+	fflush( spTask->fpMsgLog );
 #endif	/* D_TASK_LOGMODE */
 	
 	return;
@@ -316,12 +316,10 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 	switch( iDir )
 	{
 		case E_TASK_MSGDIR_SEND:
-//			printf("[SEND],%08x,0x%08x\n", iTask, iMsgId);
 			fprintf( spTask->fpMsgLog, "[SEND],0x%08x,0x%08x\n", iTask, iMsgId );
 			break;
 		
 		case E_TASK_MSGDIR_RECV:
-//			printf("[RECV],%08x,0x%08x\n", iTask, iMsgId);
 			fprintf( spTask->fpMsgLog, "[RECV],0x%08x,0x%08x\n", iTask, iMsgId );
 			break;
 		
@@ -329,6 +327,8 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 			/* フェール処理 */
 			break;
 	}
+	
+	fflush( spTask->fpMsgLog );
 #endif	/* D_TASK_LOGMODE */
 	return;
 }
