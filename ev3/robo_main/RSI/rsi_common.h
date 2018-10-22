@@ -6,11 +6,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 #if	(__VC_DEBUG__)
 #else	/* __VC_DEBUG__ */
 #include "ev3api.h"
 #endif	/* __VC_DEBUG__ */
+
 
 /*** GEN ***/
 
@@ -61,7 +61,6 @@ void RSI_init( void );
 void rsi_set_Global( void );
 S_RSI* rsi_get_Global( void );
 void rsi_rsilog_open( void );
-
 /***** ÉeÅ[ÉuÉã *****/
 
 

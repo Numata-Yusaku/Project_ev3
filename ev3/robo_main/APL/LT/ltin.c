@@ -154,39 +154,39 @@ void lt_proc( void )
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_BLACK:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_BLACK", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_BLACK", 0, 20);
 			lt_proc_CalibrateBlack();
 			/* èàóùÇµÇ»Ç¢ */
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_WHITE:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_WHITE", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_CALIBLATE_WHITE", 0, 20);
 			lt_proc_CalibrateWhite();
 			break;
 			
 		case E_LT_STATUS_WAITING:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_WAITING", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_WAITING", 0, 20);
 			lt_proc_Waiting();
 			/* èàóùÇµÇ»Ç¢ */
 			break;
 		
 		case E_LT_STATUS_RUN_STANDUP:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_STANDUP", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_STANDUP", 0, 20);
 			lt_proc_StandUp();
 			break;
 		
 		case E_LT_STATUS_RUN_PAUSE:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_PAUSE", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_PAUSE", 0, 20);
 			lt_proc_Pause();
 			break;
 		
 		case E_LT_STATUS_RUN_LOWSPEED:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_RUN_LOWSPEED", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_RUN_LOWSPEED", 0, 20);
 			lt_proc_LowSpeed();
 			break;
 		
 		case E_LT_STATUS_STOP:
-			COMMON_lcd_draw_string((const char*)"E_LT_STATUS_STOP", 0, 20);
+			RSI_lcd_draw_string((const char*)"E_LT_STATUS_STOP", 0, 20);
 			lt_proc_Stop();
 			break;
 		

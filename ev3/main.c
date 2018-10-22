@@ -113,7 +113,7 @@ void main_DispReady( void )
 {
 	/* âÊñ èâä˙âª */
 	RSI_lcd_fill_rect( 0, 0, 178, 128, 0 );
-	COMMON_lcd_draw_string((const char*)"INIT OK", 0, 10);
+	RSI_lcd_draw_string((const char*)"INIT OK", 0, 10);
 	
 	return;
 }
@@ -250,7 +250,7 @@ void main_recv_ButtonPressed( void )
 		}
 	}
 	
-	COMMON_lcd_draw_stringAndDec((const char*)"INIT OK", iKey , 10, 10);
+	RSI_lcd_draw_stringAndDec((const char*)"INIT OK", iKey , 10, 10);
 	return;
 }
 #endif	/* __VC_DEBUG__ */

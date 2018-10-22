@@ -54,6 +54,10 @@ int RSI_lcd_draw_line( signed int siXsta, signed int siYsta, signed int siXend, 
 int RSI_lcd_fill_rect( signed int siXpoint, signed int siYpoint, signed int siWidth, signed int siHeight, int iColor );
 int RSI_lcd_draw_image( const S_RSI_LCD_IMAGE* spImage, signed int siXpoint, signed int siYpoint );
 
+void RSI_lcd_draw_stringAndDec( const char* str, int iDecValue, signed int siXpoint, signed int siYpoint );
+void RSI_lcd_draw_stringAndHex( const char* str, int iHexValue, signed int siXpoint, signed int siYpoint );
+void RSI_lcd_draw_stringAndPoint( const char* str, void* iPointValue, signed int siXpoint, signed int siYpoint );
+
 /***** ÉeÅ[ÉuÉã *****/
 
 
