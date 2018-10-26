@@ -159,7 +159,7 @@ void lt_balance_set_BacklashCancel( void )
 	return;
 }
 
-void lt_balance_set_MotorPower( void )
+int lt_balance_set_MotorPower( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
@@ -167,9 +167,35 @@ void lt_balance_set_MotorPower( void )
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
-		return;
+		return D_LT_NG;
 	}
 	
+	/* “]“|”»’è */
+	if ( ( ( D_LT_PWM_MAX <= spLt->stBacanceControl.scPwmLeft ) &&
+			( D_LT_PWM_MAX <= spLt->stBacanceControl.scPwmRight ) ) ||
+		( ( D_LT_PWM_MIN >= spLt->stBacanceControl.scPwmLeft ) &&
+			( D_LT_PWM_MIN >=spLt->stBacanceControl.scPwmRight ) ) )
+	{
+		/* “]“|‚µ‚Ä‚¢‚é */
+		spLt->iFallDownCount++;
+		if( D_LT_FALLDOWNTIME == spLt->iFallDownCount )
+		{
+			/* ƒ^ƒCƒ€ƒAƒEƒg‚Å‘–s’âŽ~*/
+			RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
+			RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
+			
+			spLt->iStatus = E_LT_STATUS_STOP_WAIT;
+			
+			return D_LT_NG;
+		}
+	}
+	else
+	{
+		/* “]“|‚µ‚Ä‚¢‚È‚¢ */
+		spLt->iFallDownCount = 0;
+	}
+	
+	/* ¶ŽÔ—Ö */
 	if (spLt->stBacanceControl.scPwmLeft == 0)
 	{
 		RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
@@ -179,6 +205,7 @@ void lt_balance_set_MotorPower( void )
 		RSI_motor_set_power(spLt->stPort.iMotor.iLeftWheel, (int)spLt->stBacanceControl.scPwmLeft);
 	}
 	
+	/* ‰EŽÔ—Ö */
 	if (spLt->stBacanceControl.scPwmRight == 0)
 	{
 		RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
@@ -188,5 +215,5 @@ void lt_balance_set_MotorPower( void )
 		RSI_motor_set_power(spLt->stPort.iMotor.iRightWheel, (int)spLt->stBacanceControl.scPwmRight);
 	}
 	
-	return;
+	return D_LT_OK;
 }

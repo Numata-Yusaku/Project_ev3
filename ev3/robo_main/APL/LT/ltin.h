@@ -21,6 +21,10 @@
 /* Wait */
 #define	D_LT_CALIBRATEEND_WAIT					(100)
 
+/* 転倒タイムアウト */
+#define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
+
+/* ログファイル */
 #define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
 #define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
@@ -63,6 +67,10 @@
 #define	D_LT_FORWORD_LOWSPEED				(30)
 #define	D_LT_FORWORD_PAUSE					(0)
 
+/* PWM */
+#define	D_LT_PWM_MAX						(100)
+#define	D_LT_PWM_MIN						(-100)
+
 /* 旋回指令 */
 #define	D_LT_TURN_STOP						(0)		/* 旋回しない */
 #define	D_LT_TURN_RUN						(1)		/* 旋回する */
@@ -85,21 +93,41 @@
 #define	D_LT_A_D				(0.8F)				/* ローパスフィルタ係数(左右車輪の平均回転角度用) */
 #define	D_LT_A_R				(0.996F)			/* ローパスフィルタ係数(左右車輪の目標平均回転角度用) */
 
+#if 1	/* ゲイン調整 */
 /* 状態フィードバック係数 */
-#define	D_LT_K_F1				(-0.86526F)			/* 車輪回転角度係数 */
-#define	D_LT_K_F2				(-30.73965F)		/* 車体傾斜角度係数 */
-#define	D_LT_K_F3				(-1.14828F*0.70F)	/* 車輪回転角速度係数 */
-#define	D_LT_K_F4				(-2.29757F)			/* 車体傾斜角速度係数 */
+/* ***2018年度*** */
+#define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
+#define	D_LT_K_F2				(-40.0F)		/* 車体傾斜角度係数 */
+#define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
+#define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
 
-#define	D_LT_K_I				(-0.44721F)			/* サーボ制御用積分フィードバック係数 */
-#define	D_LT_K_PHIDOT			(25.0F*2.75F)		/* 車体目標旋回角速度係数 */
-#define	D_LT_K_THETADOT			(6.00F)				/* モータ目標回転角速度係数 */
+#define	D_LT_K_I				(-0.2F)			/* サーボ制御用積分フィードバック係数 */
+#define	D_LT_K_PHIDOT			(25.0F*2.75F)	/* 車体目標旋回角速度係数 */
+#define	D_LT_K_THETADOT			(6.00F)			/* モータ目標回転角速度係数 */
 
-#define	D_LT_BATTERY_GAIN		(0.001089F)			/* PWM出力算出用バッテリ電圧補正係数 */
-#define	D_LT_BATTERY_OFFSET		(0.625F)			/* PWM出力算出用バッテリ電圧補正オフセット */
+#define	D_LT_BATTERY_GAIN		(0.001089F)		/* PWM出力算出用バッテリ電圧補正係数 */
+#define	D_LT_BATTERY_OFFSET		(0.625F)		/* PWM出力算出用バッテリ電圧補正オフセット */
 
 #define D_LT_P_GAIN					(2.5F)		/* 完全停止用モーター制御比例係数 */
 #define D_LT_PWM_ABS_MAX			(60)		/* 完全停止用モーター制御PWM絶対最大値 */
+#else	/* ゲイン調整 */
+:/* サンプル初期値 */
+:/* 状態フィードバック係数 */
+:#define	D_LT_K_F1				(-0.86526F)			/* 車輪回転角度係数 */
+:#define	D_LT_K_F2				(-30.73965F)		/* 車体傾斜角度係数 */
+:#define	D_LT_K_F3				(-1.14828F*0.70F)	/* 車輪回転角速度係数 */
+:#define	D_LT_K_F4				(-2.29757F)			/* 車体傾斜角速度係数 */
+:#define	D_LT_K_I				(-0.44721F)			/* サーボ制御用積分フィードバック係数 */
+:#define	D_LT_K_PHIDOT			(25.0F*2.75F)		/* 車体目標旋回角速度係数 */
+:#define	D_LT_K_THETADOT			(6.00F)				/* モータ目標回転角速度係数 */
+
+:#define	D_LT_BATTERY_GAIN		(0.001089F)			/* PWM出力算出用バッテリ電圧補正係数 */
+:#define	D_LT_BATTERY_OFFSET		(0.625F)			/* PWM出力算出用バッテリ電圧補正オフセット */
+
+:#define D_LT_P_GAIN				(2.5F)				/* 完全停止用モーター制御比例係数 */
+:#define D_LT_PWM_ABS_MAX			(60)				/* 完全停止用モーター制御PWM絶対最大値 */
+#endif	/* ゲイン調整 */
+
 
 enum EN_LT_STATUS
 {
@@ -113,6 +141,7 @@ enum EN_LT_STATUS
 	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
 	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
 	E_LT_STATUS_RUN_PAUSE,			/* 走行中(停止) */
+	E_LT_STATUS_STOP_WAIT,			/* 走行体完全停止待ち */
 	E_LT_STATUS_STOP,				/* 走行体完全停止 */
 	
 	/* ここより上に定義すること */
@@ -223,6 +252,7 @@ typedef struct
 	int							iStatus;
 	int							iWupChk[E_LT_WUPCHK_NUM];
 	int							iStopChk[E_LT_STOP_NUM];
+	int							iFallDownCount;
 	FILE*						fpStatusLog;
 	FILE*						fpCalirateLog;
 	FILE*						fpSystemLog;
@@ -279,6 +309,7 @@ void lt_proc_Waiting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_Pause( void );
+void lt_proc_StopWait( void );
 void lt_proc_Stop( void );
 
 /* port */
@@ -301,6 +332,7 @@ int lt_get_RunningTurnDir( void );
 /* other I/F */
 void lt_set_TailAngle( int iAngle );
 int lt_get_SonarAlert( void );
+int lt_get_StopState( void );
 
 /*** ltin_recv.c **/
 /* FrameWork */
@@ -337,7 +369,7 @@ void lt_send_endRunning_req( S_MSG_DATA* spSend );		/* 走行停止 */
 void lt_balance_init( void );
 void lt_balance_set_BalanceInfo( void );
 void lt_balance_set_BacklashCancel( void );
-void lt_balance_set_MotorPower( void );
+int lt_balance_set_MotorPower( void );
 
 /*** ltin_log.c **/
 void lt_log_Statuslog_open( void );

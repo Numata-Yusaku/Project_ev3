@@ -68,7 +68,6 @@ void rsi_rsilog_open( void )
 void rsi_set_rsilog( const char* cpClass, const char* cpInfo, int iData1, int iData2 )
 {
 	S_RSI* spRsi = (S_RSI*)NULL;
-	FILE* fpRsiLog = (FILE*)NULL;
 	
 	spRsi = rsi_get_Global();
 	if( (S_RSI*)NULL == spRsi )

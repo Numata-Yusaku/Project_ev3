@@ -178,6 +178,10 @@ void lt_proc( void )
 			lt_proc_LowSpeed();
 			break;
 		
+		case E_LT_STATUS_STOP_WAIT:
+			lt_proc_StopWait();
+			break;
+		
 		case E_LT_STATUS_STOP:
 			lt_proc_Stop();
 			break;
@@ -404,6 +408,11 @@ void lt_proc_Pause( void )
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_STOP );
 	
+	return;
+}
+
+void lt_proc_StopWait( void )
+{
 	return;
 }
 
@@ -692,6 +701,7 @@ void lt_set_CalibrateWhite( void )
 /* running */
 void lt_Running( int iForwardLevel, int iTurnMode )
 {
+	int iRet = D_LT_NG;
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	S_LT* spLt = (S_LT*)NULL;
 	
@@ -738,7 +748,12 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	lt_balance_set_BalanceInfo();
 	
 	/* モータ稼働 */
-	lt_balance_set_MotorPower();
+	iRet = lt_balance_set_MotorPower();
+	if( D_LT_OK != iRet )
+	{
+		/* 緊急停止 */
+		lt_send_Stop_req( NULL );
+	}
 	
 	/* システムログ出力 */
 	lt_log_set_Systemlog();
@@ -846,3 +861,25 @@ int lt_get_SonarAlert( void )
 	return iAlert;
 }
 
+int lt_get_StopState( void )
+{
+	int iLoop = 0;
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return D_LT_NG;
+	}
+	
+	for( iLoop = 0; iLoop < E_LT_STOP_NUM; iLoop++ )
+	{
+		if( D_LT_FLAG_ON != spLt->iStopChk[iLoop] )
+		{
+			return D_LT_NG;
+		}
+	}
+	
+	return D_LT_OK;
+}
