@@ -493,11 +493,11 @@ END:
 	return;
 }
 
-void lt_send_setClientSendGyro_req( void )
+void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
-	void* psSendPara = (void*)NULL;
+	S_TASK_SETCLIENTSEND_GYRO* psSendPara = (void*)NULL;
 	
 	/* 領域確保 */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
@@ -506,19 +506,22 @@ void lt_send_setClientSendGyro_req( void )
 		goto END;
 	}
 	
-	psSendPara = (void*)malloc( sizeof( int ) );
-	if ((void*)NULL == psSendPara)
+	psSendPara = (S_TASK_SETCLIENTSEND_GYRO*)malloc( sizeof( S_TASK_SETCLIENTSEND_GYRO ) );
+	if ((S_TASK_SETCLIENTSEND_GYRO*)NULL == psSendPara)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
-	memset( psSendPara, 0x00, sizeof( int ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_SETCLIENTSEND_GYRO ) );
 	
+	/* 送信パラメータ設定 */
+	psSendPara->iGyro = spSend->iGyro;
+
 	/* 送信データ設定 */
 	psSendData->iMsgid = E_MSGID_BT_SETCLIENTSEND_GYRO_REQ;
-	psSendData->iSize = sizeof( S_MSG_DATA );
+	psSendData->iSize = sizeof( S_TASK_SETCLIENTSEND_GYRO );
 	psSendData->vpPara = psSendPara;
 	
 	/* MSG送信 */

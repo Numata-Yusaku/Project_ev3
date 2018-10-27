@@ -169,6 +169,11 @@ void bt_rcv_staRunning_req( S_MSG_DATA* spRecv )
 void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
+	S_TASK_SETCLIENTSEND_GYRO* spRecvPara = (S_TASK_SETCLIENTSEND_GYRO*)NULL;
+	char cSendData[D_BT_RECVDATA_SIZE];
+	
+	/* ‰Šú‰» */
+	memset( &cSendData, 0x00, D_BT_RECVDATA_SIZE );
 	
 	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
 	spBt = bt_get_Global();
@@ -177,9 +182,15 @@ void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	char cSendData[] = {"AB"};
+	spRecvPara = (S_TASK_SETCLIENTSEND_GYRO*)spRecv->vpPara;
+	if( (S_TASK_SETCLIENTSEND_GYRO*)NULL == spRecvPara )
+	{
+		return;
+	}
 	
-	bt_set_SerialMessage( cSendData, sizeof(cSendData) - 1 );
+	sprintf( cSendData, "%d", spRecvPara->iGyro );
+	
+	bt_set_SerialMessage( cSendData, (int)strlen(cSendData) );
 	
 	return;
 }

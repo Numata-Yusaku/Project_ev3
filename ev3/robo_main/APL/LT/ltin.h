@@ -24,6 +24,10 @@
 /* クライアント送信満了カウンタ */
 #define	D_LT_CLIENTSENDTIME_GYRO				( 1000 / ( D_TASK_CYCLE_BT ) )
 
+/* サンプリング期間 */
+/* 「クライアント送信が一定時間されなくなった 」= 「サンプリングが安定した」 */
+#define	D_LT_SAMPLETIME_GYRO					( D_LT_CLIENTSENDTIME_GYRO * 50 )
+
 /* 転倒タイムアウト */
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
@@ -43,6 +47,7 @@
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
 
 /* 音響 */
+#define	D_LT_TONE_VOLUME				(1)		/* 音量 */
 #define	D_LT_TONE_DURATION				(100)	/* 音響継続時間 */
 
 /* 尻尾 */
@@ -273,6 +278,7 @@ typedef struct
 	FILE*						fpSystemLog;
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
+	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
 	S_LT_BALANCEINFO			stBalanceInfo;					/* バランス制御情報 */
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 }S_LT;
@@ -360,18 +366,18 @@ void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* キャリブレーション更新
 void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート */
 
 /*** ltin_send.c **/
-void lt_send_test_res( S_MSG_DATA* spSend );				/* テスト */
-int lt_send_Wupchk_req( void );								/* 起動 */
-void lt_send_Wupchk_bt_req( void );							/* 起動：BT */
-int lt_send_Stop_req( void );								/* 停止 */
-void lt_send_Stop_bt_req( void );							/* 停止：BT */
-void lt_send_ShutDown_res( void );							/* シャットダウン */
-void lt_send_staCalibration_req( void );					/* キャリブレーション開始 */
-void lt_send_endCalibration_req( void );					/* キャリブレーション終了 */
-void lt_send_staRunning_req( void );						/* 走行開始 */
-void lt_send_endRunning_req( void );						/* 走行停止 */
-void lt_send_setClientSendGyro_req( void );					/* クライアント送信：ジャイロ */
-void lt_send_setClientSendColor_req( void );				/* クライアント送信：カラー */
+void lt_send_test_res( S_MSG_DATA* spSend );								/* テスト */
+int lt_send_Wupchk_req( void );												/* 起動 */
+void lt_send_Wupchk_bt_req( void );											/* 起動：BT */
+int lt_send_Stop_req( void );												/* 停止 */
+void lt_send_Stop_bt_req( void );											/* 停止：BT */
+void lt_send_ShutDown_res( void );											/* シャットダウン */
+void lt_send_staCalibration_req( void );									/* キャリブレーション開始 */
+void lt_send_endCalibration_req( void );									/* キャリブレーション終了 */
+void lt_send_staRunning_req( void );										/* 走行開始 */
+void lt_send_endRunning_req( void );										/* 走行停止 */
+void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* クライアント送信：ジャイロ */
+void lt_send_setClientSendColor_req( void );								/* クライアント送信：カラー */
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );

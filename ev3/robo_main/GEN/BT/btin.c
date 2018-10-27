@@ -193,13 +193,19 @@ void bt_proc_Ready( void )
 
 void bt_proc_Calibrate( void )
 {
+#if	(__VC_DEBUG__)
 	bt_check_SerialMessageRecv();
+#else	/* __VC_DEBUG__ */
+#endif	/* __VC_DEBUG__ */
 	return;
 }
 
 void bt_proc_Waiting( void )
 {
+#if	(__VC_DEBUG__)
 	bt_check_SerialMessageRecv();
+#else	/* __VC_DEBUG__ */
+#endif	/* __VC_DEBUG__ */
 	return;
 }
 
@@ -225,9 +231,11 @@ void bt_set_SerialMessage( char* cpSendData, int iSize )
 	for( iLoop = 0; iLoop < iSize; iLoop++ )
 	{
 		fprintf( spBt->BtFile, "%c", cpSendData[iLoop] );
+		fflush( spBt->BtFile );
 	}
-	fseek( spBt->BtFile, -(iSize), SEEK_CUR );
 	
+	fseek( spBt->BtFile, -(iSize), SEEK_CUR );
+
 	return;
 }
 

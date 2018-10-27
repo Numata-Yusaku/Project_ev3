@@ -159,7 +159,7 @@ END:
 	return;
 }
 
-void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* send )
+void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -191,9 +191,9 @@ void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* send )
 	memset( psSendPara, 0x00, sizeof( S_TASK_CHGCALIBRATION_RES ) );
 	
 	/* 送信パラメータ設定 */
-	psSendPara->cCmd = send->cCmd;
-	psSendPara->iSize= send->iSize;
-	memcpy( psSendPara->aData, send->aData, send->iSize );
+	psSendPara->cCmd = spSend->cCmd;
+	psSendPara->iSize= spSend->iSize;
+	memcpy( psSendPara->aData, spSend->aData, spSend->iSize );
 
 	/* 送信データ設定 */
 	psSendData->iMsgid = E_MSGID_BT_CHGCALIBRATION_RES;

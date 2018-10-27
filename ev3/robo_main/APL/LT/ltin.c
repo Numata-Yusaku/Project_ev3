@@ -67,6 +67,7 @@ void lt_init( void )
 {
 	lt_set_Global();
 	lt_set_Port();
+	RSI_hw_speaker_set_volume( D_LT_TONE_VOLUME );
 	
 	/* ログ */
 	lt_log_Statuslog_open();
@@ -240,8 +241,13 @@ void lt_proc_Idle( void )
 
 void lt_proc_CalibrateGyro( void )
 {
+	int iGyro = 0;
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
+	S_TASK_SETCLIENTSEND_GYRO stSend;
+	
+	/* 初期化 */
+	memset( &stSend, 0x00, sizeof(S_TASK_SETCLIENTSEND_GYRO) );
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -250,20 +256,48 @@ void lt_proc_CalibrateGyro( void )
 		return;
 	}
 	
-	spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] ++;
-	if( D_LT_CLIENTSENDTIME_GYRO == spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] )
+	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
+	if( spLt->stOldCalibrateInfo.iGyro != iGyro)
 	{
-		/* ジャイロをサンプリング */
-		lt_send_setClientSendGyro_req();
-		/*カウンタクリア*/
-		spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] = 0;
+		/*** データ変化あり ***/
+		
+		/* 情報表示 */
+		if( D_LT_CLIENTSENDTIME_GYRO <= spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] )
+		{
+			stSend.iGyro = iGyro;
+			/* ジャイロをサンプリング */
+			lt_send_setClientSendGyro_req( &stSend );
+		
+			/*カウンタクリア*/
+			spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] = 0;
+		}
+		
+		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_C5 ,D_LT_TONE_DURATION );
+	}
+	else
+	{
+		/*** データ変化なし ***/
+		
+		if (D_LT_SAMPLETIME_GYRO <= spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO])
+		{
+			lt_Caliblate();
+		}
 	}
 	
+	/* データ更新 */
+	spLt->stOldCalibrateInfo.iGyro = iGyro;
+		
+	/* カウンタ更新 */
+	spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] ++;
+	
+	/*** 基準ジャイロの決定 ***/
 	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
 	if ( D_LT_TRUE == isPressed )
 	{
-		/* ボタン押下でサンプリング終了 */
-		lt_Caliblate();
+		/* ボタン押下でジャイロリセット */
+		RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
+		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_B6 ,D_LT_TONE_DURATION );
+		
 	}
 	
 	return;

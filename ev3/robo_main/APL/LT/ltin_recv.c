@@ -207,7 +207,7 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
-	S_TASK_CHGCALIBRATION_RES* spChgCalibration = (S_TASK_CHGCALIBRATION_RES*)NULL;
+	S_TASK_CHGCALIBRATION_RES* spRecvPara = (S_TASK_CHGCALIBRATION_RES*)NULL;
 	
 	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
 	spLt = lt_get_Global();
@@ -216,13 +216,13 @@ void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	spChgCalibration = (S_TASK_CHGCALIBRATION_RES*)(spRecv->vpPara);
-	if( (S_TASK_CHGCALIBRATION_RES*)NULL == spChgCalibration )
+	spRecvPara = (S_TASK_CHGCALIBRATION_RES*)(spRecv->vpPara);
+	if( (S_TASK_CHGCALIBRATION_RES*)NULL == spRecvPara )
 	{
 		return;
 	}
 	
-	printf("%c\n", spChgCalibration->cCmd);
+	printf("%c\n", spRecvPara->cCmd);
 	
 	return;
 }

@@ -17,7 +17,7 @@
 #define	D_BT_CHECK_OK		(1)
 #define	D_BT_CHECK_NG		(0)
 
-#define	D_BT_RECVDATA_SIZE	(4)
+#define	D_BT_RECVDATA_SIZE	(128)
 
 enum EN_BT_STATUS
 {
@@ -91,7 +91,7 @@ void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* ƒNƒ‰ƒCƒAƒ“ƒg‘—M
 void bt_send_test_res( S_MSG_DATA* spSend );						/* ƒeƒXƒg */
 void bt_send_Wupchk_res( void );						/* ‹N“® */
 void bt_send_Stop_res( void );						/* ’â~ */
-void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* send );	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“XV */
+void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“XV */
 void bt_send_RemoteStart_res( void );					/* ƒŠƒ‚[ƒgƒXƒ^[ƒg */
 
 #endif	/* __BTIN_H__ */
