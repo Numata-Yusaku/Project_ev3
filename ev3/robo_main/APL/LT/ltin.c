@@ -263,9 +263,10 @@ void lt_proc_CalibrateGyro( void )
 		/* 情報表示 */
 		if( D_LT_CLIENTSENDTIME_GYRO <= spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] )
 		{
+#if D_LT_LOGMODE_GYRO
 			stSend.iGyro = iGyro;
-			/* ジャイロをサンプリング */
 			lt_send_setClientSendGyro_req( &stSend );
+#endif	/* D_LT_LOGMODE_GYRO */
 		
 			/*カウンタクリア*/
 			spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] = 0;

@@ -36,7 +36,8 @@
 #define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
 
-/* ログ出力 */
+/*** ログ出力 ***/
+/* ログファイル */
 #define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_OFF)
 
@@ -45,6 +46,10 @@
 #define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
+
+/* シリアルログ */
+#define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
+
 
 /* 音響 */
 #define	D_LT_TONE_VOLUME				(1)		/* 音量 */
