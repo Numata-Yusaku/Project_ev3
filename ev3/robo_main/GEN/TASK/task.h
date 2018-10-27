@@ -3,6 +3,7 @@
 
 /***** インクルード *****/
 #include "task_msgid.h"
+#include "task_msgdata.h"
 
 /***** 定数 *****/
 #define	D_TASK_OK				(0)

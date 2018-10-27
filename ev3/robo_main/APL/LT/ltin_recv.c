@@ -80,7 +80,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			break;
 			
 		case E_LT_STATUS_WAITING:
-			lt_send_staRunning_req( NULL );
+			lt_send_staRunning_req();
 			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 			printf("[Button]Gooooooooooooo!!!\n");
 			break;
@@ -207,7 +207,7 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
-	S_LT_CHGCALIBRATION_RES* spChgCalibration = (S_LT_CHGCALIBRATION_RES*)NULL;
+	S_TASK_CHGCALIBRATION_RES* spChgCalibration = (S_TASK_CHGCALIBRATION_RES*)NULL;
 	
 	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
 	spLt = lt_get_Global();
@@ -216,8 +216,8 @@ void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	spChgCalibration = (S_LT_CHGCALIBRATION_RES*)(spRecv->vpPara);
-	if( (S_LT_CHGCALIBRATION_RES*)NULL == spChgCalibration )
+	spChgCalibration = (S_TASK_CHGCALIBRATION_RES*)(spRecv->vpPara);
+	if( (S_TASK_CHGCALIBRATION_RES*)NULL == spChgCalibration )
 	{
 		return;
 	}
@@ -240,7 +240,7 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 	
 	if( E_LT_STATUS_WAITING == spLt->iStatus )
 	{
-		lt_send_staRunning_req( NULL );
+		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 		printf("[Remote]Gooooooooooooo!!!\n");
 	}

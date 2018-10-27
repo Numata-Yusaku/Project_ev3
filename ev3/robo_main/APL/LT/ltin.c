@@ -206,7 +206,7 @@ void lt_proc_Ready( void )
 	}
 	
 	/* WUPCHK */
-	iWupChk = lt_send_Wupchk_req( NULL );
+	iWupChk = lt_send_Wupchk_req();
 	if( E_LT_WUPCHK_NUM == iWupChk )
 	{
 		spLt->iStatus = E_LT_STATUS_IDLE;
@@ -227,7 +227,7 @@ void lt_proc_Idle( void )
 	}
 	
 	/* Bluetoothによるキャリブレーション通信を開始 */
-	lt_send_staCalibration_req( NULL );
+	lt_send_staCalibration_req();
 	
 	/* 初期化完了 */
 	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_ORANGE );
@@ -250,9 +250,19 @@ void lt_proc_CalibrateGyro( void )
 		return;
 	}
 	
+	spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] ++;
+	if( D_LT_CLIENTSENDTIME_GYRO == spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] )
+	{
+		/* ジャイロをサンプリング */
+		lt_send_setClientSendGyro_req();
+		/*カウンタクリア*/
+		spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] = 0;
+	}
+	
 	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
 	if ( D_LT_TRUE == isPressed )
 	{
+		/* ボタン押下でサンプリング終了 */
 		lt_Caliblate();
 	}
 	
@@ -342,7 +352,7 @@ void lt_proc_Waiting( void )
 	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
 	if ( D_LT_TRUE == isPressed )
 	{
-		lt_send_staRunning_req( NULL );
+		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 	}
 	
@@ -429,12 +439,17 @@ void lt_proc_Stop( void )
 	}
 	
 	/* STOP */
-	iStopChk = lt_send_Stop_req( NULL );
+	iStopChk = lt_send_Stop_req();
 	if( E_LT_STOP_NUM == iStopChk )
 	{
+		/* モータの固定を解除 */
+		RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_FALSE);
+		RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE);
+		RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE);
+		
 		/* システム終了 */
 		lt_shutdown();
-		lt_send_ShutDown_res( NULL );
+		lt_send_ShutDown_res();
 	}
 	
 	return;
@@ -594,8 +609,9 @@ void lt_set_CalibrateGyro( void )
 	/* ジャイロリセット */
 	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
 	
+	/* ジャイロ平均値を計算 */
+//	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	/* ジャイロを表示 */
-	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	RSI_lcd_draw_stringAndDec("Gyro:", iGyro, 0, 30 );
 	
 	/* データ設定 */
@@ -679,7 +695,7 @@ void lt_set_CalibrateWhite( void )
 		spLt->stCalibrateInfo.stWhite.iReflect = iReflect;
 		
 		/* Bluetoothによるキャリブレーション通信を終了 */
-		lt_send_endCalibration_req( NULL );
+		lt_send_endCalibration_req();
 		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION );
@@ -748,11 +764,14 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	lt_balance_set_BalanceInfo();
 	
 	/* モータ稼働 */
+#if	(__VC_DEBUG__)
+	lt_balance_set_DummyMotorPower();
+#endif	/* __VC_DEBUG__ */
 	iRet = lt_balance_set_MotorPower();
 	if( D_LT_OK != iRet )
 	{
 		/* 緊急停止 */
-		lt_send_Stop_req( NULL );
+		lt_send_Stop_req();
 	}
 	
 	/* システムログ出力 */

@@ -53,7 +53,7 @@ END:
 	return;
 }
 
-void bt_send_Wupchk_res( S_MSG_DATA* spSend )
+void bt_send_Wupchk_res( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -106,7 +106,7 @@ END:
 	return;
 }
 
-void bt_send_Stop_res( S_MSG_DATA* spSend )
+void bt_send_Stop_res( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -159,11 +159,11 @@ END:
 	return;
 }
 
-void bt_send_chgCalibration_res( S_BT_CHGCALIBRATION_RES* send )
+void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* send )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
-	S_BT_CHGCALIBRATION_RES* psSendPara = (void*)NULL;
+	S_TASK_CHGCALIBRATION_RES* psSendPara = (void*)NULL;
 	S_BT* spBt = (S_BT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -180,15 +180,15 @@ void bt_send_chgCalibration_res( S_BT_CHGCALIBRATION_RES* send )
 		goto END;
 	}
 	
-	psSendPara = (S_BT_CHGCALIBRATION_RES*)malloc( sizeof( S_BT_CHGCALIBRATION_RES ) );
-	if ((S_BT_CHGCALIBRATION_RES*)NULL == psSendPara)
+	psSendPara = (S_TASK_CHGCALIBRATION_RES*)malloc( sizeof( S_TASK_CHGCALIBRATION_RES ) );
+	if ((S_TASK_CHGCALIBRATION_RES*)NULL == psSendPara)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
-	memset( psSendPara, 0x00, sizeof( S_BT_CHGCALIBRATION_RES ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_CHGCALIBRATION_RES ) );
 	
 	/* 送信パラメータ設定 */
 	psSendPara->cCmd = send->cCmd;
@@ -197,7 +197,7 @@ void bt_send_chgCalibration_res( S_BT_CHGCALIBRATION_RES* send )
 
 	/* 送信データ設定 */
 	psSendData->iMsgid = E_MSGID_BT_CHGCALIBRATION_RES;
-	psSendData->iSize = sizeof( S_BT_CHGCALIBRATION_RES );
+	psSendData->iSize = sizeof( S_TASK_CHGCALIBRATION_RES );
 	psSendData->vpPara = (void*)psSendPara;
 	
 	/* CHG通知可能な状態かチェック */
@@ -214,10 +214,10 @@ void bt_send_chgCalibration_res( S_BT_CHGCALIBRATION_RES* send )
 
 END:
 	/*** 解放処理 ***/
-	if ((S_BT_CHGCALIBRATION_RES*)NULL != psSendPara)
+	if ((S_TASK_CHGCALIBRATION_RES*)NULL != psSendPara)
 	{
 		free( psSendPara );
-		psSendPara = (S_BT_CHGCALIBRATION_RES*)NULL;
+		psSendPara = (S_TASK_CHGCALIBRATION_RES*)NULL;
 	}
 	
 	if ((S_MSG_DATA*)NULL != psSendData)
@@ -229,7 +229,7 @@ END:
 	return;
 }
 
-void bt_send_RemoteStart_res( S_MSG_DATA* spSend )
+void bt_send_RemoteStart_res( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;

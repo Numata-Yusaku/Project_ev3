@@ -28,6 +28,7 @@ int RSI_hw_battery_voltage_mV( void )
 	int iRet = 0;
 	
 #if	(__VC_DEBUG__)
+	iRet = 7500;
 #else	/* __VC_DEBUG__ */
 	iRet = ev3_battery_voltage_mV();
 #endif	/* __VC_DEBUG__ */

@@ -21,6 +21,9 @@
 /* Wait */
 #define	D_LT_CALIBRATEEND_WAIT					(100)
 
+/* クライアント送信満了カウンタ */
+#define	D_LT_CLIENTSENDTIME_GYRO				( 1000 / ( D_TASK_CYCLE_BT ) )
+
 /* 転倒タイムアウト */
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
@@ -64,7 +67,8 @@
 
 /*** 走行指令値 ***/
 /* 前後進指令 */
-#define	D_LT_FORWORD_LOWSPEED				(30)
+#define	D_LT_FORWORD_LOWSPEED				(0)
+//#define	D_LT_FORWORD_LOWSPEED				(30)
 #define	D_LT_FORWORD_PAUSE					(0)
 
 /* PWM */
@@ -180,6 +184,16 @@ enum EN_LT_PARTS
 	E_LT_PARTS_NONE = 0,			/* 未設定 */
 };
 
+/* クライアント送信カウンタ */
+enum EN_LT_CLIENTSEND
+{
+	E_LT_CLIENTSEND_GYRO = 0,
+	E_LT_CLIENTSEND_COLOR,
+
+	/* ここより上に定義すること */
+	E_LT_CLIENTSEND_NUM
+};
+
 /***** 構造体 *****/
 typedef void( *F_LT_RECVFUNCPTR )(S_MSG_DATA* spRecv);
 
@@ -253,6 +267,7 @@ typedef struct
 	int							iWupChk[E_LT_WUPCHK_NUM];
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
+	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
 	FILE*						fpStatusLog;
 	FILE*						fpCalirateLog;
 	FILE*						fpSystemLog;
@@ -275,15 +290,6 @@ typedef struct
 	int		iPort;
 	int		iType;
 }S_LT_PORTINFO;
-
-/*** 受信データ ***/
-/* キャリブレーションパラメータ通知 */
-typedef struct
-{
-	int iSize;
-	char aData[D_LT_RECVDATA_SIZE];
-	char cCmd;
-}S_LT_CHGCALIBRATION_RES;
 
 /***** 関数プロトタイプ *****/
 
@@ -340,36 +346,39 @@ void lt_recv( S_MSG_DATA* spRecv );
 F_LT_RECVFUNCPTR lt_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
-void lt_rcv_test_req( S_MSG_DATA* spRecv );				/* テスト */
-void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv );		/* キーボード：TouchButton押下 */
-void lt_rcv_BackButton_req( S_MSG_DATA* spRecv );		/* キーボード：BackButton押下 */
-void lt_rcv_UpButton_req( S_MSG_DATA* spRecv );			/* キーボード：UpButton押下 */
-void lt_rcv_DownButton_req( S_MSG_DATA* spRecv );		/* キーボード：DownButton押下 */
-void lt_rcv_LeftButton_req( S_MSG_DATA* spRecv );		/* キーボード：LeftButton押下 */
-void lt_rcv_RightButton_req( S_MSG_DATA* spRecv );		/* キーボード：RightButton押下 */
-void lt_rcv_CenterButton_req( S_MSG_DATA* spRecv );		/* キーボード：CenterButton押下 */
-void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );			/* 起動 */
-void lt_rcv_Stop_res( S_MSG_DATA* spRecv );				/* 停止 */
-void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );	/* キャリブレーション更新 */
-void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );		/* リモートスタート */
+void lt_rcv_test_req( S_MSG_DATA* spRecv );					/* テスト */
+void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv );			/* キーボード：TouchButton押下 */
+void lt_rcv_BackButton_req( S_MSG_DATA* spRecv );			/* キーボード：BackButton押下 */
+void lt_rcv_UpButton_req( S_MSG_DATA* spRecv );				/* キーボード：UpButton押下 */
+void lt_rcv_DownButton_req( S_MSG_DATA* spRecv );			/* キーボード：DownButton押下 */
+void lt_rcv_LeftButton_req( S_MSG_DATA* spRecv );			/* キーボード：LeftButton押下 */
+void lt_rcv_RightButton_req( S_MSG_DATA* spRecv );			/* キーボード：RightButton押下 */
+void lt_rcv_CenterButton_req( S_MSG_DATA* spRecv );			/* キーボード：CenterButton押下 */
+void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* 起動 */
+void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* 停止 */
+void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* キャリブレーション更新 */
+void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート */
 
 /*** ltin_send.c **/
-void lt_send_test_res( S_MSG_DATA* spSend );			/* テスト */
-int lt_send_Wupchk_req( S_MSG_DATA* spSend );			/* 起動 */
-void lt_send_Wupchk_bt_req( S_MSG_DATA* spSend );		/* 起動：BT */
-int lt_send_Stop_req( S_MSG_DATA* spSend );				/* 停止 */
-void lt_send_Stop_bt_req( S_MSG_DATA* spSend );			/* 停止：BT */
-void lt_send_ShutDown_res( S_MSG_DATA* spSend );		/* シャットダウン */
-void lt_send_staCalibration_req( S_MSG_DATA* spSend );	/* キャリブレーション開始 */
-void lt_send_endCalibration_req( S_MSG_DATA* spSend );	/* キャリブレーション終了 */
-void lt_send_staRunning_req( S_MSG_DATA* spSend );		/* 走行開始 */
-void lt_send_endRunning_req( S_MSG_DATA* spSend );		/* 走行停止 */
+void lt_send_test_res( S_MSG_DATA* spSend );				/* テスト */
+int lt_send_Wupchk_req( void );								/* 起動 */
+void lt_send_Wupchk_bt_req( void );							/* 起動：BT */
+int lt_send_Stop_req( void );								/* 停止 */
+void lt_send_Stop_bt_req( void );							/* 停止：BT */
+void lt_send_ShutDown_res( void );							/* シャットダウン */
+void lt_send_staCalibration_req( void );					/* キャリブレーション開始 */
+void lt_send_endCalibration_req( void );					/* キャリブレーション終了 */
+void lt_send_staRunning_req( void );						/* 走行開始 */
+void lt_send_endRunning_req( void );						/* 走行停止 */
+void lt_send_setClientSendGyro_req( void );					/* クライアント送信：ジャイロ */
+void lt_send_setClientSendColor_req( void );				/* クライアント送信：カラー */
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );
 void lt_balance_set_BalanceInfo( void );
 void lt_balance_set_BacklashCancel( void );
 int lt_balance_set_MotorPower( void );
+void lt_balance_set_DummyMotorPower( void );
 
 /*** ltin_log.c **/
 void lt_log_Statuslog_open( void );

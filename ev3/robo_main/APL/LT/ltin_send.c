@@ -53,7 +53,7 @@ END:
 	return;
 }
 
-int lt_send_Wupchk_req( S_MSG_DATA* spSend )
+int lt_send_Wupchk_req( void )
 {
 	int iWupChk = 0;
 	int iLoop = 0;
@@ -73,7 +73,7 @@ int lt_send_Wupchk_req( S_MSG_DATA* spSend )
 			switch( iLoop )
 			{
 				case E_LT_WUPCHK_BT:
-					lt_send_Wupchk_bt_req( NULL );
+					lt_send_Wupchk_bt_req();
 					break;
 				
 				default:
@@ -91,7 +91,7 @@ int lt_send_Wupchk_req( S_MSG_DATA* spSend )
 	return iWupChk;
 }
 
-void lt_send_Wupchk_bt_req( S_MSG_DATA* spSend )
+void lt_send_Wupchk_bt_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -143,7 +143,7 @@ END:
 	return;
 }
 
-int lt_send_Stop_req( S_MSG_DATA* spSend )
+int lt_send_Stop_req( void )
 {
 	int iStopChk = 0;
 	int iLoop = 0;
@@ -163,7 +163,7 @@ int lt_send_Stop_req( S_MSG_DATA* spSend )
 			switch( iLoop )
 			{
 				case E_LT_STOP_BT:
-					lt_send_Stop_bt_req( NULL );
+					lt_send_Stop_bt_req();
 					break;
 				
 				default:
@@ -181,7 +181,7 @@ int lt_send_Stop_req( S_MSG_DATA* spSend )
 	return iStopChk;
 }
 
-void lt_send_Stop_bt_req( S_MSG_DATA* spSend )
+void lt_send_Stop_bt_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -233,7 +233,7 @@ END:
 	return;
 }
 
-void lt_send_ShutDown_res( S_MSG_DATA* spSend )
+void lt_send_ShutDown_res( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -285,7 +285,7 @@ END:
 	return;
 }
 
-void lt_send_staCalibration_req( S_MSG_DATA* spSend )
+void lt_send_staCalibration_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -337,7 +337,7 @@ END:
 	return;
 }
 
-void lt_send_endCalibration_req( S_MSG_DATA* spSend )
+void lt_send_endCalibration_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -389,7 +389,7 @@ END:
 	return;
 }
 
-void lt_send_staRunning_req( S_MSG_DATA* spSend )
+void lt_send_staRunning_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -441,7 +441,7 @@ END:
 	return;
 }
 
-void lt_send_endRunning_req( S_MSG_DATA* spSend )
+void lt_send_endRunning_req( void )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
@@ -466,6 +466,110 @@ void lt_send_endRunning_req( S_MSG_DATA* spSend )
 	
 	/* 送信データ設定 */
 	psSendData->iMsgid = E_MSGID_BT_ENDRUNNING_REQ;
+	psSendData->iSize = sizeof( S_MSG_DATA );
+	psSendData->vpPara = psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_BT, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_setClientSendGyro_req( void )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	void* psSendPara = (void*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (void*)malloc( sizeof( int ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( int ) );
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_BT_SETCLIENTSEND_GYRO_REQ;
+	psSendData->iSize = sizeof( S_MSG_DATA );
+	psSendData->vpPara = psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_BT, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_setClientSendColor_req( void )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	void* psSendPara = (void*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (void*)malloc( sizeof( int ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( int ) );
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_BT_SETCLIENTSEND_COLOR_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	

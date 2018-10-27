@@ -79,7 +79,7 @@ void bt_rcv_Wupchk_req( S_MSG_DATA* spRecv )
 	if( ( E_BT_STATUS_READY != spBt->iStatus) &&
 		( D_BT_FLAG_ON != spBt->iWupChk ) )
 	{
-		bt_send_Wupchk_res( spRecv );
+		bt_send_Wupchk_res();
 		spBt->iWupChk = D_BT_FLAG_ON;
 	}
 	
@@ -111,7 +111,7 @@ void bt_rcv_Stop_req( S_MSG_DATA* spRecv )
 	
 	spBt->iWupChk = D_BT_FLAG_OFF;
 		
-	bt_send_Stop_res( spRecv );
+	bt_send_Stop_res();
 	
 	spBt->iStatus = E_BT_STATUS_STOP;
 	
@@ -162,6 +162,39 @@ void bt_rcv_staRunning_req( S_MSG_DATA* spRecv )
 	}
 	
 	spBt->iStatus = E_BT_STATUS_RUN;
+	
+	return;
+}
+
+void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv )
+{
+	S_BT* spBt = (S_BT*)NULL;
+	
+	/* グローバル領域取得 */
+	spBt = bt_get_Global();
+	if( (S_BT*)NULL == spBt )
+	{
+		return;
+	}
+	
+	char cSendData[] = {"AB"};
+	
+	bt_set_SerialMessage( cSendData, sizeof(cSendData) - 1 );
+	
+	return;
+}
+
+void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv )
+{
+	S_BT* spBt = (S_BT*)NULL;
+	
+	/* グローバル領域取得 */
+	spBt = bt_get_Global();
+	if( (S_BT*)NULL == spBt )
+	{
+		return;
+	}
+	
 	
 	return;
 }

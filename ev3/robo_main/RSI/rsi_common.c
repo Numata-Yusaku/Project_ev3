@@ -58,7 +58,7 @@ void rsi_rsilog_open( void )
 	spRsi->fpRsiLog = fpRsiLog;
 	
 	/* ƒwƒbƒ_o—Í */
-	fprintf( spRsi->fpRsiLog , "Class,Info,Data\n");
+	fprintf( spRsi->fpRsiLog , "Class,Info,Data1,Data2\n");
 	fflush( spRsi->fpRsiLog  );
 	
 #endif	/* D_RSI_LOGMODE */
@@ -84,6 +84,12 @@ void rsi_set_rsilog( const char* cpClass, const char* cpInfo, int iData1, int iD
 	fprintf( spRsi->fpRsiLog , "," );
 	
 	fprintf( spRsi->fpRsiLog , cpInfo );
+	fprintf( spRsi->fpRsiLog , "," );
+	
+	fprintf( spRsi->fpRsiLog ,"%d",iData1 );
+	fprintf( spRsi->fpRsiLog , "," );
+	
+	fprintf( spRsi->fpRsiLog ,"%d",iData2 );
 	fprintf( spRsi->fpRsiLog , "," );
 	
 	fprintf( spRsi->fpRsiLog , "\n" );

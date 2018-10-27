@@ -187,6 +187,7 @@
     <ClInclude Include="robo_main\GEN\COMMON\common.h" />
     <ClInclude Include="robo_main\GEN\TASK\task.h" />
     <ClInclude Include="robo_main\GEN\TASK\taskin.h" />
+    <ClInclude Include="robo_main\GEN\TASK\task_msgdata.h" />
     <ClInclude Include="robo_main\GEN\TASK\task_msgid.h" />
     <ClInclude Include="robo_main\RSI\Filesystem\fs.h" />
     <ClInclude Include="robo_main\RSI\Hardware\hw.h" />

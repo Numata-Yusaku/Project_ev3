@@ -25,23 +25,29 @@ void lt_balance_set_BalanceInfo( void )
 	S_LT* spLt = (S_LT*)NULL;
 	S_LT_BALANCE_CONTROL* spBalanceControl = NULL;
 	
-	float fTmpTheta;
-	float fTmpThetaLpf;
-	float fTmpPwmRightLimiter;
-	float fTmpPsidot;
-	float fTmpPwmTurn;
-	float fTmpPwmLeftLimiter;
-	float fTmpThetadotCmdLpf;
+	float fTmpTheta = 0.0;
+	float fTmpThetaLpf = 0.0;
+	float fTmpPwmRightLimiter = 0.0;
+	float fTmpPsidot = 0.0;
+	float fTmpPwmTurn = 0.0;
+	float fTmpPwmLeftLimiter = 0.0;
+	float fTmpThetadotCmdLpf = 0.0;
 	float fTmp[4];
 	float fTmpTheta_0[4];
 	long lTmp_0;
-	float fK_F[4] = 
-	{
-		D_LT_K_F1,
-		D_LT_K_F2,
-		D_LT_K_F3,
-		D_LT_K_F4
-	};
+	float fK_F[4];
+	
+	/* 初期化 */
+	memset( &fTmp, 0x00, sizeof(fTmp) );
+	memset( &fTmpTheta_0, 0x00, sizeof(fTmpTheta_0) );
+	memset( &lTmp_0, 0x00, sizeof(lTmp_0) );
+	memset( &fK_F, 0x00, sizeof(fK_F) );
+	
+	/* フィードバック係数設定 */
+	fK_F[0] = D_LT_K_F1;
+	fK_F[1] = D_LT_K_F2;
+	fK_F[2] = D_LT_K_F3;
+	fK_F[3] = D_LT_K_F4;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -216,4 +222,56 @@ int lt_balance_set_MotorPower( void )
 	}
 	
 	return D_LT_OK;
+}
+
+void lt_balance_set_DummyMotorPower( void )
+{
+	//static int siDirL = 1;
+	//static int siDirR = 1;
+	//static int siLeft = 0;
+	//static int siRight = 0;
+
+	//S_LT* spLt = (S_LT*)NULL;
+	//
+	///* グローバル領域取得 */
+	//spLt = lt_get_Global();
+	//if( (S_LT*)NULL == spLt )
+	//{
+	//	return;
+	//}
+	//
+	//if( D_LT_PWM_MAX <= (siLeft + spLt->stBacanceControl.scPwmLeft) )
+	//{
+	//	siDirL = -1;
+	//	siLeft += siDirL;
+	//}
+	//else if( D_LT_PWM_MIN <= (siLeft + spLt->stBacanceControl.scPwmLeft) )
+	//{
+	//	siDirL = 1;
+	//	siLeft += siDirL;
+	//}
+	//else
+	//{
+	//	siLeft += siDirL;
+	//}
+	//
+	//if( (D_LT_PWM_MAX - spLt->stBacanceControl.scPwmRight) <= siRight )
+	//{
+	//	siDirR = -1;
+	//	siRight += siDirR;
+	//}
+	//else if( (D_LT_PWM_MIN + spLt->stBacanceControl.scPwmRight) >= siRight )
+	//{
+	//	siDirR = 1;
+	//	siRight += siDirR;
+	//}
+	//else
+	//{
+	//	siRight += siDirR;
+	//}
+
+	//spLt->stBacanceControl.scPwmLeft = siLeft;
+	//spLt->stBacanceControl.scPwmRight = siRight;
+	
+	return;
 }

@@ -309,10 +309,10 @@ void bt_check_SerialMessageRecv( void )
 {
 	char cCmd = ' ';
 	char* cpData = (char*)NULL;
-	S_BT_CHGCALIBRATION_RES stChgData;
+	S_TASK_CHGCALIBRATION_RES stChgData;
 	
 	/* 初期化 */
-	memset( &stChgData, 0x00, sizeof(S_BT_CHGCALIBRATION_RES) );
+	memset( &stChgData, 0x00, sizeof(S_TASK_CHGCALIBRATION_RES) );
 	
 	cpData = (char*)malloc( D_BT_RECVDATA_SIZE );
 	if( (char*)NULL == cpData )
@@ -329,16 +329,16 @@ void bt_check_SerialMessageRecv( void )
 		switch( cCmd )
 		{
 			case 's':
-				bt_send_RemoteStart_res( NULL );
+				bt_send_RemoteStart_res();
 				break;
 			
 			default:
-				/* 送信データ設定 */
-				stChgData.iSize = D_BT_RECVDATA_SIZE;
-				memcpy( &(stChgData.aData), cpData, D_BT_RECVDATA_SIZE );
-				stChgData.cCmd = cCmd;
-				
-				bt_send_chgCalibration_res( &stChgData );
+				///* 送信データ設定 */
+				//stChgData.iSize = D_BT_RECVDATA_SIZE;
+				//memcpy( &(stChgData.aData), cpData, D_BT_RECVDATA_SIZE );
+				//stChgData.cCmd = cCmd;
+				//
+				//bt_send_chgCalibration_res( &stChgData );
 				break;
 			
 		}

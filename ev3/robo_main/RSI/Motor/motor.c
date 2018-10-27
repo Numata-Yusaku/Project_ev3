@@ -120,7 +120,7 @@ int RSI_motor_stop( int iPort, int iBrake )
 	iRet = (int)ev3_motor_stop( (motor_port_t)iPort, (bool_t)iBrake );
 #endif	/* __VC_DEBUG__ */
 #if	(D_RSI_LOGMODE)
-	rsi_set_rsilog( "[MOTOR]","@@Motor Stop@@",0 ,0 );
+	rsi_set_rsilog( "[MOTOR]","@@Motor Stop@@",iPort ,iBrake );
 #endif	/* D_RSI_LOGMODE */
 	
 	return iRet;	/* RetÅFåãâ  */

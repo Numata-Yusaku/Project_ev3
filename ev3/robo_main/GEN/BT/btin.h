@@ -43,16 +43,6 @@ typedef struct
 	FILE* BtFile;		/* Bluetoo通信ポート */
 }S_BT;
 
-/*** 送信データ ***/
-
-/* キャリブレーションパラメータ通知 */
-typedef struct
-{
-	int iSize;
-	char aData[D_BT_RECVDATA_SIZE];
-	char cCmd;
-}S_BT_CHGCALIBRATION_RES;
-
 typedef struct
 {
 	int iMsgId;
@@ -94,12 +84,14 @@ void bt_rcv_Stop_req( S_MSG_DATA* spRecv );							/* 停止 */
 void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv );				/* キャリブレーション開始 */
 void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv );				/* キャリブレーション終了 */
 void bt_rcv_staRunning_req( S_MSG_DATA* spRecv );					/* 走行開始 */
+void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* クライアント送信：ジャイロ */
+void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* クライアント送信：カラー */
 
 /*** btin_send.c **/
 void bt_send_test_res( S_MSG_DATA* spSend );						/* テスト */
-void bt_send_Wupchk_res( S_MSG_DATA* spSend );						/* 起動 */
-void bt_send_Stop_res( S_MSG_DATA* spSend );						/* 停止 */
-void bt_send_chgCalibration_res( S_BT_CHGCALIBRATION_RES* send );	/* キャリブレーション更新 */
-void bt_send_RemoteStart_res( S_MSG_DATA* spSend );					/* リモートスタート */
+void bt_send_Wupchk_res( void );						/* 起動 */
+void bt_send_Stop_res( void );						/* 停止 */
+void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* send );	/* キャリブレーション更新 */
+void bt_send_RemoteStart_res( void );					/* リモートスタート */
 
 #endif	/* __BTIN_H__ */
