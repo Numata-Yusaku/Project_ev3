@@ -156,7 +156,6 @@ void lt_proc( void )
 			
 		case E_LT_STATUS_CALIBLATE_BLACK:
 			lt_proc_CalibrateBlack();
-			/* 処理しない */
 			break;
 			
 		case E_LT_STATUS_CALIBLATE_WHITE:
@@ -313,6 +312,8 @@ void lt_proc_CalibrateTail( void )
 	{
 		return;
 	}
+	
+	RSI_motor_reset_counts( spLt->stPort.iMotor.iTail );
 	
 	/* 尻尾の回転 */
 	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_CALIBRATE_DEGREES, D_LT_TAIL_CALIBRATE_SPEED, D_LT_TRUE );
@@ -630,7 +631,6 @@ void lt_Caliblate( void )
 
 void lt_set_CalibrateGyro( void )
 {
-	int iGyro = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -640,16 +640,8 @@ void lt_set_CalibrateGyro( void )
 		return;
 	}
 	
-	/* ジャイロリセット */
-	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
-	
-	/* ジャイロ平均値を計算 */
-//	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
-	/* ジャイロを表示 */
-	RSI_lcd_draw_stringAndDec("Gyro:", iGyro, 0, 30 );
-	
 	/* データ設定 */
-	spLt->stCalibrateInfo.iGyro = iGyro;
+	spLt->stCalibrateInfo.iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	
 	/* 設定完了通知 */
 	RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_C4, D_LT_TONE_DURATION );
