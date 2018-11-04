@@ -487,7 +487,7 @@ void lt_proc_Stop( void )
 		lt_shutdown();
 #if	(__VC_DEBUG__)
 		lt_send_ShutDown_res();
-#endif	(__VC_DEBUG__)
+#endif	/* __VC_DEBUG__ */
 	}
 	
 	return;

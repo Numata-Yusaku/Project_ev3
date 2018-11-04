@@ -288,8 +288,8 @@ void bt_recvCmd_s( char* cpRecvData, int iSize )
 		return;
 	}
 	
-	fprintf( spBt->fpBtFile, "Remote OK");
-	RSI_lcd_draw_string("Remote OK", 0, 70);
+	fprintf( spBt->fpBtFile, "Go!!!");
+	RSI_lcd_draw_string("Go!!!", 0, 70);
 	bt_send_RemoteStart_res();
 	
 	return;
