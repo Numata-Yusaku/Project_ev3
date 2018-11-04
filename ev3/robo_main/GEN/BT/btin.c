@@ -65,9 +65,6 @@ END:
 void bt_init( void )
 {
 	bt_set_Global();
-	
-	/* ログ */
-	bt_log_Statuslog_open();
 	return;
 }
 
@@ -126,9 +123,6 @@ void bt_proc( void )
 		return;
 	}
 	
-	/* ログ出力 */
-	bt_log_set_Statuslog();
-	
 	/* 状態に応じて処理実行 */
 	switch (iStatus)
 	{
@@ -163,7 +157,7 @@ void bt_proc_Ready( void )
 {
 	int iConnect = D_RSI_FALSE;
 	S_BT* spBt = (S_BT*)NULL;
-	FILE* fpBtFile = (FILE*)NULL;
+	FILE* spBtFile = (FILE*)NULL;
 	
 	/* グローバル領域取得 */
 	spBt = bt_get_Global();
@@ -180,15 +174,15 @@ void bt_proc_Ready( void )
 	}
 	
 	/* Bluetooth通信確立 */
-	fpBtFile = RSI_fs_serial_open_file( E_RSI_FS_SERIALPORT_BT );
-	if( (FILE*)NULL == fpBtFile )
+	spBtFile = RSI_fs_serial_open_file( E_RSI_FS_SERIALPORT_BT );
+	if( (FILE*)NULL == spBtFile )
 	{
 		return;
 	}
 	else
 	{
 		/* グローバル保持 */
-		spBt->fpBtFile = fpBtFile;
+		spBt->BtFile = spBtFile;
 	}
 	
 	/* 状態遷移 */
@@ -208,6 +202,189 @@ void bt_proc_Calibrate( void )
 
 void bt_proc_Waiting( void )
 {
+#if	(__VC_DEBUG__)
 	bt_check_SerialMessageRecv();
+#else	/* __VC_DEBUG__ */
+#endif	/* __VC_DEBUG__ */
 	return;
+}
+
+/* serial */
+void bt_set_SerialMessage( char* cpSendData, int iSize )
+{
+	int iLoop = 0;
+	S_BT* spBt = (S_BT*)NULL;
+	
+	/* グローバル領域取得 */
+	spBt = bt_get_Global();
+	if( (S_BT*)NULL == spBt )
+	{
+		return;
+	}
+	
+	if( (FILE*)NULL == spBt->BtFile )
+	{
+		printf("Serial_set error\n");
+		return;
+	}
+	
+	for( iLoop = 0; iLoop < iSize; iLoop++ )
+	{
+		fprintf( spBt->BtFile, "%c", cpSendData[iLoop] );
+		fflush( spBt->BtFile );
+	}
+	
+	fseek( spBt->BtFile, -(iSize), SEEK_CUR );
+
+	return;
+}
+
+char bt_get_SerialMessage( char* cpData )
+{
+	int iLoop = 0;
+	int iCheck = 0;
+	S_BT* spBt = (S_BT*)NULL;
+	char aTemp[D_BT_RECVDATA_SIZE +1 ];
+	char cRecvData = ' ';
+	char cRet = ' ';
+	
+	/* 初期化 */
+	memset( &aTemp, 0x00, sizeof(aTemp) );
+	
+	/* グローバル領域取得 */
+	spBt = bt_get_Global();
+	if( (S_BT*)NULL == spBt )
+	{
+		return ' ';
+	}
+	
+	if( (FILE*)NULL == spBt->BtFile )
+	{
+		printf("Serial_get error\n");
+		return ' ';
+	}
+	
+	/* データ受信 */
+	cRecvData = fgetc( spBt->BtFile );
+	if (EOF == cRecvData)
+	{
+		/* 受信データがない場合処理なし */
+		return ' ';
+	}
+	
+	/* コマンド判定 */
+	iCheck = bt_check_SerialMessageCommand( cRecvData );
+	if (D_BT_CHECK_OK != iCheck)
+	{
+		/* コマンドでないデータは無視 */
+		return ' ';
+	}
+	
+	/* コマンド設定 */
+	cRet = cRecvData;
+	
+	/* データ部受信(固定長) */
+	for( iLoop = 0; iLoop < D_BT_RECVDATA_SIZE; iLoop++ )
+	{
+		cRecvData = fgetc( spBt->BtFile );
+		if (EOF == cRecvData)
+		{
+			/* 終端到達した場合、データ欠損 or 桁足らず */
+			/* 受信できたデータまでは保証する */
+			break;
+		}
+		
+		/* 数値判定 */
+		iCheck = bt_check_SerialMessageNumber( cRecvData );
+		if( D_BT_CHECK_OK == iCheck )
+		{
+			aTemp[iLoop] = cRecvData;
+		}
+		else
+		{
+			/* 終端をいれることで受信できたデータまでは保証する */
+			aTemp[iLoop] = 0x00;
+		}
+	}
+	
+	/* 受信データ設定 */
+	memcpy( cpData, &aTemp, D_BT_RECVDATA_SIZE );
+	
+	return cRet;
+}
+
+void bt_check_SerialMessageRecv( void )
+{
+	char cCmd = ' ';
+	char* cpData = (char*)NULL;
+	S_TASK_CHGCALIBRATION_RES stChgData;
+	
+	/* 初期化 */
+	memset( &stChgData, 0x00, sizeof(S_TASK_CHGCALIBRATION_RES) );
+	
+	cpData = (char*)malloc( D_BT_RECVDATA_SIZE );
+	if( (char*)NULL == cpData )
+	{
+		goto END;
+	}
+	memset( cpData, 0x00, D_BT_RECVDATA_SIZE );
+
+	/* メッセージ取得 */
+	cCmd = bt_get_SerialMessage( cpData );
+	if( ' ' != cCmd )
+	{
+		
+		switch( cCmd )
+		{
+			case 's':
+				bt_send_RemoteStart_res();
+				break;
+			
+			default:
+				///* 送信データ設定 */
+				//stChgData.iSize = D_BT_RECVDATA_SIZE;
+				//memcpy( &(stChgData.aData), cpData, D_BT_RECVDATA_SIZE );
+				//stChgData.cCmd = cCmd;
+				//
+				//bt_send_chgCalibration_res( &stChgData );
+				break;
+			
+		}
+		
+	}
+
+END:
+	
+	if( (char*)NULL != cpData )
+	{
+		free(cpData);
+		cpData = (char*)NULL;
+	}
+	
+	return;
+}
+
+int bt_check_SerialMessageCommand( char cVal )
+{
+	int iRet = D_BT_CHECK_NG;
+	
+	if( (('a' <= cVal) && ('z' >= cVal)) ||
+		(('A' <= cVal) && ('Z' >= cVal)) )
+	{
+		iRet = D_BT_CHECK_OK;
+	}
+	
+	return iRet;
+}
+
+int bt_check_SerialMessageNumber( char cVal )
+{
+	int iRet = D_BT_CHECK_NG;
+	
+	if( ('0' <= cVal) && ('9' >= cVal) )
+	{
+		iRet = D_BT_CHECK_OK;
+	}
+	
+	return iRet;
 }

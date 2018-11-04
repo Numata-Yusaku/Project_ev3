@@ -19,13 +19,6 @@
 
 #define	D_BT_RECVDATA_SIZE	(128)
 
-/* ログファイル */
-#define	D_BT_FILENAME_STATUSLOG					"OutData/StatusLog_Bt.csv"
-
-/*** ログ出力 ***/
-#define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_ON)
-
-
 enum EN_BT_STATUS
 {
 	E_BT_STATUS_READY = 0,		/* 起動準備中 */
@@ -40,16 +33,14 @@ enum EN_BT_STATUS
 };
 
 /***** 構造体 *****/
-typedef void( *F_BT_RECVFUNCPTR )( S_MSG_DATA* spRecv );
-typedef void( *F_BT_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
+typedef void( *F_BT_RECVFUNCPTR )(S_MSG_DATA* spRecv);
 
 /* 常駐領域 */
 typedef struct
 {
 	int iStatus;		/* クラスステータス */
 	int iWupChk;
-	FILE* fpBtFile;		/* Bluetoo通信ポート */
-	FILE* fpStatusLog;
+	FILE* BtFile;		/* Bluetoo通信ポート */
 }S_BT;
 
 typedef struct
@@ -57,13 +48,6 @@ typedef struct
 	int iMsgId;
 	void* func;
 }S_BT_RECV_TABLE;
-
-typedef struct
-{
-	char cCommand;
-	int iSize;
-	void* vpFunc;
-}S_BT_MESSAGE_TABLE;
 
 /***** 関数プロトタイプ *****/
 /* startup */
@@ -81,6 +65,13 @@ void bt_proc_Ready( void );
 void bt_proc_Calibrate( void );
 void bt_proc_Waiting( void );
 
+/* serial */
+void bt_set_SerialMessage( char* cpSendData, int iSize );
+char bt_get_SerialMessage( char* cpData );
+void bt_check_SerialMessageRecv( void );
+int bt_check_SerialMessageCommand( char cVal );
+int bt_check_SerialMessageNumber( char cVal );
+
 /*** btin_recv.c **/
 /* FrameWork */
 void bt_recv( S_MSG_DATA* spRecv );
@@ -97,25 +88,10 @@ void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* クライアント送信：
 void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* クライアント送信：カラー */
 
 /*** btin_send.c **/
-void bt_send_test_res( S_MSG_DATA* spSend );							/* テスト */
-void bt_send_Wupchk_res( void );										/* 起動 */
-void bt_send_Stop_res( void );											/* 停止 */
+void bt_send_test_res( S_MSG_DATA* spSend );						/* テスト */
+void bt_send_Wupchk_res( void );						/* 起動 */
+void bt_send_Stop_res( void );						/* 停止 */
 void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* キャリブレーション更新 */
-void bt_send_RemoteStart_res( void );									/* リモートスタート */
-
-/*** btin_message.c **/
-void bt_set_SerialMessage( char* cpSendData, int iSize );
-int bt_get_SerialMessage( char* cpRecvData, int iSize );
-void bt_check_SerialMessageRecv( void );
-int bt_get_MessageSize( char cCmd );
-F_BT_RECVCMDFUNCPTR bt_get_MessageRecvFunc( char cCmd );
-int bt_check_SerialMessageCommand( char cVal );
-int bt_check_SerialMessageNumber( char cVal );
-/* RecvCmdFunc */
-void bt_recvCmd_s( char* cpRecvData, int iSize );
-
-/*** btin_log.c **/
-void bt_log_Statuslog_open( void );
-void bt_log_set_Statuslog( void );
+void bt_send_RemoteStart_res( void );					/* リモートスタート */
 
 #endif	/* __BTIN_H__ */
