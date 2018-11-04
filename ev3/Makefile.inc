@@ -17,6 +17,8 @@ APPL_COBJS +=	\
 			btin.o \
 			btin_recv.o \
 			btin_send.o \
+			btin_message.o \
+			btin_log.o \
 			lt.o \
 			ltin.o \
 			ltin_recv.o \

@@ -163,6 +163,8 @@
     <ClCompile Include="robo_main\APL\LT\ltin_send.c" />
     <ClCompile Include="robo_main\GEN\BT\bt.c" />
     <ClCompile Include="robo_main\GEN\BT\btin.c" />
+    <ClCompile Include="robo_main\GEN\BT\btin_log.c" />
+    <ClCompile Include="robo_main\GEN\BT\btin_message.c" />
     <ClCompile Include="robo_main\GEN\BT\btin_recv.c" />
     <ClCompile Include="robo_main\GEN\BT\btin_send.c" />
     <ClCompile Include="robo_main\GEN\COMMON\common.c" />
@@ -183,6 +185,7 @@
     <ClInclude Include="robo_main\APL\LT\ltin_recvtable.h" />
     <ClInclude Include="robo_main\GEN\BT\bt.h" />
     <ClInclude Include="robo_main\GEN\BT\btin.h" />
+    <ClInclude Include="robo_main\GEN\BT\btin_messagetable.h" />
     <ClInclude Include="robo_main\GEN\BT\btin_recvtable.h" />
     <ClInclude Include="robo_main\GEN\COMMON\common.h" />
     <ClInclude Include="robo_main\GEN\TASK\task.h" />
