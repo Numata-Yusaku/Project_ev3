@@ -57,7 +57,6 @@ F_BT_RECVFUNCPTR bt_get_RecvFunc( int iMsgId )
 void bt_rcv_test_req( S_MSG_DATA* spRecv )
 {
 	char cSendData[] = {"a4660b1234s"};
-//	char cSendData[] = {"p4660"};
 	
 	bt_set_SerialMessage( cSendData, sizeof(cSendData) - 1 );
 	bt_send_test_res( spRecv );
@@ -103,10 +102,10 @@ void bt_rcv_Stop_req( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	if( (FILE*)NULL != spBt->BtFile )
+	if( (FILE*)NULL != spBt->fpBtFile )
 	{
-		fclose(spBt->BtFile);
-		spBt->BtFile = (FILE*)NULL;
+		fclose(spBt->fpBtFile);
+		spBt->fpBtFile = (FILE*)NULL;
 	}
 	
 	spBt->iWupChk = D_BT_FLAG_OFF;
@@ -137,6 +136,7 @@ void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv )
 void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
+	char cSendData[] = {"Remote Ready:"};
 	
 	/* グローバル領域取得 */
 	spBt = bt_get_Global();
@@ -145,6 +145,9 @@ void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv )
 		return;
 	}
 	
+	/* キャリブレーション完了通知 */
+	bt_set_SerialMessage( cSendData, (int)strlen(cSendData) );
+
 	spBt->iStatus = E_BT_STATUS_WAITING;
 	
 	return;

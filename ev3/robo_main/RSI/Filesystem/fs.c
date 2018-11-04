@@ -100,7 +100,7 @@ FILE* RSI_fs_serial_open_file( int iSerialPort )
 	spFile = ev3_serial_open_file( (serial_port_t)iSerialPort );
 #endif	/* __VC_DEBUG__ */
 #if	(D_RSI_LOGMODE)
-	rsi_set_rsilog( "[FS]","Serial Open",0 ,0 );
+	rsi_set_rsilog( "[FS]","Serial Open",iSerialPort ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
 	return spFile;
