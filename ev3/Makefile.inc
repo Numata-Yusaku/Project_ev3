@@ -11,6 +11,7 @@ APPL_COBJS +=	\
 			lcd.o \
 			motor.o \
 			sensor.o \
+			extend.o \
 			task.o \
 			taskin.o \
 			bt.o \
@@ -35,6 +36,7 @@ APPL_DIR +=		\
 			$(mkfile_path)robo_main/RSI/Lcd \
 			$(mkfile_path)robo_main/RSI/Motor \
 			$(mkfile_path)robo_main/RSI/Sensor \
+			$(mkfile_path)robo_main/RSI/Extend \
 			$(mkfile_path)robo_main/GEN/COMMON \
 			$(mkfile_path)robo_main/GEN/TASK \
 			$(mkfile_path)robo_main/GEN/BT \
@@ -49,6 +51,7 @@ INCLUDES +=		\
 			-I$(mkfile_path)robo_main/RSI/Lcd \
 			-I$(mkfile_path)robo_main/RSI/Motor \
 			-I$(mkfile_path)robo_main/RSI/Sensor \
+			-I$(mkfile_path)robo_main/RSI/Extend \
 			-I$(mkfile_path)robo_main/GEN/COMMON \
 			-I$(mkfile_path)robo_main/GEN/TASK \
 			-I$(mkfile_path)robo_main/GEN/BT \

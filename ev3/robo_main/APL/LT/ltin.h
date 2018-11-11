@@ -61,7 +61,7 @@
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
 #define	D_LT_TAIL_STANDUP_BACK_DEGREES	(D_LT_TAIL_CALIBRATE_DEGREES + D_LT_TAIL_STANDUP_KICK_DEGREES)
-#define	D_LT_TAIL_STANDUP_SPEED			(30)
+#define	D_LT_TAIL_STANDUP_SPEED			(50)
 
 #define	D_LT_RECVDATA_SIZE				(4)		/* 受信データサイズ */
 
@@ -306,7 +306,9 @@ typedef struct
 
 /*** ltin_recv.c **/
 /* startup */
+void lt_startup( void );
 void lt_main( void );
+void lt_main_debug( void );
 void lt_init( void );
 void lt_shutdown( void );
 

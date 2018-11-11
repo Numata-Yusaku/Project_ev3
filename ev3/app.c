@@ -10,6 +10,13 @@ void Main_task(intptr_t exinf )
 	return;
 }
 
+void MAIN_ev3_cyc_run(intptr_t exinf )
+{
+	LT_main();
+
+	return;
+}
+
 void Bluetooth_task( intptr_t exinf )
 {
 	TASK_sleep( D_MAIN_STARTUP_WAIT );
@@ -20,6 +27,10 @@ void Bluetooth_task( intptr_t exinf )
 void LineTrace_task( intptr_t exinf )
 {
 	TASK_sleep( D_MAIN_STARTUP_WAIT );
-	LT_main();
+#if	(__VC_DEBUG__)
+	LT_main_debug();
+#else	/* __VC_DEBUG__ */
+	LT_startup();
+#endif	/* __VC_DEBUG__ */
 	return;
 }

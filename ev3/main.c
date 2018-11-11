@@ -19,7 +19,7 @@ void main_make_thread( void )
 	/* GEN */
 	HANDLE	hBt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)BT_main, NULL, 0, &iMsgThId);
 	/* APL */
-	HANDLE	hLt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LT_main, NULL, 0, &iMsgThId);
+	HANDLE	hLt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LT_main_debug, NULL, 0, &iMsgThId);
 	return;
 }
 #endif	/* __VC_DEBUG__ */

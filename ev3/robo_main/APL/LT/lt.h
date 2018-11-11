@@ -14,6 +14,8 @@
 
 /***** 関数プロトタイプ *****/
 void LT_main( void );
+void LT_main_debug( void );
+void LT_startup( void );
 
 /***** テーブル *****/
 

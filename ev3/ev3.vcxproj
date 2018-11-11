@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__VC_DEBUG__</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__VC_DEBUG__</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -170,6 +170,7 @@
     <ClCompile Include="robo_main\GEN\COMMON\common.c" />
     <ClCompile Include="robo_main\GEN\TASK\task.c" />
     <ClCompile Include="robo_main\GEN\TASK\taskin.c" />
+    <ClCompile Include="robo_main\RSI\Extend\extend.c" />
     <ClCompile Include="robo_main\RSI\Filesystem\fs.c" />
     <ClCompile Include="robo_main\RSI\Hardware\hw.c" />
     <ClCompile Include="robo_main\RSI\Lcd\lcd.c" />
@@ -192,6 +193,7 @@
     <ClInclude Include="robo_main\GEN\TASK\taskin.h" />
     <ClInclude Include="robo_main\GEN\TASK\task_msgdata.h" />
     <ClInclude Include="robo_main\GEN\TASK\task_msgid.h" />
+    <ClInclude Include="robo_main\RSI\Extend\extend.h" />
     <ClInclude Include="robo_main\RSI\Filesystem\fs.h" />
     <ClInclude Include="robo_main\RSI\Hardware\hw.h" />
     <ClInclude Include="robo_main\RSI\Lcd\lcd.h" />

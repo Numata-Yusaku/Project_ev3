@@ -3,8 +3,83 @@
 
 S_LT* gspLt = (S_LT*)NULL;
 
+void test( signed char* aaa )
+{
+//	signed char tmp = (signed char)(&(*aaa));
+//	printf("[%d]]\n",tmp);
+	return;
+}
+
+void lt_startup( void )
+{
+	/* 起動準備 */
+	lt_init();
+	
+	/* サイクル起動 */
+#if	(__VC_DEBUG__)
+#else	/* __VC_DEBUG__ */
+	RSI_extend_sta_cyc( D_EV3_CYC_RUN );
+#endif	/* __VC_DEBUG__ */
+	
+	return;
+}
+
 /* startup */
 void lt_main( void )
+{
+	int			iRet		= D_LT_NG;
+	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
+	
+	/* 領域確保 */
+	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if((S_MSG_DATA*)NULL == psRecvData)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	
+	/* LT_TASK */
+	iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
+	if ((D_TASK_OK == iRet) &&
+		(E_MSGID_LT_INVALID != psRecvData->iMsgid))
+	{
+		/* 受信処理 */
+		lt_recv( psRecvData );
+	
+	}
+	
+	/* 受信データクリア */
+	if ((void*)NULL != psRecvData->vpPara)
+	{
+		free( psRecvData->vpPara );
+		psRecvData->vpPara = (void*)NULL;
+	}
+	
+	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	
+	/* 常駐処理 */
+	lt_proc();
+	
+	/* タスクサイクル(ms) */
+	//TASK_sleep( D_TASK_CYCLE_LT );
+
+
+END:
+	/*** 解放処理 ***/
+	if ((S_MSG_DATA*)NULL != psRecvData)
+	{
+		free( psRecvData );
+		psRecvData = (S_MSG_DATA*)NULL;
+	}
+	
+	lt_shutdown();
+	
+	return;
+}
+
+void lt_main_debug( void )
 {
 	int			iRet		= D_LT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
@@ -23,29 +98,29 @@ void lt_main( void )
 	lt_init();
 	
 	/* LT_TASK */
-	while(1)
+	while ( 1 )
 	{
 		iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
-		if( ( D_TASK_OK == iRet ) &&
-			( E_MSGID_LT_INVALID != psRecvData->iMsgid) )
+		if ((D_TASK_OK == iRet) &&
+			(E_MSGID_LT_INVALID != psRecvData->iMsgid))
 		{
 			/* 受信処理 */
 			lt_recv( psRecvData );
-			
+
 		}
-		
+
 		/* 受信データクリア */
-		if((void*)NULL != psRecvData->vpPara)
+		if ((void*)NULL != psRecvData->vpPara)
 		{
 			free( psRecvData->vpPara );
 			psRecvData->vpPara = (void*)NULL;
 		}
-		
+
 		memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
-		
+
 		/* 常駐処理 */
 		lt_proc();
-		
+
 		/* タスクサイクル(ms) */
 		TASK_sleep( D_TASK_CYCLE_LT );
 	}
@@ -413,27 +488,27 @@ void lt_proc_StandUp( void )
 	
 	/*** ジャイロ制御 ***/
 	/* ジャイロセンサリセット */
-	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
+//	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
 	
 	/* 倒立振子初期化 */
 	lt_balance_init();
 
 	/*** 尻尾制御 ***/
 #if 1	/* T.B.D ▲1 */
-	/* キックスタート */
-	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_STANDUP_KICK_DEGREES, D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
+//	/* キックスタート */
+//	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_STANDUP_KICK_DEGREES, D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
 	
 	/* 尻尾を戻す */
-	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_STANDUP_KICK_DEGREES, D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
+	RSI_motor_rotate( spLt->stPort.iMotor.iTail, -(D_LT_TAIL_CALIBRATE_DEGREES), D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
 
 #else	/* T.B.D ▲1 */
-	lt_set_TailAngle( D_LT_TAIL_STANDUP_KICK_DEGREES );
+	lt_set_TailAngle( -(D_LT_TAIL_CALIBRATE_DEGREES) );
 #endif	/* T.B.D */
 	
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_RUN );
 	
-	/* 状態遷移 ▲1 */
+	/* 状態遷移 */
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
 	
 	return;
@@ -441,8 +516,6 @@ void lt_proc_StandUp( void )
 
 void lt_proc_LowSpeed( void )
 {
-	printf("■\n");
-	
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_LOWSPEED, D_LT_TURN_RUN );
 	
@@ -757,6 +830,10 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 		return;
 	}
 	
+#if	(__VC_DEBUG__)
+	printf("■\n");
+#endif	/* __VC_DEBUG__ */
+	
 	/* 障害物判定 */
 	iAlert = lt_get_SonarAlert();
 	if( D_LT_SONAR_ARERT_NON_OBSTRUCTION != iAlert )
@@ -827,7 +904,7 @@ int lt_get_RunningTurnDir( void )
 	iReflect = (int)RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
 	
 	/* 路面の反射光平均値を取得 */
-#if 1	/* T.B.D ▲3 */
+#if 0	/* T.B.D ▲3 */
 	iThreshold = (D_LT_COLORSENSOR_REFLECT_WHITE + D_LT_COLORSENSOR_REFLECT_BLACK) / 2;
 #else	/* T.B.D ▲3 */
 	iThreshold = ( spLt->stCalibrateInfo.stWhite.iReflect + spLt->stCalibrateInfo.stBlack.iReflect ) / 2;
@@ -857,7 +934,7 @@ void lt_set_TailAngle( int iAngle )
 		return;
 	}
 	
-	pwm = (signed int)((iAngle - RSI_motor_get_counts( spLt->stPort.iMotor.iTail )) * D_LT_P_GAIN);
+	pwm = (signed int)( (iAngle - RSI_motor_get_counts( spLt->stPort.iMotor.iTail )) * D_LT_P_GAIN );
 	/* PWM出力飽和処理 */
 	if (pwm > D_LT_PWM_ABS_MAX)
 	{

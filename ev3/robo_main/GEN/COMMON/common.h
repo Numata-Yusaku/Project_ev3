@@ -19,6 +19,7 @@
 #include "lcd.h"
 #include "motor.h"
 #include "sensor.h"
+#include "extend.h"
 
 /* TOPPERS */
 
