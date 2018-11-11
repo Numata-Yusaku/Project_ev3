@@ -142,7 +142,6 @@
 :#define D_LT_PWM_ABS_MAX			(60)				/* 完全停止用モーター制御PWM絶対最大値 */
 #endif	/* ゲイン調整 */
 
-
 enum EN_LT_STATUS
 {
 	E_LT_STATUS_READY = 0,			/* 起動準備中 */

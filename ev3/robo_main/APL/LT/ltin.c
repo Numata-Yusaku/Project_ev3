@@ -16,10 +16,7 @@ void lt_startup( void )
 	lt_init();
 	
 	/* サイクル起動 */
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
 	RSI_extend_sta_cyc( D_EV3_CYC_RUN );
-#endif	/* __VC_DEBUG__ */
 	
 	return;
 }
@@ -61,10 +58,6 @@ void lt_main( void )
 	
 	/* 常駐処理 */
 	lt_proc();
-	
-	/* タスクサイクル(ms) */
-	//TASK_sleep( D_TASK_CYCLE_LT );
-
 
 END:
 	/*** 解放処理 ***/
@@ -98,7 +91,7 @@ void lt_main_debug( void )
 	lt_init();
 	
 	/* LT_TASK */
-	while ( 1 )
+	while (1)
 	{
 		iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
 		if ((D_TASK_OK == iRet) &&
@@ -154,10 +147,7 @@ void lt_init( void )
 
 void lt_shutdown( void )
 {
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-	ter_tsk( LT_TASK );
-#endif	/* __VC_DEBUG__ */
+	RSI_extend_stp_cyc( D_EV3_CYC_RUN );
 	return;
 }
 
