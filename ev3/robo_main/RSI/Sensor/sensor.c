@@ -3,7 +3,7 @@
 /*** sensor ***/
 
 /********************************************************/
-/* ƒZƒ“ƒTƒ|[ƒg‚ğİ’è‚·‚é								*/
+/* ã‚»ãƒ³ã‚µãƒãƒ¼ãƒˆã‚’è¨­å®šã™ã‚‹								*/
 /********************************************************/
 int RSI_sensor_config( int iPort, int iType )
 {
@@ -17,11 +17,11 @@ int RSI_sensor_config( int iPort, int iType )
 	rsi_set_rsilog( "[SENSOR]","Sensor Set",0 ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒZƒ“ƒTƒ|[ƒg‚ÌƒZƒ“ƒTƒ^ƒCƒv‚ğæ“¾‚·‚é					*/
+/* ã‚»ãƒ³ã‚µãƒãƒ¼ãƒˆã®ã‚»ãƒ³ã‚µã‚¿ã‚¤ãƒ—ã‚’å–å¾—ã™ã‚‹					*/
 /********************************************************/
 unsigned int RSI_sensor_get_type( int iPort )
 {
@@ -33,11 +33,11 @@ unsigned int RSI_sensor_get_type( int iPort )
 	iRet = (int)ev3_sensor_get_type( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFƒZƒ“ƒTƒ^ƒCƒv */
+	return iRet;	/* Retï¼šã‚»ãƒ³ã‚µã‚¿ã‚¤ãƒ— */
 }
 
 /********************************************************/
-/* ƒJƒ‰[ƒZƒ“ƒT‚ÅƒJƒ‰[‚ğ¯•Ê‚·‚é						*/
+/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µã§ã‚«ãƒ©ãƒ¼ã‚’è­˜åˆ¥ã™ã‚‹						*/
 /********************************************************/
 int RSI_color_sensor_get_color( int iPort )
 {
@@ -51,13 +51,13 @@ int RSI_color_sensor_get_color( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Get Color@@",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetF¯•Ê‚µ‚½ƒJƒ‰[ */
+	return iRet;	/* Retï¼šè­˜åˆ¥ã—ãŸã‚«ãƒ©ãƒ¼ */
 }
 
 /*** color_sensor ***/
 
 /********************************************************/
-/* ƒJƒ‰[ƒZƒ“ƒT‚Å”½ËŒõ‚Ì‹­‚³‚ğ‘ª’è‚·‚é					*/
+/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µã§åå°„å…‰ã®å¼·ã•ã‚’æ¸¬å®šã™ã‚‹					*/
 /********************************************************/
 unsigned char RSI_color_sensor_get_reflect( int iPort )
 {
@@ -71,11 +71,11 @@ unsigned char RSI_color_sensor_get_reflect( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Color Reflect@@",ucRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return ucRet;	/* RetF”½ËŒõ‚Ì‹­‚³(0-100) */
+	return ucRet;	/* Retï¼šåå°„å…‰ã®å¼·ã•(0-100) */
 }
 
 /********************************************************/
-/* ƒJƒ‰[ƒZƒ“ƒT‚ÅŠÂ‹«Œõ‚Ì‹­‚³‚ğ‘ª’è‚·‚é					*/
+/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µã§ç’°å¢ƒå…‰ã®å¼·ã•ã‚’æ¸¬å®šã™ã‚‹					*/
 /********************************************************/
 unsigned char RSI_color_sensor_get_ambient( int iPort )
 {
@@ -89,11 +89,11 @@ unsigned char RSI_color_sensor_get_ambient( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Color Ambient@@",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒJƒ‰[ƒZƒ“ƒT‚ÅRGB Raw’l‚ğ‘ª’è‚·‚é					*/
+/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µã§RGB Rawå€¤ã‚’æ¸¬å®šã™ã‚‹					*/
 /********************************************************/
 void RSI_color_sensor_get_rgb_raw( int iPort, S_RSI_SENSOR_RGB_RAW* spVal )
 {
@@ -109,7 +109,7 @@ void RSI_color_sensor_get_rgb_raw( int iPort, S_RSI_SENSOR_RGB_RAW* spVal )
 /*** gyro_sensor ***/
 
 /********************************************************/
-/* ƒWƒƒƒCƒƒZƒ“ƒT‚ÅŠpˆÊ’u‚ğ‘ª’è‚·‚é						*/
+/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µã§è§’ä½ç½®ã‚’æ¸¬å®šã™ã‚‹						*/
 /********************************************************/
 signed short RSI_gyro_sensor_get_angle( int iPort )
 {
@@ -123,11 +123,11 @@ signed short RSI_gyro_sensor_get_angle( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Gyro Angle@@",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŠpˆÊ’u */
+	return iRet;	/* Retï¼šè§’ä½ç½® */
 }
 
 /********************************************************/
-/* ƒWƒƒƒCƒƒZƒ“ƒT‚ÅŠp‘¬“x‚ğ‘ª’è‚·‚é						*/
+/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µã§è§’é€Ÿåº¦ã‚’æ¸¬å®šã™ã‚‹						*/
 /********************************************************/
 signed short RSI_gyro_sensor_get_rate( int iPort )
 {
@@ -141,11 +141,11 @@ signed short RSI_gyro_sensor_get_rate( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Gyro Rate@@",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŠp‘¬“x */
+	return iRet;	/* Retï¼šè§’é€Ÿåº¦ */
 }
 
 /********************************************************/
-/* ƒWƒƒƒCƒƒZƒ“ƒT‚ÌŠpˆÊ’u‚ğƒ[ƒ‚ÉƒŠƒZƒbƒg‚·‚é			*/
+/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µã®è§’ä½ç½®ã‚’ã‚¼ãƒ­ã«ãƒªã‚»ãƒƒãƒˆã™ã‚‹			*/
 /********************************************************/
 int RSI_gyro_sensor_reset( int iPort )
 {
@@ -159,13 +159,13 @@ int RSI_gyro_sensor_reset( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Gyro Reset@@", 0 ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /*** ultrasonic_sensor ***/
 
 /********************************************************/
-/* ’´‰¹”gƒZƒ“ƒT‚Å‹——£‚ğ‘ª’è‚·‚é							*/
+/* è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µã§è·é›¢ã‚’æ¸¬å®šã™ã‚‹							*/
 /********************************************************/
 signed short RSI_ultrasonic_sensor_get_distance( int iPort )
 {
@@ -179,11 +179,11 @@ signed short RSI_ultrasonic_sensor_get_distance( int iPort )
 	rsi_set_rsilog( "[SENSOR]","@@Distance@@", iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetF‹——£(%) */
+	return iRet;	/* Retï¼šè·é›¢(%) */
 }
 
 /********************************************************/
-/* ’´‰¹”gƒZƒ“ƒT‚Å’´‰¹”gM†‚ğŒŸo‚·‚é					*/
+/* è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µã§è¶…éŸ³æ³¢ä¿¡å·ã‚’æ¤œå‡ºã™ã‚‹					*/
 /********************************************************/
 int RSI_ultrasonic_sensor_listen( int iPort )
 {
@@ -195,13 +195,13 @@ int RSI_ultrasonic_sensor_listen( int iPort )
 	iRet = (int)ev3_ultrasonic_sensor_listen( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒŸoŒ‹‰Ê */
+	return iRet;	/* Retï¼šæ¤œå‡ºçµæœ */
 }
 
 /*** infrared_sensor ***/
 
 /********************************************************/
-/* IRƒZƒ“ƒT‚Å‹——£‚ğ‘ª’è‚·‚é								*/
+/* IRã‚»ãƒ³ã‚µã§è·é›¢ã‚’æ¸¬å®šã™ã‚‹								*/
 /********************************************************/
 signed char RSI_infrared_sensor_get_distance( int iPort )
 {
@@ -213,11 +213,11 @@ signed char RSI_infrared_sensor_get_distance( int iPort )
 	iRet = (int)ev3_infrared_sensor_get_distance( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* IRƒZƒ“ƒT‚ÅIRƒr[ƒRƒ“‚Ì•ûˆÊ‚Æ‹——£‚ğ‘ª’è‚·‚é			*/
+/* IRã‚»ãƒ³ã‚µã§IRãƒ“ãƒ¼ã‚³ãƒ³ã®æ–¹ä½ã¨è·é›¢ã‚’æ¸¬å®šã™ã‚‹			*/
 /********************************************************/
 S_RSI_SENSOR_IR_SEEK RSI_infrared_sensor_seek( int iPort )
 {
@@ -230,11 +230,11 @@ S_RSI_SENSOR_IR_SEEK RSI_infrared_sensor_seek( int iPort )
 //	stSeekTemp = ev3_infrared_sensor_seek( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return stSeek;	/* RetF•ûˆÊ‚Æ‹——£ */
+	return stSeek;	/* Retï¼šæ–¹ä½ã¨è·é›¢ */
 }
 
 /********************************************************/
-/* IRƒZƒ“ƒT‚ÅIRƒr[ƒRƒ“‚Ìƒ{ƒ^ƒ““ü—Í‚ğŒŸo‚·‚é			*/
+/* IRã‚»ãƒ³ã‚µã§IRãƒ“ãƒ¼ã‚³ãƒ³ã®ãƒœã‚¿ãƒ³å…¥åŠ›ã‚’æ¤œå‡ºã™ã‚‹			*/
 /********************************************************/
 S_RSI_SENSOR_IR_REMOTE RSI_infrared_sensor_get_remote( int iPort )
 {
@@ -248,13 +248,13 @@ S_RSI_SENSOR_IR_REMOTE RSI_infrared_sensor_get_remote( int iPort )
 //	spRemote = (S_RSI_SENSOR_IR_REMOTE)ev3_infrared_sensor_get_remote( (sensor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return stRemote;	/* RetFƒ{ƒ^ƒ““ü—Í‚Ìƒpƒ^[ƒ“ */
+	return stRemote;	/* Retï¼šãƒœã‚¿ãƒ³å…¥åŠ›ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ */
 }
 
 /*** touch_sensor ***/
 
 /********************************************************/
-/* ƒ^ƒbƒ`ƒZƒ“ƒT‚Ìó‘Ô‚ğŒŸo‚·‚é							*/
+/* ã‚¿ãƒƒãƒã‚»ãƒ³ã‚µã®çŠ¶æ…‹ã‚’æ¤œå‡ºã™ã‚‹							*/
 /********************************************************/
 int RSI_touch_sensor_is_pressed( int iPort )
 {
@@ -263,7 +263,7 @@ int RSI_touch_sensor_is_pressed( int iPort )
 #if	(__VC_DEBUG__)
 #if	(D_RSI_LOGMODE)
 	S_RSI* spRsi = rsi_get_Global();
-	/* ƒƒOo—Í—}§ */
+	/* ãƒ­ã‚°å‡ºåŠ›æŠ‘åˆ¶ */
 	if( D_RSI_FALSE != iRet )
 	{
 		fprintf( spRsi->fpRsiLog, "[SENSOR],Touch,%d\n", iRet );
@@ -274,13 +274,13 @@ int RSI_touch_sensor_is_pressed( int iPort )
 #endif	/* __VC_DEBUG__ */
 	
 	
-	return iRet;	/* RetF‰Ÿ‰ºó‘Ô */
+	return iRet;	/* Retï¼šæŠ¼ä¸‹çŠ¶æ…‹ */
 }
 
 /*** ht_nxt_accel_sensor ***/
 
 /********************************************************/
-/* ‰Á‘¬“xƒZƒ“ƒTiHiTechnicĞ»j‚Å‰Á‘¬“x‚ğ‘ª’è‚·‚é		*/
+/* åŠ é€Ÿåº¦ã‚»ãƒ³ã‚µï¼ˆHiTechnicç¤¾è£½ï¼‰ã§åŠ é€Ÿåº¦ã‚’æ¸¬å®šã™ã‚‹		*/
 /********************************************************/
 int RSI_ht_nxt_accel_sensor_measure( int iPort, signed short ssAxes )
 {
@@ -292,13 +292,13 @@ int RSI_ht_nxt_accel_sensor_measure( int iPort, signed short ssAxes )
 //	iRet = (int)ht_nxt_accel_sensor_measure( (sensor_port_t)iPort, (int16_t)ssAxes );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFXVó‘Ô */
+	return iRet;	/* Retï¼šæ›´æ–°çŠ¶æ…‹ */
 }
 
 /*** RSI_nxt_temp_sensor ***/
 
 /********************************************************/
-/* NXT‰·“xƒZƒ“ƒTi9749j‚Å‰·“x‚ğ‘ª’è‚·‚é				*/
+/* NXTæ¸©åº¦ã‚»ãƒ³ã‚µï¼ˆ9749ï¼‰ã§æ¸©åº¦ã‚’æ¸¬å®šã™ã‚‹				*/
 /********************************************************/
 int RSI_nxt_temp_sensor_measure( int iPort, float* fpTemp )
 {
@@ -310,6 +310,6 @@ int RSI_nxt_temp_sensor_measure( int iPort, float* fpTemp )
 	iRet = (int)nxt_temp_sensor_measure( (sensor_port_t)iPort, fpTemp );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFXVó‘Ô */
+	return iRet;	/* Retï¼šæ›´æ–°çŠ¶æ…‹ */
 }
 

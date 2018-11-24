@@ -3,7 +3,7 @@
 /*** battery ***/
 
 /********************************************************/
-/* ƒoƒbƒeƒŠ‚Ì“d—¬‚ğæ“¾‚·‚é								*/
+/* ãƒãƒƒãƒ†ãƒªã®é›»æµã‚’å–å¾—ã™ã‚‹								*/
 /********************************************************/
 int RSI_hw_battery_current_mA( void )
 {
@@ -17,11 +17,11 @@ int RSI_hw_battery_current_mA( void )
 	rsi_set_rsilog( "[BATTERY]","mA",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFƒoƒbƒeƒŠ[‚Ì“d—¬(mA) */
+	return iRet;	/* Retï¼šãƒãƒƒãƒ†ãƒªãƒ¼ã®é›»æµ(mA) */
 }
 
 /********************************************************/
-/* ƒoƒbƒeƒŠ‚Ì“dˆ³‚ğæ“¾‚·‚é								*/
+/* ãƒãƒƒãƒ†ãƒªã®é›»åœ§ã‚’å–å¾—ã™ã‚‹								*/
 /********************************************************/
 int RSI_hw_battery_voltage_mV( void )
 {
@@ -36,13 +36,13 @@ int RSI_hw_battery_voltage_mV( void )
 	rsi_set_rsilog( "[BATTERY]","mV",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFƒoƒbƒeƒŠ[‚Ì“dˆ³(mV) */
+	return iRet;	/* Retï¼šãƒãƒƒãƒ†ãƒªãƒ¼ã®é›»åœ§(mV) */
 }
 
 /*** button ***/
 
 /********************************************************/
-/* ƒ{ƒ^ƒ“‚Ì‰Ÿ‰ºó‘Ô‚ğæ“¾‚·‚é							*/
+/* ãƒœã‚¿ãƒ³ã®æŠ¼ä¸‹çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹							*/
 /********************************************************/
 int RSI_hw_button_is_pressed( int iButton )
 {
@@ -58,11 +58,11 @@ int RSI_hw_button_is_pressed( int iButton )
 #endif	/* D_RSI_LOGMODE */
 	
 	
-	return iRet;	/* RetFƒ{ƒ^ƒ“‚Ì‰Ÿ‰ºó‘Ô */
+	return iRet;	/* Retï¼šãƒœã‚¿ãƒ³ã®æŠ¼ä¸‹çŠ¶æ…‹ */
 }
 
 /********************************************************/
-/* w’è‚µ‚½ƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰‚ğİ’è‚·‚é	*/
+/* æŒ‡å®šã—ãŸãƒœã‚¿ãƒ³ã®ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©ã‚’è¨­å®šã™ã‚‹	*/
 /********************************************************/
 int RSI_hw_button_set_on_clicked( int iButton, void* vpHandler, intptr_t exinf )
 {
@@ -74,13 +74,13 @@ int RSI_hw_button_set_on_clicked( int iButton, void* vpHandler, intptr_t exinf )
 #endif	/* __VC_DEBUG__ */
 	printf("[BUTTON],Button,%d\n",iButton);
 	
-	return iRet;	/* RetFİ’èŒ‹‰Ê */
+	return iRet;	/* Retï¼šè¨­å®šçµæœ */
 }
 
 /*** led ***/
 
 /********************************************************/
-/* LEDƒ‰ƒCƒg‚ÌƒJƒ‰[‚ğİ’è‚·‚é							*/
+/* LEDãƒ©ã‚¤ãƒˆã®ã‚«ãƒ©ãƒ¼ã‚’è¨­å®šã™ã‚‹							*/
 /********************************************************/
 int RSI_hw_led_set_color( int iColor )
 {
@@ -95,13 +95,13 @@ int RSI_hw_led_set_color( int iColor )
 	rsi_set_rsilog( "[LED]","Set Color",iColor ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFİ’èŒ‹‰Ê */
+	return iRet;	/* Retï¼šè¨­å®šçµæœ */
 }
 
 /*** speaker ***/
 
 /********************************************************/
-/* ‰¹—Ê‚ğ’²®‚·‚é										*/
+/* éŸ³é‡ã‚’èª¿æ•´ã™ã‚‹										*/
 /********************************************************/
 int RSI_hw_speaker_set_volume( unsigned char ucVolume )
 {
@@ -113,11 +113,11 @@ int RSI_hw_speaker_set_volume( unsigned char ucVolume )
 #endif	/* __VC_DEBUG__ */
 	printf("[SPK],Set Volume,%d\n",ucVolume);
 	
-	return iRet;	/* RetFİ’èŒ‹‰Ê */
+	return iRet;	/* Retï¼šè¨­å®šçµæœ */
 }
 
 /********************************************************/
-/* w’è‚µ‚½ü”g”‚Åƒg[ƒ“o—Í‚·‚é						*/
+/* æŒ‡å®šã—ãŸå‘¨æ³¢æ•°ã§ãƒˆãƒ¼ãƒ³å‡ºåŠ›ã™ã‚‹						*/
 /********************************************************/
 int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration )
 {
@@ -132,11 +132,11 @@ int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration 
 	rsi_set_rsilog( "[SPK]","Freq/Dur",usFrequency ,siDuration );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* w’è‚µ‚½WAVƒtƒ@ƒCƒ‹‚ğÄ¶‚·‚é						*/
+/* æŒ‡å®šã—ãŸWAVãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿã™ã‚‹						*/
 /********************************************************/
 int RSI_hw_speaker_play_file( const S_RSI_FILEINFO* spMemfile, signed int siDuration )
 {
@@ -148,11 +148,11 @@ int RSI_hw_speaker_play_file( const S_RSI_FILEINFO* spMemfile, signed int siDura
 	iRet = (int)ev3_speaker_play_file( (const memfile_t*)spMemfile, (int32_t)siDuration );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ¡Ä¶‚µ‚Ä‚¢‚éƒTƒEƒ“ƒh‚ğ’â~‚·‚é						*/
+/* ä»Šå†ç”Ÿã—ã¦ã„ã‚‹ã‚µã‚¦ãƒ³ãƒ‰ã‚’åœæ­¢ã™ã‚‹						*/
 /********************************************************/
 int RSI_hw_speaker_stop( void )
 {
@@ -164,7 +164,7 @@ int RSI_hw_speaker_stop( void )
 	iRet = (int)ev3_speaker_stop();
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 

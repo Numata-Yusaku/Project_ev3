@@ -1,7 +1,7 @@
 #ifndef	__FS_H__
 #define	__FS_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 
 #include "rsi_common.h"
@@ -14,7 +14,7 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_RSI_FS_SERIALPORT		"OutData/serial.txt"
 
 enum EN_RSI_FS_SERIALPORT
@@ -23,10 +23,10 @@ enum EN_RSI_FS_SERIALPORT
 	E_RSI_FS_SERIALPORT_UART,
 	E_RSI_FS_SERIALPORT_BT,
 };
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 
 /* sdcard */
 int RSI_fs_sdcard_opendir( const char* aName );
@@ -43,7 +43,7 @@ FILE* RSI_fs_serial_open_file( int iSerialPort );
 /* Bluetooth */
 int RSI_fs_bluetooth_is_connected( void );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __FS_H__ */

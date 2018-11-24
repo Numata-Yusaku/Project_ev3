@@ -1,7 +1,7 @@
 #ifndef	__HW_H__
 #define	__HW_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include "rsi_common.h"
 
@@ -14,70 +14,70 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
-#define	D_RSI_HW_SOUND_MANUAL_STOP		(-1)		/* ‰¹º‚ÌÄ¶‚ğè“®‚Å’â~‚·‚é‚½‚ß‚Ìƒtƒ‰ƒO */
-#define	D_RSI_HW_NOTE_C4				(unsigned short)(261.63)	/* ƒm[ƒgC4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_CS4				(unsigned short)(277.18)	/* ƒm[ƒgC#4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_D4				(unsigned short)(293.66)	/* ƒm[ƒgD4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_DS4				(unsigned short)(311.13)	/* ƒm[ƒgD#4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_E4				(unsigned short)(329.63)	/* ƒm[ƒgE4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_F4				(unsigned short)(349.23)	/* ƒm[ƒgF4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_FS4				(unsigned short)(369.99)	/* ƒm[ƒgF#4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_G4				(unsigned short)(392.00)	/* ƒm[ƒgG4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_GS4				(unsigned short)(415.30)	/* ƒm[ƒgG#4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_A4				(unsigned short)(440.00)	/* ƒm[ƒgA4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_AS4				(unsigned short)(466.16)	/* ƒm[ƒgA#4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_B4				(unsigned short)(493.88)	/* ƒm[ƒgB4‚Ìü”g” */
-#define	D_RSI_HW_NOTE_C5				(unsigned short)(523.25)	/* ƒm[ƒgC5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_CS5				(unsigned short)(554.37)	/* ƒm[ƒgC#5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_D5				(unsigned short)(587.33)	/* ƒm[ƒgD5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_DS5				(unsigned short)(622.25)	/* ƒm[ƒgD#5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_E5				(unsigned short)(659.25)	/* ƒm[ƒgE5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_F5				(unsigned short)(698.46)	/* ƒm[ƒgF5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_FS5				(unsigned short)(739.99)	/* ƒm[ƒgF#5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_G5				(unsigned short)(783.99)	/* ƒm[ƒgG5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_GS5				(unsigned short)(830.61)	/* ƒm[ƒgG#5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_A5				(unsigned short)(880.00)	/* ƒm[ƒgA5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_AS5				(unsigned short)(932.33)	/* ƒm[ƒgA#5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_B5				(unsigned short)(987.77)	/* ƒm[ƒgB5‚Ìü”g” */
-#define	D_RSI_HW_NOTE_C6				(unsigned short)(1046.50)	/* ƒm[ƒgC6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_CS6				(unsigned short)(1108.73)	/* ƒm[ƒgC#6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_D6				(unsigned short)(1174.66)	/* ƒm[ƒgD6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_DS6				(unsigned short)(1244.51)	/* ƒm[ƒgD#6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_E6				(unsigned short)(1318.51)	/* ƒm[ƒgE6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_F6				(unsigned short)(1396.91)	/* ƒm[ƒgF6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_FS6				(unsigned short)(1479.98)	/* ƒm[ƒgF#6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_G6				(unsigned short)(1567.98)	/* ƒm[ƒgG6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_GS6				(unsigned short)(1661.22)	/* ƒm[ƒgG#6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_A6				(unsigned short)(1760.00)	/* ƒm[ƒgA6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_AS6				(unsigned short)(1864.66)	/* ƒm[ƒgA#6‚Ìü”g” */
-#define	D_RSI_HW_NOTE_B6				(unsigned short)(1975.53)	/* ƒm[ƒgB6‚Ìü”g” */
+/***** å®šæ•° *****/
+#define	D_RSI_HW_SOUND_MANUAL_STOP		(-1)		/* éŸ³å£°ã®å†ç”Ÿã‚’æ‰‹å‹•ã§åœæ­¢ã™ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚° */
+#define	D_RSI_HW_NOTE_C4				(unsigned short)(261.63)	/* ãƒãƒ¼ãƒˆC4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_CS4				(unsigned short)(277.18)	/* ãƒãƒ¼ãƒˆC#4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_D4				(unsigned short)(293.66)	/* ãƒãƒ¼ãƒˆD4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_DS4				(unsigned short)(311.13)	/* ãƒãƒ¼ãƒˆD#4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_E4				(unsigned short)(329.63)	/* ãƒãƒ¼ãƒˆE4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_F4				(unsigned short)(349.23)	/* ãƒãƒ¼ãƒˆF4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_FS4				(unsigned short)(369.99)	/* ãƒãƒ¼ãƒˆF#4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_G4				(unsigned short)(392.00)	/* ãƒãƒ¼ãƒˆG4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_GS4				(unsigned short)(415.30)	/* ãƒãƒ¼ãƒˆG#4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_A4				(unsigned short)(440.00)	/* ãƒãƒ¼ãƒˆA4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_AS4				(unsigned short)(466.16)	/* ãƒãƒ¼ãƒˆA#4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_B4				(unsigned short)(493.88)	/* ãƒãƒ¼ãƒˆB4ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_C5				(unsigned short)(523.25)	/* ãƒãƒ¼ãƒˆC5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_CS5				(unsigned short)(554.37)	/* ãƒãƒ¼ãƒˆC#5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_D5				(unsigned short)(587.33)	/* ãƒãƒ¼ãƒˆD5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_DS5				(unsigned short)(622.25)	/* ãƒãƒ¼ãƒˆD#5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_E5				(unsigned short)(659.25)	/* ãƒãƒ¼ãƒˆE5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_F5				(unsigned short)(698.46)	/* ãƒãƒ¼ãƒˆF5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_FS5				(unsigned short)(739.99)	/* ãƒãƒ¼ãƒˆF#5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_G5				(unsigned short)(783.99)	/* ãƒãƒ¼ãƒˆG5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_GS5				(unsigned short)(830.61)	/* ãƒãƒ¼ãƒˆG#5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_A5				(unsigned short)(880.00)	/* ãƒãƒ¼ãƒˆA5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_AS5				(unsigned short)(932.33)	/* ãƒãƒ¼ãƒˆA#5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_B5				(unsigned short)(987.77)	/* ãƒãƒ¼ãƒˆB5ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_C6				(unsigned short)(1046.50)	/* ãƒãƒ¼ãƒˆC6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_CS6				(unsigned short)(1108.73)	/* ãƒãƒ¼ãƒˆC#6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_D6				(unsigned short)(1174.66)	/* ãƒãƒ¼ãƒˆD6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_DS6				(unsigned short)(1244.51)	/* ãƒãƒ¼ãƒˆD#6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_E6				(unsigned short)(1318.51)	/* ãƒãƒ¼ãƒˆE6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_F6				(unsigned short)(1396.91)	/* ãƒãƒ¼ãƒˆF6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_FS6				(unsigned short)(1479.98)	/* ãƒãƒ¼ãƒˆF#6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_G6				(unsigned short)(1567.98)	/* ãƒãƒ¼ãƒˆG6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_GS6				(unsigned short)(1661.22)	/* ãƒãƒ¼ãƒˆG#6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_A6				(unsigned short)(1760.00)	/* ãƒãƒ¼ãƒˆA6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_AS6				(unsigned short)(1864.66)	/* ãƒãƒ¼ãƒˆA#6ã®å‘¨æ³¢æ•° */
+#define	D_RSI_HW_NOTE_B6				(unsigned short)(1975.53)	/* ãƒãƒ¼ãƒˆB6ã®å‘¨æ³¢æ•° */
 
 enum EN_RSI_HW_BUTTON
 {
-	E_RSI_HW_BUTTON_LEFT = 0,		/* ¶ƒ{ƒ^ƒ“ */
-	E_RSI_HW_BUTTON_RIGHT,			/* ‰Eƒ{ƒ^ƒ“ */
-	E_RSI_HW_BUTTON_UP,				/* ãƒ{ƒ^ƒ“ */
-	E_RSI_HW_BUTTON_DOWN,			/* ‰ºƒ{ƒ^ƒ“ */
-	E_RSI_HW_BUTTON_ENTER,			/* ’†‰›ƒ{ƒ^ƒ“ */
-	E_RSI_HW_BUTTON_BACK,			/* –ß‚éƒ{ƒ^ƒ“ */
+	E_RSI_HW_BUTTON_LEFT = 0,		/* å·¦ãƒœã‚¿ãƒ³ */
+	E_RSI_HW_BUTTON_RIGHT,			/* å³ãƒœã‚¿ãƒ³ */
+	E_RSI_HW_BUTTON_UP,				/* ä¸Šãƒœã‚¿ãƒ³ */
+	E_RSI_HW_BUTTON_DOWN,			/* ä¸‹ãƒœã‚¿ãƒ³ */
+	E_RSI_HW_BUTTON_ENTER,			/* ä¸­å¤®ãƒœã‚¿ãƒ³ */
+	E_RSI_HW_BUTTON_BACK,			/* æˆ»ã‚‹ãƒœã‚¿ãƒ³ */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_HW_BUTTON_TNUM,			/* ƒ{ƒ^ƒ“‚Ì” */
-	E_RSI_HW_BUTTON_INVALID = -1,	/* –³Œø’l */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_HW_BUTTON_TNUM,			/* ãƒœã‚¿ãƒ³ã®æ•° */
+	E_RSI_HW_BUTTON_INVALID = -1,	/* ç„¡åŠ¹å€¤ */
 };
 
 enum EN_RSI_HW_LEDCOLOR
 {
-	E_RSI_HW_LEDCOLOR_OFF = 0,								/* ƒIƒt */
-	E_RSI_HW_LEDCOLOR_RED = 1 << 0,							/* Ô */
-	E_RSI_HW_LEDCOLOR_GREEN = 1 << 1,						/* —Î */
-	E_RSI_HW_LEDCOLOR_ORANGE								/* ƒIƒŒƒ“ƒW */
+	E_RSI_HW_LEDCOLOR_OFF = 0,								/* ã‚ªãƒ• */
+	E_RSI_HW_LEDCOLOR_RED = 1 << 0,							/* èµ¤ */
+	E_RSI_HW_LEDCOLOR_GREEN = 1 << 1,						/* ç·‘ */
+	E_RSI_HW_LEDCOLOR_ORANGE								/* ã‚ªãƒ¬ãƒ³ã‚¸ */
 		= E_RSI_HW_LEDCOLOR_RED | E_RSI_HW_LEDCOLOR_GREEN,
 };
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* battery */
 int RSI_hw_battery_current_mA( void );
 int RSI_hw_battery_voltage_mV( void );
@@ -95,7 +95,7 @@ int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration 
 int RSI_hw_speaker_play_file( const S_RSI_FILEINFO* spMemfile, signed int siDuration );
 int RSI_hw_speaker_stop( void );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __HW_H__ */

@@ -3,7 +3,7 @@
 /*** sdcard ***/
 
 /********************************************************/
-/* ƒfƒBƒŒƒNƒgƒŠ‚ğƒI[ƒvƒ“‚·‚é							*/
+/* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹							*/
 /********************************************************/
 int RSI_fs_sdcard_opendir( const char* aName )
 {
@@ -15,11 +15,11 @@ int RSI_fs_sdcard_opendir( const char* aName )
 	iRet = (int)ev3_sdcard_opendir( aName );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* ƒI[ƒvƒ“ƒfƒBƒŒƒNƒgƒŠID */
+	return iRet;	/* ã‚ªãƒ¼ãƒ—ãƒ³ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªID */
 }
 
 /********************************************************/
-/* ƒfƒBƒŒƒNƒgƒŠ“à‚Ìƒtƒ@ƒCƒ‹î•ñ‚ğ“Ç‚İ‚Ş				*/
+/* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€				*/
 /********************************************************/
 int RSI_fs_sdcard_readdir( signed int siDirid, S_RSI_FILEINFO* 	spFileinfo )
 {
@@ -31,12 +31,12 @@ int RSI_fs_sdcard_readdir( signed int siDirid, S_RSI_FILEINFO* 	spFileinfo )
 	iRet = (int)ev3_sdcard_readdir( (ID)siDirid, (fileinfo_t*)spFileinfo );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* Œ‹‰Ê */
+	return iRet;	/* çµæœ */
 }
 
 
 /********************************************************/
-/* ƒfƒBƒŒƒNƒgƒŠ‚ğƒNƒ[ƒY‚·‚é							*/
+/* ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ã‚¯ãƒ­ãƒ¼ã‚ºã™ã‚‹							*/
 /********************************************************/
 int RSI_fs_sdcard_closedir( signed int siDirid )
 {
@@ -48,13 +48,13 @@ int RSI_fs_sdcard_closedir( signed int siDirid )
 	iRet = (int)ev3_sdcard_closedir( (ID)siDirid );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* Œ‹‰Ê */
+	return iRet;	/* çµæœ */
 }
 
 /*** memfile ***/
 
 /********************************************************/
-/* SDƒJ[ƒh‚Ìƒtƒ@ƒCƒ‹‚ğƒƒ‚ƒŠƒtƒ@ƒCƒ‹‚Æ‚µ‚Äƒ[ƒh‚·‚é	*/
+/* SDã‚«ãƒ¼ãƒ‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ãƒ­ãƒ¼ãƒ‰ã™ã‚‹	*/
 /********************************************************/
 int RSI_fs_memfile_load( const char* aPath, S_RSI_MEMFILE* spMemfile )
 {
@@ -66,11 +66,11 @@ int RSI_fs_memfile_load( const char* aPath, S_RSI_MEMFILE* spMemfile )
 	iRet = (int)ev3_memfile_load( aPath, (memfile_t*)spMemfile );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* Œ‹‰Ê */
+	return iRet;	/* çµæœ */
 }
 
 /********************************************************/
-/* ƒƒ‚ƒŠƒtƒ@ƒCƒ‹‚ğ‰ğ•ú‚·‚é								*/
+/* ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‚’è§£æ”¾ã™ã‚‹								*/
 /********************************************************/
 int RSI_fs_memfile_free( S_RSI_MEMFILE* spMemfile )
 {
@@ -82,13 +82,13 @@ int RSI_fs_memfile_free( S_RSI_MEMFILE* spMemfile )
 	iRet = (int)ev3_memfile_free( (memfile_t*)spMemfile );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* Œ‹‰Ê */
+	return iRet;	/* çµæœ */
 }
 
 /*** Serial ***/
 
 /********************************************************/
-/* ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğƒtƒ@ƒCƒ‹‚Æ‚µ‚ÄƒI[ƒvƒ“‚·‚é			*/
+/* ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹			*/
 /********************************************************/
 FILE* RSI_fs_serial_open_file( int iSerialPort )
 {
@@ -109,7 +109,7 @@ FILE* RSI_fs_serial_open_file( int iSerialPort )
 /*** Bluetooth ***/
 
 /********************************************************/
-/* 	Bluetooth‚ªÚ‘±‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚é		*/
+/* 	BluetoothãŒæ¥ç¶šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹		*/
 /********************************************************/
 int RSI_fs_bluetooth_is_connected( void )
 {

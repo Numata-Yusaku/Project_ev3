@@ -12,10 +12,10 @@ void test( signed char* aaa )
 
 void lt_startup( void )
 {
-	/* ‹N“®€”õ */
+	/* èµ·å‹•æº–å‚™ */
 	lt_init();
 	
-	/* ƒTƒCƒNƒ‹‹N“® */
+	/* ã‚µã‚¤ã‚¯ãƒ«èµ·å‹• */
 	RSI_extend_sta_cyc( D_EV3_CYC_RUN );
 	
 	return;
@@ -27,14 +27,14 @@ void lt_main( void )
 	int			iRet		= D_LT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if((S_MSG_DATA*)NULL == psRecvData)
 	{
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* LT_TASK */
@@ -42,12 +42,12 @@ void lt_main( void )
 	if ((D_TASK_OK == iRet) &&
 		(E_MSGID_LT_INVALID != psRecvData->iMsgid))
 	{
-		/* ŽóMˆ— */
+		/* å—ä¿¡å‡¦ç† */
 		lt_recv( psRecvData );
 	
 	}
 	
-	/* ŽóMƒf[ƒ^ƒNƒŠƒA */
+	/* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ */
 	if ((void*)NULL != psRecvData->vpPara)
 	{
 		free( psRecvData->vpPara );
@@ -56,11 +56,11 @@ void lt_main( void )
 	
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* í’“ˆ— */
+	/* å¸¸é§å‡¦ç† */
 	lt_proc();
 
 END:
-	/*** ‰ð•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psRecvData)
 	{
 		free( psRecvData );
@@ -77,17 +77,17 @@ void lt_main_debug( void )
 	int			iRet		= D_LT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if((S_MSG_DATA*)NULL == psRecvData)
 	{
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* ‹N“®€”õ */
+	/* èµ·å‹•æº–å‚™ */
 	lt_init();
 	
 	/* LT_TASK */
@@ -97,12 +97,12 @@ void lt_main_debug( void )
 		if ((D_TASK_OK == iRet) &&
 			(E_MSGID_LT_INVALID != psRecvData->iMsgid))
 		{
-			/* ŽóMˆ— */
+			/* å—ä¿¡å‡¦ç† */
 			lt_recv( psRecvData );
 
 		}
 
-		/* ŽóMƒf[ƒ^ƒNƒŠƒA */
+		/* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ */
 		if ((void*)NULL != psRecvData->vpPara)
 		{
 			free( psRecvData->vpPara );
@@ -111,15 +111,15 @@ void lt_main_debug( void )
 
 		memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 
-		/* í’“ˆ— */
+		/* å¸¸é§å‡¦ç† */
 		lt_proc();
 
-		/* ƒ^ƒXƒNƒTƒCƒNƒ‹(ms) */
+		/* ã‚¿ã‚¹ã‚¯ã‚µã‚¤ã‚¯ãƒ«(ms) */
 		TASK_sleep( D_TASK_CYCLE_LT );
 	}
 
 END:
-	/*** ‰ð•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psRecvData)
 	{
 		free( psRecvData );
@@ -137,7 +137,7 @@ void lt_init( void )
 	lt_set_Port();
 	RSI_hw_speaker_set_volume( D_LT_TONE_VOLUME );
 	
-	/* ƒƒO */
+	/* ãƒ­ã‚° */
 	lt_log_Statuslog_open();
 	lt_log_Calibratelog_open();
 	lt_log_Systemlog_open();
@@ -162,12 +162,12 @@ void lt_set_Global( void )
 		return;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( spLt, 0x00, sizeof(S_LT) );
 	
-	/*** ‰Šú‰»’lÝ’è ***/
+	/*** åˆæœŸåŒ–å€¤è¨­å®š ***/
 	
-	/* ƒOƒ[ƒoƒ‹Ý’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®š */
 	gspLt = spLt;
 	
 	return;
@@ -190,17 +190,17 @@ void lt_proc( void )
 		return;
 	}
 	
-	/* ƒNƒ‰ƒXƒXƒe[ƒ^ƒXŽæ“¾ */
+	/* ã‚¯ãƒ©ã‚¹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å–å¾— */
 	iStatus = spLt->iStatus;
 	if( E_LT_STATUS_INVALID == iStatus )
 	{
 		return;
 	}
 	
-	/* ƒƒOo—Í */
+	/* ãƒ­ã‚°å‡ºåŠ› */
 	lt_log_set_Statuslog();
 	
-	/* ó‘Ô‚É‰ž‚¶‚Äˆ—ŽÀs */
+	/* çŠ¶æ…‹ã«å¿œã˜ã¦å‡¦ç†å®Ÿè¡Œ */
 	switch( iStatus )
 	{
 		case E_LT_STATUS_READY:
@@ -263,7 +263,7 @@ void lt_proc_Ready( void )
 	int iWupChk = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -284,20 +284,20 @@ void lt_proc_Idle( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* Bluetooth‚É‚æ‚éƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’ÊM‚ðŠJŽn */
+	/* Bluetoothã«ã‚ˆã‚‹ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é€šä¿¡ã‚’é–‹å§‹ */
 	lt_send_staCalibration_req();
 	
-	/* ‰Šú‰»Š®—¹ */
+	/* åˆæœŸåŒ–å®Œäº† */
 	RSI_hw_led_set_color( E_RSI_HW_LEDCOLOR_ORANGE );
 	
-	/* ó‘Ô‘JˆÚ */
+	/* çŠ¶æ…‹é·ç§» */
 	spLt->iStatus = E_LT_STATUS_CALIBLATE_GYRO;
 	
 	return;
@@ -310,10 +310,10 @@ void lt_proc_CalibrateGyro( void )
 	S_LT* spLt = (S_LT*)NULL;
 	S_TASK_SETCLIENTSEND_GYRO stSend;
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( &stSend, 0x00, sizeof(S_TASK_SETCLIENTSEND_GYRO) );
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -323,9 +323,9 @@ void lt_proc_CalibrateGyro( void )
 	iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	if( spLt->stOldCalibrateInfo.iGyro != iGyro)
 	{
-		/*** ƒf[ƒ^•Ï‰»‚ ‚è ***/
+		/*** ãƒ‡ãƒ¼ã‚¿å¤‰åŒ–ã‚ã‚Š ***/
 		
-		/* î•ñ•\Ž¦ */
+		/* æƒ…å ±è¡¨ç¤º */
 		if( D_LT_CLIENTSENDTIME_GYRO <= spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] )
 		{
 #if D_LT_LOGMODE_GYRO
@@ -333,7 +333,7 @@ void lt_proc_CalibrateGyro( void )
 			lt_send_setClientSendGyro_req( &stSend );
 #endif	/* D_LT_LOGMODE_GYRO */
 		
-			/*ƒJƒEƒ“ƒ^ƒNƒŠƒA*/
+			/*ã‚«ã‚¦ãƒ³ã‚¿ã‚¯ãƒªã‚¢*/
 			spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] = 0;
 		}
 		
@@ -341,7 +341,7 @@ void lt_proc_CalibrateGyro( void )
 	}
 	else
 	{
-		/*** ƒf[ƒ^•Ï‰»‚È‚µ ***/
+		/*** ãƒ‡ãƒ¼ã‚¿å¤‰åŒ–ãªã— ***/
 		
 		if (D_LT_SAMPLETIME_GYRO <= spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO])
 		{
@@ -349,17 +349,17 @@ void lt_proc_CalibrateGyro( void )
 		}
 	}
 	
-	/* ƒf[ƒ^XV */
+	/* ãƒ‡ãƒ¼ã‚¿æ›´æ–° */
 	spLt->stOldCalibrateInfo.iGyro = iGyro;
 		
-	/* ƒJƒEƒ“ƒ^XV */
+	/* ã‚«ã‚¦ãƒ³ã‚¿æ›´æ–° */
 	spLt->iClientSendCount[E_LT_CLIENTSEND_GYRO] ++;
 	
-	/*** Šî€ƒWƒƒƒCƒ‚ÌŒˆ’è ***/
+	/*** åŸºæº–ã‚¸ãƒ£ã‚¤ãƒ­ã®æ±ºå®š ***/
 	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
 	if ( D_LT_TRUE == isPressed )
 	{
-		/* ƒ{ƒ^ƒ“‰Ÿ‰º‚ÅƒWƒƒƒCƒƒŠƒZƒbƒg */
+		/* ãƒœã‚¿ãƒ³æŠ¼ä¸‹ã§ã‚¸ãƒ£ã‚¤ãƒ­ãƒªã‚»ãƒƒãƒˆ */
 		RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_B6 ,D_LT_TONE_DURATION );
 		
@@ -372,7 +372,7 @@ void lt_proc_CalibrateTail( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -381,13 +381,13 @@ void lt_proc_CalibrateTail( void )
 	
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iTail );
 	
-	/* K”ö‚Ì‰ñ“] */
+	/* å°»å°¾ã®å›žè»¢ */
 	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_CALIBRATE_DEGREES, D_LT_TAIL_CALIBRATE_SPEED, D_LT_TRUE );
 	
-	/* K”ö‚ðŒÅ’è */
+	/* å°»å°¾ã‚’å›ºå®š */
 	RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_TRUE );
 	
-	/* ó‘Ô‘JˆÚ */
+	/* çŠ¶æ…‹é·ç§» */
 	spLt->iStatus = E_LT_STATUS_CALIBLATE_BLACK;
 	
 	return;
@@ -399,7 +399,7 @@ void lt_proc_CalibrateBlack( void )
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -421,7 +421,7 @@ void lt_proc_CalibrateWhite( void )
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -443,7 +443,7 @@ void lt_proc_Waiting( void )
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -464,41 +464,41 @@ void lt_proc_StandUp( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/*** ŽÔ—Ö§Œä ***/
-	/* ƒ‚[ƒ^‚ÌŠp‘¬“xƒŠƒZƒbƒg */
+	/*** è»Šè¼ªåˆ¶å¾¡ ***/
+	/* ãƒ¢ãƒ¼ã‚¿ã®è§’é€Ÿåº¦ãƒªã‚»ãƒƒãƒˆ */
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iLeftWheel );
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iRightWheel );
 	
-	/*** ƒWƒƒƒCƒ§Œä ***/
-	/* ƒWƒƒƒCƒƒZƒ“ƒTƒŠƒZƒbƒg */
+	/*** ã‚¸ãƒ£ã‚¤ãƒ­åˆ¶å¾¡ ***/
+	/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µãƒªã‚»ãƒƒãƒˆ */
 //	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
 	
-	/* “|—§UŽq‰Šú‰» */
+	/* å€’ç«‹æŒ¯å­åˆæœŸåŒ– */
 	lt_balance_init();
 
-	/*** K”ö§Œä ***/
-#if 1	/* T.B.D £1 */
-//	/* ƒLƒbƒNƒXƒ^[ƒg */
+	/*** å°»å°¾åˆ¶å¾¡ ***/
+#if 1	/* T.B.D â–²1 */
+//	/* ã‚­ãƒƒã‚¯ã‚¹ã‚¿ãƒ¼ãƒˆ */
 //	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_STANDUP_KICK_DEGREES, D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
 	
-	/* K”ö‚ð–ß‚· */
+	/* å°»å°¾ã‚’æˆ»ã™ */
 	RSI_motor_rotate( spLt->stPort.iMotor.iTail, -(D_LT_TAIL_CALIBRATE_DEGREES), D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
 
-#else	/* T.B.D £1 */
+#else	/* T.B.D â–²1 */
 	lt_set_TailAngle( -(D_LT_TAIL_CALIBRATE_DEGREES) );
 #endif	/* T.B.D */
 	
-	/* ‘–s§Œä */
+	/* èµ°è¡Œåˆ¶å¾¡ */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_RUN );
 	
-	/* ó‘Ô‘JˆÚ */
+	/* çŠ¶æ…‹é·ç§» */
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
 	
 	return;
@@ -506,7 +506,7 @@ void lt_proc_StandUp( void )
 
 void lt_proc_LowSpeed( void )
 {
-	/* ‘–s§Œä */
+	/* èµ°è¡Œåˆ¶å¾¡ */
 	lt_Running( D_LT_FORWORD_LOWSPEED, D_LT_TURN_RUN );
 	
 	return;
@@ -514,7 +514,7 @@ void lt_proc_LowSpeed( void )
 
 void lt_proc_Pause( void )
 {
-	/* ‘–s§Œä */
+	/* èµ°è¡Œåˆ¶å¾¡ */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_STOP );
 	
 	return;
@@ -530,7 +530,7 @@ void lt_proc_Stop( void )
 	int iStopChk = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -541,12 +541,12 @@ void lt_proc_Stop( void )
 	iStopChk = lt_send_Stop_req();
 	if( E_LT_STOP_NUM == iStopChk )
 	{
-		/* ƒ‚[ƒ^‚ÌŒÅ’è‚ð‰ðœ */
+		/* ãƒ¢ãƒ¼ã‚¿ã®å›ºå®šã‚’è§£é™¤ */
 		RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_FALSE);
 		RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE);
 		RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE);
 		
-		/* ƒVƒXƒeƒ€I—¹ */
+		/* ã‚·ã‚¹ãƒ†ãƒ çµ‚äº† */
 		lt_shutdown();
 #if	(__VC_DEBUG__)
 		lt_send_ShutDown_res();
@@ -561,20 +561,20 @@ void lt_set_Port( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ƒZƒ“ƒT‚Ìƒ|[ƒgÝ’è‚ð‚·‚é */
+	/* ã‚»ãƒ³ã‚µã®ãƒãƒ¼ãƒˆè¨­å®šã‚’ã™ã‚‹ */
 	lt_set_SensorPort();
 	
-	/* ƒ‚[ƒ^‚Ìƒ|[ƒgÝ’è‚ð‚·‚é */
+	/* ãƒ¢ãƒ¼ã‚¿ã®ãƒãƒ¼ãƒˆè¨­å®šã‚’ã™ã‚‹ */
 	lt_set_MotorPort();
 	
-	/* ƒ|[ƒg•ÛŽ */
+	/* ãƒãƒ¼ãƒˆä¿æŒ */
 	spLt->stPort.iSensor.iTouch = lt_get_SensorPort( E_LT_PARTS_TOUCH_SENSOR );
 	spLt->stPort.iSensor.iColor = lt_get_SensorPort( E_LT_PARTS_COLOR_SENSOR );
 	spLt->stPort.iSensor.iGyro = lt_get_SensorPort( E_LT_PARTS_GYRO_SENSOR );
@@ -591,7 +591,7 @@ void lt_set_SensorPort( void )
 	int iLoop = 0;
 	S_LT_PORTINFO* spSensorTable = T_LT_SENSORPORT_TABLE;
 	
-	/* ƒZƒ“ƒT‚Ìƒ|[ƒgÝ’è‚ð‚·‚é */
+	/* ã‚»ãƒ³ã‚µã®ãƒãƒ¼ãƒˆè¨­å®šã‚’ã™ã‚‹ */
 	for( iLoop = 0; iLoop < E_RSI_SENSOR_PORT_NUM; iLoop++ )
 	{
 		if( E_LT_PARTS_NONE != spSensorTable[iLoop].iParts )
@@ -620,7 +620,7 @@ int lt_get_SensorPort( int iParts )
 		
 	}
 	
-	return iRet;		/* Ret:ƒ|[ƒg */
+	return iRet;		/* Ret:ãƒãƒ¼ãƒˆ */
 }
 
 void lt_set_MotorPort( void )
@@ -628,7 +628,7 @@ void lt_set_MotorPort( void )
 	int iLoop = 0;
 	S_LT_PORTINFO* spMotorTable = T_LT_MOTORPORT_TABLE;
 	
-	/* ƒ‚[ƒ^‚Ìƒ|[ƒgÝ’è‚ð‚·‚é */
+	/* ãƒ¢ãƒ¼ã‚¿ã®ãƒãƒ¼ãƒˆè¨­å®šã‚’ã™ã‚‹ */
 	for( iLoop = 0; iLoop < E_RSI_MOTOR_PORT_NUM; iLoop++ )
 	{
 		if( E_LT_PARTS_NONE != spMotorTable[iLoop].iParts )
@@ -657,7 +657,7 @@ int lt_get_MotorPort( int iParts )
 		
 	}
 	
-	return iRet;		/* Ret:ƒ|[ƒg */
+	return iRet;		/* Ret:ãƒãƒ¼ãƒˆ */
 }
 
 /* calibrate */
@@ -665,7 +665,7 @@ void lt_Caliblate( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -688,7 +688,7 @@ void lt_Caliblate( void )
 			break;
 		
 		default:
-			/* ƒtƒF[ƒ‹ˆ— */
+			/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 			break;
 	}
 	
@@ -699,20 +699,20 @@ void lt_set_CalibrateGyro( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ƒf[ƒ^Ý’è */
+	/* ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	spLt->stCalibrateInfo.iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	
-	/* Ý’èŠ®—¹’Ê’m */
+	/* è¨­å®šå®Œäº†é€šçŸ¥ */
 	RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_C4, D_LT_TONE_DURATION );
 	
-	/* ó‘Ô‘JˆÚ */
+	/* çŠ¶æ…‹é·ç§» */
 	spLt->iStatus = E_LT_STATUS_CALIBLATE_TAIL;
 	
 	return;
@@ -724,33 +724,33 @@ void lt_set_CalibrateBlack( void )
 	int iReflect = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ”½ŽËŒõ‚Ì‹­‚³‚ðŽæ“¾ */
+	/* åå°„å…‰ã®å¼·ã•ã‚’å–å¾— */
 #if	(__VC_DEBUG__)
 	iColor = E_RSI_SENSOR_COLOR_BLACK;
 #else	/* __VC_DEBUG__ */
 	iColor = RSI_color_sensor_get_color( spLt->stPort.iSensor.iColor );
 #endif	/* __VC_DEBUG__ */
 	
-	/* ”½ŽËŒõ‚Ì‹­‚³‚ðŽæ“¾ */
+	/* åå°„å…‰ã®å¼·ã•ã‚’å–å¾— */
 	iReflect = RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
 	
 	if( E_RSI_SENSOR_COLOR_BLACK == iColor )
 	{
-		/* ƒf[ƒ^Ý’è */
+		/* ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 		spLt->stCalibrateInfo.stBlack.iColor = iColor;
 		spLt->stCalibrateInfo.stBlack.iReflect = iReflect;
 		
-		/* Ý’èŠ®—¹’Ê’m */
+		/* è¨­å®šå®Œäº†é€šçŸ¥ */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_D4, D_LT_TONE_DURATION );
 		
-		/* ó‘Ô‘JˆÚ */
+		/* çŠ¶æ…‹é·ç§» */
 		spLt->iStatus = E_LT_STATUS_CALIBLATE_WHITE;
 	}
 	
@@ -763,42 +763,42 @@ void lt_set_CalibrateWhite( void )
 	int iReflect = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ”½ŽËŒõ‚Ì‹­‚³‚ðŽæ“¾ */
+	/* åå°„å…‰ã®å¼·ã•ã‚’å–å¾— */
 #if	(__VC_DEBUG__)
 	iColor = E_RSI_SENSOR_COLOR_WHITE;
 #else	/* __VC_DEBUG__ */
 	iColor = RSI_color_sensor_get_color( spLt->stPort.iSensor.iColor );
 #endif	/* __VC_DEBUG__ */
 	
-	/* ”½ŽËŒõ‚Ì‹­‚³‚ðŽæ“¾ */
+	/* åå°„å…‰ã®å¼·ã•ã‚’å–å¾— */
 	iReflect = RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
 	
 	if( E_RSI_SENSOR_COLOR_WHITE == iColor )
 	{
-		/* ƒf[ƒ^Ý’è */
+		/* ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 		spLt->stCalibrateInfo.stWhite.iColor = iColor;
 		spLt->stCalibrateInfo.stWhite.iReflect = iReflect;
 		
-		/* Bluetooth‚É‚æ‚éƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’ÊM‚ðI—¹ */
+		/* Bluetoothã«ã‚ˆã‚‹ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é€šä¿¡ã‚’çµ‚äº† */
 		lt_send_endCalibration_req();
 		
-		/* Ý’èŠ®—¹’Ê’m */
+		/* è¨­å®šå®Œäº†é€šçŸ¥ */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION );
 		
-		/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“ƒƒOo—Í */
+		/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ­ã‚°å‡ºåŠ› */
 		lt_log_set_Calibratelog();
 		
-		/* ‚·‚®ó‘Ô‘JˆÚ‚·‚é‚Æƒ^ƒbƒ`ƒZƒ“ƒT‚ðŒŸ’m‚µ‚Ä‚µ‚Ü‚¤‚Ì‚ÅWait‚ð‚©‚¯‚é */
+		/* ã™ãçŠ¶æ…‹é·ç§»ã™ã‚‹ã¨ã‚¿ãƒƒãƒã‚»ãƒ³ã‚µã‚’æ¤œçŸ¥ã—ã¦ã—ã¾ã†ã®ã§Waitã‚’ã‹ã‘ã‚‹ */
 		TASK_sleep( D_LT_CALIBRATEEND_WAIT );
 		
-		/* ó‘Ô‘JˆÚ */
+		/* çŠ¶æ…‹é·ç§» */
 		spLt->iStatus = E_LT_STATUS_WAITING;
 		
 	}
@@ -813,7 +813,7 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -821,24 +821,24 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	}
 	
 #if	(__VC_DEBUG__)
-	printf("¡\n");
+	printf("â– \n");
 #endif	/* __VC_DEBUG__ */
 	
-	/* áŠQ•¨”»’è */
+	/* éšœå®³ç‰©åˆ¤å®š */
 	iAlert = lt_get_SonarAlert();
 	if( D_LT_SONAR_ARERT_NON_OBSTRUCTION != iAlert )
 	{
 		spLt->stBacanceControl.fCmdForward = 0;
 		spLt->stBacanceControl.fCmdTurn = 0;
-		/* ’âŽ~‚·‚é */
+		/* åœæ­¢ã™ã‚‹ */
 		spLt->iStatus = E_LT_STATUS_RUN_PAUSE;
 	}
 	else
 	{
-		/* ‘OiŽw—ß’lŽæ“¾ */
+		/* å‰é€²æŒ‡ä»¤å€¤å–å¾— */
 		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
 		
-		/* ù‰ñŽw—ß’lŽæ“¾ */
+		/* æ—‹å›žæŒ‡ä»¤å€¤å–å¾— */
 		if( D_LT_TURN_STOP != iTurnMode )
 		{
 			spLt->stBacanceControl.fCmdTurn = (float)lt_get_RunningTurnDir();
@@ -851,23 +851,23 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	spLt->stBacanceControl.fBattery = (float)RSI_hw_battery_voltage_mV();
 	
 	/****************************/
-	/* “|—§§Œä					*/
+	/* å€’ç«‹åˆ¶å¾¡					*/
 	/****************************/
-	/* ƒoƒbƒNƒ‰ƒbƒVƒ…ƒLƒƒƒ“ƒZƒ‹ */
+	/* ãƒãƒƒã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã‚­ãƒ£ãƒ³ã‚»ãƒ« */
 	lt_balance_set_BacklashCancel();
 	
-	/* “|—§‘–sƒpƒ‰ƒ[ƒ^‚æ‚èA¶‰E‚Ìƒ‚[ƒ^o—Í‚ðŽæ“¾ */
+	/* å€’ç«‹èµ°è¡Œãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚ˆã‚Šã€å·¦å³ã®ãƒ¢ãƒ¼ã‚¿å‡ºåŠ›ã‚’å–å¾— */
 	lt_balance_set_BalanceInfo();
 	
-	/* ƒ‚[ƒ^‰Ò“­ */
+	/* ãƒ¢ãƒ¼ã‚¿ç¨¼åƒ */
 	iRet = lt_balance_set_MotorPower();
 	if( D_LT_OK != iRet )
 	{
-		/* ‹Ù‹}’âŽ~ */
+		/* ç·Šæ€¥åœæ­¢ */
 		lt_send_Stop_req();
 	}
 	
-	/* ƒVƒXƒeƒ€ƒƒOo—Í */
+	/* ã‚·ã‚¹ãƒ†ãƒ ãƒ­ã‚°å‡ºåŠ› */
 	lt_log_set_Systemlog();
 	
 	return;
@@ -880,32 +880,32 @@ int lt_get_RunningTurnDir( void )
 	int iThreshold = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return iTurnDir;
 	}
 	
-	/* ˜H–Ê‚Ì”½ŽËŒõ‚ðŽæ“¾ */
+	/* è·¯é¢ã®åå°„å…‰ã‚’å–å¾— */
 	iReflect = (int)RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
 	
-	/* ˜H–Ê‚Ì”½ŽËŒõ•½‹Ï’l‚ðŽæ“¾ */
-#if 0	/* T.B.D £3 */
+	/* è·¯é¢ã®åå°„å…‰å¹³å‡å€¤ã‚’å–å¾— */
+#if 0	/* T.B.D â–²3 */
 	iThreshold = (D_LT_COLORSENSOR_REFLECT_WHITE + D_LT_COLORSENSOR_REFLECT_BLACK) / 2;
-#else	/* T.B.D £3 */
+#else	/* T.B.D â–²3 */
 	iThreshold = ( spLt->stCalibrateInfo.stWhite.iReflect + spLt->stCalibrateInfo.stBlack.iReflect ) / 2;
-#endif	/* T.B.D £3 */
+#endif	/* T.B.D â–²3 */
 	if ( iReflect >= iThreshold )
 	{
-		iTurnDir = D_LT_TURN_LEFT;		/* ¶ù‰ñ–½—ß */
+		iTurnDir = D_LT_TURN_LEFT;		/* å·¦æ—‹å›žå‘½ä»¤ */
 	}
 	else
 	{
-		iTurnDir = D_LT_TURN_RIGHT;		/* ‰Eù‰ñ–½—ß */
+		iTurnDir = D_LT_TURN_RIGHT;		/* å³æ—‹å›žå‘½ä»¤ */
 	}	
 	
-	return iTurnDir;		/* ù‰ñ•ûŒü */
+	return iTurnDir;		/* æ—‹å›žæ–¹å‘ */
 }
 
 /* other I/F */
@@ -914,7 +914,7 @@ void lt_set_TailAngle( int iAngle )
 	signed int pwm = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -922,7 +922,7 @@ void lt_set_TailAngle( int iAngle )
 	}
 	
 	pwm = (signed int)( (iAngle - RSI_motor_get_counts( spLt->stPort.iMotor.iTail )) * D_LT_P_GAIN );
-	/* PWMo—Í–O˜aˆ— */
+	/* PWMå‡ºåŠ›é£½å’Œå‡¦ç† */
 	if (pwm > D_LT_PWM_ABS_MAX)
 	{
 		pwm = D_LT_PWM_ABS_MAX;
@@ -945,27 +945,27 @@ void lt_set_TailAngle( int iAngle )
 
 int lt_get_SonarAlert( void )
 {
-/* T.B.D £2 */
+/* T.B.D â–²2 */
 /*
-	’´‰¹”gƒZƒ“ƒT‚É‚æ‚é‹——£‘ª’èŽüŠú‚ÍA’´‰¹”g‚ÌŒ¸Š“Á«‚ÉˆË‘¶‚µ‚Ü‚·B
-	NXT‚Ìê‡‚ÍA40msecŽüŠú’ö“x‚ªŒoŒ±ã‚ÌÅ’Z‘ª’èŽüŠú‚Å‚·B
-	EV3‚Ìê‡‚ÍA—vŠm”F
+	è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µã«ã‚ˆã‚‹è·é›¢æ¸¬å®šå‘¨æœŸã¯ã€è¶…éŸ³æ³¢ã®æ¸›è¡°ç‰¹æ€§ã«ä¾å­˜ã—ã¾ã™ã€‚
+	NXTã®å ´åˆã¯ã€40msecå‘¨æœŸç¨‹åº¦ãŒçµŒé¨“ä¸Šã®æœ€çŸ­æ¸¬å®šå‘¨æœŸã§ã™ã€‚
+	EV3ã®å ´åˆã¯ã€è¦ç¢ºèª
 */
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	unsigned int counter = 0;
 	
 	signed int distance;
 	
-	if (++counter == 40/4) /* –ñ40msecŽüŠú–ˆ‚ÉáŠQ•¨ŒŸ’m  */
+	if (++counter == 40/4) /* ç´„40msecå‘¨æœŸæ¯Žã«éšœå®³ç‰©æ¤œçŸ¥  */
 	{
 		distance = RSI_ultrasonic_sensor_get_distance(E_LT_PARTS_SONAR_SENSOR);
 	if ((distance <= D_LT_SONAR_ALERT_DISTANCE) && (distance >= 0))
 	{
-		iAlert = D_LT_SONAR_ARERT_OBSTRUCTION; /* áŠQ•¨‚ðŒŸ’m */
+		iAlert = D_LT_SONAR_ARERT_OBSTRUCTION; /* éšœå®³ç‰©ã‚’æ¤œçŸ¥ */
 	}
 	else
 	{
-		iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION; /* áŠQ•¨–³‚µ */
+		iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION; /* éšœå®³ç‰©ç„¡ã— */
 	}
 		counter = 0;
 	}
@@ -978,7 +978,7 @@ int lt_get_StopState( void )
 	int iLoop = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{

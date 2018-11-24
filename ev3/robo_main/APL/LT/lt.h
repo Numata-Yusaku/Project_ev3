@@ -1,22 +1,22 @@
 #ifndef	__LT_H__
 #define	__LT_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 /*** GEN ***/
 #include "common.h"
 #include "task.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_LT_OK		(0)
 #define	D_LT_NG		(-1)
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 void LT_main( void );
 void LT_main_debug( void );
 void LT_startup( void );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 #endif	/* __LT_H__ */

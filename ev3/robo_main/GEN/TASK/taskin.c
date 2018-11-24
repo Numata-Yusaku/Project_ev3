@@ -33,12 +33,12 @@ void task_set_Global( void )
 		return;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( spTask, 0x00, sizeof(S_TASK) );
 	
-	/*** ‰Šú‰»’lİ’è ***/
+	/*** åˆæœŸåŒ–å€¤è¨­å®š ***/
 	
-	/* ƒOƒ[ƒoƒ‹İ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®š */
 	gspTask = spTask;
 	
 	return;
@@ -56,14 +56,14 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	S_MSG_DATA* psSend = (S_MSG_DATA*)NULL;
 	void* psData = (void*)NULL;
 	
-	/* ˆø”ƒ`ƒFƒbƒN */
+	/* å¼•æ•°ãƒã‚§ãƒƒã‚¯ */
 	if(E_TASK_TASKID_NUM < iTask ||
 		(S_MSG_DATA*)NULL == spPara )
 	{
 		return D_TASK_NG;
 	}
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSend = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if((S_MSG_DATA*)NULL == psSend)
 	{
@@ -71,21 +71,21 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	}
 	memset( psSend, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* ƒLƒ…[æ“¾ */
+	/* ã‚­ãƒ¥ãƒ¼å–å¾— */
 	psQue = &pgQue[iTask];
 	if( (S_MSG_QUE*)NULL == psQue )
 	{
 		goto END;
 	}
 	
-	/* ƒLƒ…[ˆì‚ê */
+	/* ã‚­ãƒ¥ãƒ¼æº¢ã‚Œ */
 	if( D_TASK_QUE_MAX <= psQue->stStatus.iNum )
 	{
 		printf( "que over: %08x\n",iTask);
 		goto END;
 	}
 	
-	/* ‘—Mƒf[ƒ^‘Ş”ğ */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿é€€é¿ */
 	psSend->iMsgid = spPara->iMsgid;
 	psSend->iSize = spPara->iSize;
 	if( 0 >= psSend->iSize )
@@ -105,24 +105,24 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	psQue->stStatus.iFlag = D_TASK_MODE_ON;
 	/************/
 	
-	/*** ƒf[ƒ^İ’è ***/
+	/*** ãƒ‡ãƒ¼ã‚¿è¨­å®š ***/
 	/* ID */
 	psQue->stData[psQue->stStatus.iTail].iMsgid = psSend->iMsgid;
-	/* ƒpƒ‰ƒ[ƒ^ƒTƒCƒY */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
 	psQue->stData[psQue->stStatus.iTail].iSize = psSend->iSize;
-	/* ƒpƒ‰ƒ[ƒ^ƒAƒhƒŒƒX */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹ */
 	psQue->stData[psQue->stStatus.iTail].vpPara = psSend->vpPara;
 	
-	/* ƒƒOo—Í */
+	/* ãƒ­ã‚°å‡ºåŠ› */
 	task_msglog( E_TASK_MSGDIR_SEND, iTask, psSend->iMsgid );
 	
-	/*** ó‘ÔXV ***/
-	/* ƒLƒ…[” */
+	/*** çŠ¶æ…‹æ›´æ–° ***/
+	/* ã‚­ãƒ¥ãƒ¼æ•° */
 	psQue->stStatus.iNum++;
-	/* I’[ */
+	/* çµ‚ç«¯ */
 	psQue->stStatus.iTail++;
 	
-	/* I’[‚Ìê‡‚Íæ“ª‚É–ß‚· */
+	/* çµ‚ç«¯ã®å ´åˆã¯å…ˆé ­ã«æˆ»ã™ */
 	if (D_TASK_QUE_MAX == psQue->stStatus.iTail)
 	{
 		psQue->stStatus.iTail = 0;
@@ -131,7 +131,7 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	/************/
 	psQue->stStatus.iFlag = D_TASK_MODE_OFF;	
 	
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psSend)
 	{
 		free( psSend );
@@ -141,7 +141,7 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	return D_TASK_OK;
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ( (S_MSG_DATA*)NULL != psSend)
 	{
 		free( psSend );
@@ -163,14 +163,14 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	S_MSG_DATA* psRecv = (S_MSG_DATA*)NULL;
 	void* psData = (void*)NULL;
 	
-	/* ˆø”ƒ`ƒFƒbƒN */
+	/* å¼•æ•°ãƒã‚§ãƒƒã‚¯ */
 	if ( E_TASK_TASKID_NUM < iTask ||
 		(S_MSG_DATA*)NULL == spPara)
 	{
 		return D_TASK_NG;
 	}
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psRecv = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psRecv)
 	{
@@ -178,14 +178,14 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	}
 	memset( psRecv, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* ƒLƒ…[æ“¾ */
+	/* ã‚­ãƒ¥ãƒ¼å–å¾— */
 	psQue = &pgQue[iTask];
 	if ((S_MSG_QUE*)NULL == psQue)
 	{
 		goto END;
 	}
 	
-	/* ƒCƒxƒ“ƒg‚È‚µ */
+	/* ã‚¤ãƒ™ãƒ³ãƒˆãªã— */
 	if (0 == psQue->stStatus.iNum)
 	{
 		goto END;
@@ -193,12 +193,12 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	
 	psQue->stStatus.iFlag = D_TASK_MODE_ON;
 	/************/
-	/*** ƒf[ƒ^æ“¾ ***/
+	/*** ãƒ‡ãƒ¼ã‚¿å–å¾— ***/
 	/* ID */
 	psRecv->iMsgid = psQue->stData[psQue->stStatus.iHead].iMsgid;
-	/* ƒpƒ‰ƒ[ƒ^ƒTƒCƒY */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
 	psRecv->iSize = psQue->stData[psQue->stStatus.iHead].iSize;
-	/* ƒpƒ‰ƒ[ƒ^ƒAƒhƒŒƒX */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹ */
 	psRecv->vpPara = psQue->stData[psQue->stStatus.iHead].vpPara;
 	
 	psData = (void*)malloc( psRecv->iSize );
@@ -209,23 +209,23 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	memset( psData, 0x00, psRecv->iSize );
 	memcpy( psData, psRecv->vpPara, psRecv->iSize );
 	
-	/* ƒƒOo—Í */
+	/* ãƒ­ã‚°å‡ºåŠ› */
 	task_msglog( E_TASK_MSGDIR_RECV, iTask, psRecv->iMsgid );
 	
-	/* o—Í‚Éİ’è */
+	/* å‡ºåŠ›ã«è¨­å®š */
 	/* ID */
 	spPara->iMsgid = psRecv->iMsgid;
-	/* ƒpƒ‰ƒ[ƒ^ƒTƒCƒY */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
 	spPara->iSize = psRecv->iSize;
-	/* ƒpƒ‰ƒ[ƒ^ƒAƒhƒŒƒX */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹ */
 	spPara->vpPara = psData;
 	
-	/*** ƒf[ƒ^ƒNƒŠƒA ***/
+	/*** ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ ***/
 	/* ID */
 	psQue->stData[psQue->stStatus.iHead].iMsgid = D_TASK_MSGID_INVALID;
-	/* ƒpƒ‰ƒ[ƒ^ƒTƒCƒY */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
 	psQue->stData[psQue->stStatus.iHead].iSize = 0;
-	/* ƒpƒ‰ƒ[ƒ^ƒAƒhƒŒƒX */
+	/* ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚¢ãƒ‰ãƒ¬ã‚¹ */
 	if( (void*)NULL != psQue->stData[psQue->stStatus.iHead].vpPara)
 	{
 		free( psQue->stData[psQue->stStatus.iHead].vpPara );
@@ -233,13 +233,13 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 		psRecv->vpPara = (void*)NULL;
 	}
 	
-	/*** ó‘ÔXV ***/
-	/* ƒLƒ…[” */
+	/*** çŠ¶æ…‹æ›´æ–° ***/
+	/* ã‚­ãƒ¥ãƒ¼æ•° */
 	psQue->stStatus.iNum--;
-	/* æ“ª */
+	/* å…ˆé ­ */
 	psQue->stStatus.iHead++;
 	
-	/* I’[‚Ìê‡‚Íæ“ª‚É–ß‚· */
+	/* çµ‚ç«¯ã®å ´åˆã¯å…ˆé ­ã«æˆ»ã™ */
 	if (D_TASK_QUE_MAX == psQue->stStatus.iHead)
 	{
 		psQue->stStatus.iHead = 0;
@@ -251,7 +251,7 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	return D_TASK_OK;
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psRecv)
 	{
 		free( psRecv );
@@ -286,10 +286,10 @@ void task_msglog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚Éİ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spTask->fpMsgLog = fpMsgLog;
 	
-	/* ƒwƒbƒ_o—Í */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
 	fprintf( spTask->fpMsgLog, "Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
 	fflush( spTask->fpMsgLog );
 #endif	/* D_TASK_LOGMODE */
@@ -324,7 +324,7 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 			break;
 		
 		default:
-			/* ƒtƒF[ƒ‹ˆ— */
+			/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 			break;
 	}
 	

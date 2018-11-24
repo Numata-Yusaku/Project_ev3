@@ -3,7 +3,7 @@
 /*** font ***/
 
 /********************************************************/
-/* ƒfƒtƒHƒ‹ƒg‚ÌƒtƒHƒ“ƒg‚ğİ’è‚·‚é						*/
+/* ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹						*/
 /********************************************************/
 int RSI_lcd_set_font( int iFont )
 {
@@ -15,11 +15,11 @@ int RSI_lcd_set_font( int iFont )
 	iRet = (int)ev3_lcd_set_font( (lcdfont_t )iFont );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒtƒHƒ“ƒg‚ÌƒTƒCƒY‚ğæ“¾‚·‚é							*/
+/* ãƒ•ã‚©ãƒ³ãƒˆã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹							*/
 /********************************************************/
 int RSI_lcd_font_get_size( int iFont, signed int* sipWidth, signed int* sipHeight )
 {
@@ -31,13 +31,13 @@ int RSI_lcd_font_get_size( int iFont, signed int* sipWidth, signed int* sipHeigh
 	iRet = (int)ev3_font_get_size( (lcdfont_t)iFont, (int32_t*)sipWidth, (int32_t*)sipHeight );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /*** image ***/
 
 /********************************************************/
-/* ƒƒ‚ƒŠƒtƒ@ƒCƒ‹‚©‚ç‰æ‘œ‚ğƒ[ƒh‚·‚é					*/
+/* ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ç”»åƒã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹					*/
 /********************************************************/
 int RSI_lcd_image_load( const S_RSI_MEMFILE* spMemfile, S_RSI_LCD_IMAGE* spImage )
 {
@@ -48,11 +48,11 @@ int RSI_lcd_image_load( const S_RSI_MEMFILE* spMemfile, S_RSI_LCD_IMAGE* spImage
 	iRet = (int)ev3_image_load( (const memfile_t*)spMemfile, (image_t*)spImage );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ‰æ‘œ‚ÌƒIƒuƒWƒFƒNƒg‚ğ‰ğ•ú‚·‚é							*/
+/* ç”»åƒã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è§£æ”¾ã™ã‚‹							*/
 /********************************************************/
 int RSI_lcd_image_free( S_RSI_LCD_IMAGE* spImage )
 {
@@ -63,13 +63,13 @@ int RSI_lcd_image_free( S_RSI_LCD_IMAGE* spImage )
 	iRet = (int)ev3_image_free( (image_t*)spImage );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /*** lcd ***/
 
 /********************************************************/
-/* w’èˆÊ’u‚Å•¶š—ñ‚ğ•`‚­								*/
+/* æŒ‡å®šä½ç½®ã§æ–‡å­—åˆ—ã‚’æã								*/
 /********************************************************/
 int RSI_lcd_draw_string( const char* str, signed int siXpoint, signed int siYpoint )
 {
@@ -81,11 +81,11 @@ int RSI_lcd_draw_string( const char* str, signed int siXpoint, signed int siYpoi
 #endif	/* __VC_DEBUG__ */
 //	printf("[LCD],%s,[%d %d]\n",str, siXpoint, siYpoint );
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* w’èÀ•W‚Åü‚ğˆø‚­									*/
+/* æŒ‡å®šåº§æ¨™ã§ç·šã‚’å¼•ã									*/
 /********************************************************/
 int RSI_lcd_draw_line( signed int siXsta, signed int siYsta, signed int siXend, signed int siYend )
 {
@@ -97,11 +97,11 @@ int RSI_lcd_draw_line( signed int siXsta, signed int siYsta, signed int siXend, 
 	iRet = (int)ev3_lcd_draw_line( (int32_t)siXsta, (int32_t)siYsta, (int32_t)siXend, (int32_t)siYend );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ‹éŒ`‚ğ•`‚¢‚ÄF‚ğ“h‚é									*/
+/* çŸ©å½¢ã‚’æã„ã¦è‰²ã‚’å¡—ã‚‹									*/
 /********************************************************/
 int RSI_lcd_fill_rect( signed int siXpoint, signed int siYpoint, signed int siWidth, signed int siHeight, int iColor )
 {
@@ -113,11 +113,11 @@ int RSI_lcd_fill_rect( signed int siXpoint, signed int siYpoint, signed int siWi
 	iRet = (int)ev3_lcd_fill_rect( (int32_t)siXpoint, (int32_t)siYpoint, (int32_t)siWidth, (int32_t)siHeight, (lcdcolor_t) iColor );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* w’èÀ•W‚Å‰æ‘œ‚ğ•\¦‚·‚é								*/
+/* æŒ‡å®šåº§æ¨™ã§ç”»åƒã‚’è¡¨ç¤ºã™ã‚‹								*/
 /********************************************************/
 int RSI_lcd_draw_image( const S_RSI_LCD_IMAGE* spImage, signed int siXpoint, signed int siYpoint )
 {
@@ -129,18 +129,18 @@ int RSI_lcd_draw_image( const S_RSI_LCD_IMAGE* spImage, signed int siXpoint, sig
 	iRet = (int)ev3_lcd_draw_image( (const image_t*)spImage, (int32_t)siXpoint, (int32_t)siYpoint );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 //=============================================================================
-/* Šg’£API */
+/* æ‹¡å¼µAPI */
 void RSI_lcd_draw_stringAndDec( const char* str, int iDecValue , signed int siXpoint, signed int siYpoint )
 {
 	char cBuff[256];
 	
 	memset( &cBuff, 0x00, sizeof(cBuff) );
 	
-	/* •¶š—ñŒ‹‡ */
+	/* æ–‡å­—åˆ—çµåˆ */
 	sprintf( cBuff, "%s%d", str , iDecValue );
 	
 #if	(__VC_DEBUG__)
@@ -157,7 +157,7 @@ void RSI_lcd_draw_stringAndHex( const char* str, int iHexValue , signed int siXp
 	
 	memset( &cBuff, 0x00, sizeof(cBuff) );
 	
-	/* •¶š—ñŒ‹‡ */
+	/* æ–‡å­—åˆ—çµåˆ */
 	sprintf( cBuff, "%s0x%08x", str , iHexValue );
 	
 #if	(__VC_DEBUG__)
@@ -174,7 +174,7 @@ void RSI_lcd_draw_stringAndPoint( const char* str, void* iPointValue, signed int
 	
 	memset( &cBuff, 0x00, sizeof(cBuff) );
 	
-	/* •¶š—ñŒ‹‡ */
+	/* æ–‡å­—åˆ—çµåˆ */
 	sprintf( cBuff, "%s0x%p", str , iPointValue );
 	
 #if	(__VC_DEBUG__)

@@ -2,12 +2,12 @@
 #define	__TASK_MSGDATA_H__
 
 /*************************************************************/
-/* MSG‚Å‘—ŽóM‚·‚éƒf[ƒ^‚Ì’è‹`’l^\‘¢‘Ì‚ð’è‹`‚·‚é‚±‚Æ		 */
+/* MSGã§é€å—ä¿¡ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã®å®šç¾©å€¤ï¼æ§‹é€ ä½“ã‚’å®šç¾©ã™ã‚‹ã“ã¨		 */
 /*************************************************************/
 #define	D_TASK_RECVDATA_SIZE			(4)
 
 
-/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“ƒpƒ‰ƒ[ƒ^’Ê’m */
+/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿é€šçŸ¥ */
 typedef struct
 {
 	int iSize;
@@ -16,7 +16,7 @@ typedef struct
 }S_TASK_CHGCALIBRATION_RES;
 
 
-/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MFGYRO */
+/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ï¼šGYRO */
 typedef struct
 {
 	int iGyro;

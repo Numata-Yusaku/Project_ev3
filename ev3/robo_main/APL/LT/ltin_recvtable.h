@@ -1,10 +1,10 @@
 #ifndef	__LTIN_RECVTABLE_H__
 #define	__LTIN_RECVTABLE_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include "ltin.h"
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 S_LT_RECV_TABLE T_LT_RECV_TABLE[] =
 {
 	/* MSGID							,	RecvFunc					*/
@@ -14,7 +14,7 @@ S_LT_RECV_TABLE T_LT_RECV_TABLE[] =
 	{ E_MSGID_BT_CHGCALIBRATION_RES		,	lt_rcv_ChgCalibration_res	},
 	{ E_MSGID_BT_REMOTESTART_RES		,	lt_rcv_RemoteStart_res		},
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	{ E_MSGID_LT_TEST_REQ				,	lt_rcv_test_req				},
 	{ E_MSGID_LT_TOUCHBUTTON_REQ		,	lt_rcv_TouchButton_req		},
 	{ E_MSGID_LT_BACKBUTTON_REQ			,	lt_rcv_BackButton_req		},

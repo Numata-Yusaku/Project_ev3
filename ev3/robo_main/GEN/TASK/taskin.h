@@ -1,27 +1,27 @@
 #ifndef	__TASKIN_H__
 #define	__TASKIN_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 
 #include "common.h"
 #include "task.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_TASK_MSGID_INVALID		(0x00000000)
 
-/* ƒƒOo—Í */
+/* ãƒ­ã‚°å‡ºåŠ› */
 #define	D_TASK_FILENAME_MSGLOG		"OutData/msglog.csv"
 
 #define	D_TASK_LOGMODE				(D_TASK_MODE_ON)
 
-/***** \‘¢‘Ì *****/
-/* í’“—Ìˆæ */
+/***** æ§‹é€ ä½“ *****/
+/* å¸¸é§é ˜åŸŸ */
 typedef struct
 {
 	FILE*	fpMsgLog;
 }S_TASK;
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* startup */
 void task_init_que( void );
 void task_sleep( int iCycle );
@@ -38,7 +38,7 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara );
 void task_msglog_open( void );
 void task_msglog( int iDir, int iTask, int iMsgId );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __TASKIN_H__ */

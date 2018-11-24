@@ -18,10 +18,10 @@ void bt_log_Statuslog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚ÉÝ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spBt->fpStatusLog = fpStatusLog;
 	
-	/* ƒwƒbƒ_o—Í */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
 	fprintf( spBt->fpStatusLog, "Status,");
 	
 	fprintf( spBt->fpStatusLog, "\n");
@@ -35,7 +35,7 @@ void bt_log_set_Statuslog( void )
 #if	(D_BT_LOGMODE_STATUS)
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -61,7 +61,7 @@ void bt_log_set_Calibratelog( void )
 #if	(D_BT_LOGMODE_CALIBRATE)
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -73,7 +73,7 @@ void bt_log_set_Calibratelog( void )
 		return;
 	}
 	
-	/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ */
+	/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 	fprintf( spBt->fpCalirateLog, "%d,",spBt->stCalibrateInfo.iGyro);
 	fprintf( spBt->fpCalirateLog, "%d,",spBt->stCalibrateInfo.stBlack.iColor);
 	fprintf( spBt->fpCalirateLog, "%d,",spBt->stCalibrateInfo.stBlack.iReflect);

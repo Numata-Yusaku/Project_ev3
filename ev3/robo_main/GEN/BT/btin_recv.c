@@ -8,11 +8,11 @@ void bt_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_BT_RECVFUNCPTR pvRecvFunc = (F_BT_RECVFUNCPTR)NULL;
 	
-	/* ÀsŠÖ”æ“¾ */
+	/* å®Ÿè¡Œé–¢æ•°å–å¾— */
 	pvRecvFunc = bt_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)
 	{
-		/* óMŠÖ”Às */
+		/* å—ä¿¡é–¢æ•°å®Ÿè¡Œ */
 		pvRecvFunc( spRecv );
 	}
 	
@@ -26,21 +26,21 @@ F_BT_RECVFUNCPTR bt_get_RecvFunc( int iMsgId )
 	int iCount = 0;
 	S_BT_RECV_TABLE* psRecvTable = (S_BT_RECV_TABLE*)NULL;
 	
-	/* óMƒe[ƒuƒ‹İ’è */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¨­å®š */
 	psRecvTable =T_BT_RECV_TABLE;
 	if((S_BT_RECV_TABLE*)NULL == psRecvTable )
 	{
 		return (F_BT_RECVFUNCPTR)NULL;
 	}
 	
-	/* óMƒe[ƒuƒ‹—v‘f”æ“¾ */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¦ç´ æ•°å–å¾— */
 	iNum = sizeof( T_BT_RECV_TABLE ) / sizeof( S_BT_RECV_TABLE );
 	if( 0 >= iNum )
 	{
 		return (F_BT_RECVFUNCPTR)NULL;
 	}
 	
-	/* óMŠÖ”’Tõ */
+	/* å—ä¿¡é–¢æ•°æ¢ç´¢ */
 	for(iCount = 0; iCount < iNum; iCount++)
 	{
 		if( iMsgId == psRecvTable[iCount].iMsgId )
@@ -67,14 +67,14 @@ void bt_rcv_Wupchk_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		return;
 	}
 	
-	/* BTƒ^ƒXƒN‹N“®Š®—¹Ï */
+	/* BTã‚¿ã‚¹ã‚¯èµ·å‹•å®Œäº†æ¸ˆ */
 	if( ( E_BT_STATUS_READY != spBt->iStatus) &&
 		( D_BT_FLAG_ON != spBt->iWupChk ) )
 	{
@@ -89,14 +89,14 @@ void bt_rcv_Stop_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		return;
 	}
 	
-	/* ‚·‚Å‚É’â~’†‚Ìê‡‚Íˆ—‚µ‚È‚¢ */
+	/* ã™ã§ã«åœæ­¢ä¸­ã®å ´åˆã¯å‡¦ç†ã—ãªã„ */
 	if( E_BT_STATUS_STOP == spBt->iStatus )
 	{
 		return;
@@ -121,7 +121,7 @@ void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -138,14 +138,14 @@ void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv )
 	S_BT* spBt = (S_BT*)NULL;
 	char cSendData[] = {"Remote Ready:"};
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		return;
 	}
 	
-	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“Š®—¹’Ê’m */
+	/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³å®Œäº†é€šçŸ¥ */
 	bt_set_SerialMessage( cSendData, (int)strlen(cSendData) );
 
 	spBt->iStatus = E_BT_STATUS_WAITING;
@@ -157,7 +157,7 @@ void bt_rcv_staRunning_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -175,10 +175,10 @@ void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv )
 	S_TASK_SETCLIENTSEND_GYRO* spRecvPara = (S_TASK_SETCLIENTSEND_GYRO*)NULL;
 	char cSendData[D_BT_RECVDATA_SIZE];
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( &cSendData, 0x00, D_BT_RECVDATA_SIZE );
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -202,7 +202,7 @@ void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{

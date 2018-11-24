@@ -1,8 +1,8 @@
 #ifndef	__MAIN_H__
 #define	__MAIN_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
-/* •W€ƒ‰ƒCƒuƒ‰ƒŠ */
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
+/* æ¨™æº–ãƒ©ã‚¤ãƒ–ãƒ©ãƒª */
 #include <stdio.h>
 #if __VC_DEBUG__
 #include <Windows.h>
@@ -12,20 +12,20 @@
 /* TOPPERS */
 
 
-/* ƒƒCƒ“ */
+/* ãƒ¡ã‚¤ãƒ³ */
 #include "task.h"
 #include "bt.h"
 #include "lt.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define D_MAIN_OK	(0)
 #define D_MAIN_NG	(-1)
 
 #define	D_MAIN_STARTUP_WAIT			(100)
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 void main_make_thread( void );
 void MAIN_init( void );
 void MAIN_task( void );
@@ -57,7 +57,7 @@ void main_send_DownButton_req( S_MSG_DATA* spSend );
 void main_send_LeftButton_req( S_MSG_DATA* spSend );
 void main_send_RightButton_req( S_MSG_DATA* spSend );
 void main_send_CenterButton_req( S_MSG_DATA* spSend );
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __MAIN_H__ */

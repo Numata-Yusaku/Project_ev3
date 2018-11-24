@@ -1,7 +1,7 @@
 #ifndef	__EXTEND_H__
 #define	__EXTEND_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include "rsi_common.h"
 
@@ -14,16 +14,16 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* RTOS */
 int RSI_extend_sta_cyc( signed int siCycId );
 int RSI_extend_stp_cyc( signed int siCycId );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __EXTEND_H__ */

@@ -8,11 +8,11 @@ void lt_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_LT_RECVFUNCPTR pvRecvFunc = (F_LT_RECVFUNCPTR)NULL;
 	
-	/* ŽÀsŠÖ”Žæ“¾ */
+	/* å®Ÿè¡Œé–¢æ•°å–å¾— */
 	pvRecvFunc = lt_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)
 	{
-		/* ŽóMŠÖ”ŽÀs */
+		/* å—ä¿¡é–¢æ•°å®Ÿè¡Œ */
 		pvRecvFunc( spRecv );
 	}
 	
@@ -26,21 +26,21 @@ F_LT_RECVFUNCPTR lt_get_RecvFunc( int iMsgId )
 	int iCount = 0;
 	S_LT_RECV_TABLE* psRecvTable = (S_LT_RECV_TABLE*)NULL;
 	
-	/* ŽóMƒe[ƒuƒ‹Ý’è */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¨­å®š */
 	psRecvTable =T_LT_RECV_TABLE;
 	if((S_LT_RECV_TABLE*)NULL == psRecvTable )
 	{
 		return (F_LT_RECVFUNCPTR)NULL;
 	}
 	
-	/* ŽóMƒe[ƒuƒ‹—v‘f”Žæ“¾ */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¦ç´ æ•°å–å¾— */
 	iNum = sizeof( T_LT_RECV_TABLE ) / sizeof( S_LT_RECV_TABLE );
 	if( 0 >= iNum )
 	{
 		return (F_LT_RECVFUNCPTR)NULL;
 	}
 	
-	/* ŽóMŠÖ”’Tõ */
+	/* å—ä¿¡é–¢æ•°æŽ¢ç´¢ */
 	for(iCount = 0; iCount < iNum; iCount++)
 	{
 		if( iMsgId == psRecvTable[iCount].iMsgId )
@@ -64,7 +64,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -85,7 +85,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			printf("[Button]Gooooooooooooo!!!\n");
 			break;
 		default:
-			/* ƒtƒF[ƒ‹ˆ— */
+			/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 			break;
 	}
 
@@ -97,19 +97,19 @@ void lt_rcv_BackButton_req( S_MSG_DATA* spRecv )
 	int iLoop = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 
-	/*** ŽÔ—Ö§Œä ***/
-	/* ƒ‚[ƒ^‚ÌŠp‘¬“xƒŠƒZƒbƒg */
+	/*** è»Šè¼ªåˆ¶å¾¡ ***/
+	/* ãƒ¢ãƒ¼ã‚¿ã®è§’é€Ÿåº¦ãƒªã‚»ãƒƒãƒˆ */
 	RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE );
 	RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE );
 	
-	/* ƒ‚ƒWƒ…[ƒ‹‹N“®ƒtƒ‰ƒO‰Šú‰» */
+	/* ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«èµ·å‹•ãƒ•ãƒ©ã‚°åˆæœŸåŒ– */
 	for( iLoop = 0; iLoop < E_LT_WUPCHK_NUM; iLoop++ )
 	{
 		spLt->iWupChk[iLoop] = D_LT_FLAG_OFF;
@@ -150,7 +150,7 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -164,7 +164,7 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv )
 			break;
 		
 		default:
-			/* ƒtƒF[ƒ‹ˆ— */
+			/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 			break;
 	}
 	
@@ -176,7 +176,7 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 	int iRet = D_LT_NG;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -190,11 +190,11 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 			break;
 		
 		default:
-			/* ƒtƒF[ƒ‹ˆ— */
+			/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 			break;
 	}
 	
-	/* ‰ºˆÊƒ‚ƒWƒ…[ƒ‹‚ª’âŽ~ó‘Ô‚©ƒ`ƒFƒbƒN */
+	/* ä¸‹ä½ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒåœæ­¢çŠ¶æ…‹ã‹ãƒã‚§ãƒƒã‚¯ */
 	iRet = lt_get_StopState();
 	if( D_LT_OK == iRet )
 	{
@@ -209,7 +209,7 @@ void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv )
 	S_LT* spLt = (S_LT*)NULL;
 	S_TASK_CHGCALIBRATION_RES* spRecvPara = (S_TASK_CHGCALIBRATION_RES*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -231,7 +231,7 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{

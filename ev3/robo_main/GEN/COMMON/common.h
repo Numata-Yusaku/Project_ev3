@@ -1,8 +1,8 @@
 #ifndef	__COMMON_H__
 #define	__COMMON_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
-/* •W€ƒ‰ƒCƒuƒ‰ƒŠ */
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
+/* æ¨™æº–ãƒ©ã‚¤ãƒ–ãƒ©ãƒª */
 #if	(__VC_DEBUG__)
 #include <Windows.h>
 #include <process.h>
@@ -24,19 +24,19 @@
 /* TOPPERS */
 
 
-/* ƒƒCƒ“ */
+/* ãƒ¡ã‚¤ãƒ³ */
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #if	(__VC_DEBUG__)
-#define	D_EV3_CYC_RUN				(1)		/* ƒ_ƒ~[’è‹` */
+#define	D_EV3_CYC_RUN				(1)		/* ãƒ€ãƒŸãƒ¼å®šç¾© */
 #endif	/* __VC_DEBUG__ */
 
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __COMMON_H__ */

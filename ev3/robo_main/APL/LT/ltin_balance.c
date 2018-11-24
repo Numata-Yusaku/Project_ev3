@@ -4,7 +4,7 @@ void lt_balance_init( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -37,26 +37,26 @@ void lt_balance_set_BalanceInfo( void )
 	long lTmp_0;
 	float fK_F[4];
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( &fTmp, 0x00, sizeof(fTmp) );
 	memset( &fTmpTheta_0, 0x00, sizeof(fTmpTheta_0) );
 	memset( &lTmp_0, 0x00, sizeof(lTmp_0) );
 	memset( &fK_F, 0x00, sizeof(fK_F) );
 	
-	/* ƒtƒB[ƒhƒoƒbƒNŒW”İ’è */
+	/* ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•°è¨­å®š */
 	fK_F[0] = D_LT_K_F1;
 	fK_F[1] = D_LT_K_F2;
 	fK_F[2] = D_LT_K_F3;
 	fK_F[3] = D_LT_K_F4;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ƒpƒ‰ƒ[ƒ^æ“¾ */
+	/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å–å¾— */
 	spBalanceControl = &(spLt->stBacanceControl);
 	if( (S_LT_BALANCE_CONTROL*)NULL == spBalanceControl )
 	{
@@ -113,7 +113,7 @@ void lt_balance_set_BalanceInfo( void )
 	
 	fTmpPwmRightLimiter = ((spLt->stBalanceInfo.fThetaRef - fTmpTheta) * D_LT_EXEC_PERIOD) + spLt->stBalanceInfo.fErr_theta;
 	
-	/* ƒoƒ‰ƒ“ƒXî•ñXV */
+	/* ãƒãƒ©ãƒ³ã‚¹æƒ…å ±æ›´æ–° */
 	spLt->stBalanceInfo.fErr_theta = fTmpPwmRightLimiter;
 	spLt->stBalanceInfo.fThetaRef = fTmpPwmLeftLimiter;
 	spLt->stBalanceInfo.fThetadotCmdLpf = fTmpThetadotCmdLpf;
@@ -127,14 +127,14 @@ void lt_balance_set_BacklashCancel( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
 	
-	/* ¶ƒ‚[ƒ^ */
+	/* å·¦ãƒ¢ãƒ¼ã‚¿ */
 	if(spLt->stBacanceControl.scPwmLeft < 0)
 	{
 		spLt->stBacanceControl.fThetaMLeft += D_LT_BACKLASH_HALF;
@@ -145,10 +145,10 @@ void lt_balance_set_BacklashCancel( void )
 	}
 	else
 	{
-		/* ƒtƒF[ƒ‹ˆ— */
+		/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 	}
 	
-	/* ‰Eƒ‚[ƒ^ */
+	/* å³ãƒ¢ãƒ¼ã‚¿ */
 	if(spLt->stBacanceControl.scPwmRight < 0)
 	{
 		spLt->stBacanceControl.fThetaMRight += D_LT_BACKLASH_HALF;
@@ -159,7 +159,7 @@ void lt_balance_set_BacklashCancel( void )
 	}
 	else
 	{
-		/* ƒtƒF[ƒ‹ˆ— */
+		/* ãƒ•ã‚§ãƒ¼ãƒ«å‡¦ç† */
 	}
 	
 	return;
@@ -169,24 +169,24 @@ int lt_balance_set_MotorPower( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return D_LT_NG;
 	}
 	
-	/* “]“|”»’è */
+	/* è»¢å€’åˆ¤å®š */
 	if ( ( ( D_LT_PWM_MAX <= spLt->stBacanceControl.scPwmLeft ) &&
 			( D_LT_PWM_MAX <= spLt->stBacanceControl.scPwmRight ) ) ||
 		( ( D_LT_PWM_MIN >= spLt->stBacanceControl.scPwmLeft ) &&
 			( D_LT_PWM_MIN >=spLt->stBacanceControl.scPwmRight ) ) )
 	{
-		/* “]“|‚µ‚Ä‚¢‚é */
+		/* è»¢å€’ã—ã¦ã„ã‚‹ */
 		spLt->iFallDownCount++;
 		if( D_LT_FALLDOWNTIME == spLt->iFallDownCount )
 		{
-			/* ƒ^ƒCƒ€ƒAƒEƒg‚Å‘–s’â~*/
+			/* ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã§èµ°è¡Œåœæ­¢*/
 			RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
 			RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
 			
@@ -197,11 +197,11 @@ int lt_balance_set_MotorPower( void )
 	}
 	else
 	{
-		/* “]“|‚µ‚Ä‚¢‚È‚¢ */
+		/* è»¢å€’ã—ã¦ã„ãªã„ */
 		spLt->iFallDownCount = 0;
 	}
 	
-	/* ¶Ô—Ö */
+	/* å·¦è»Šè¼ª */
 	if (spLt->stBacanceControl.scPwmLeft == 0)
 	{
 		RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
@@ -211,7 +211,7 @@ int lt_balance_set_MotorPower( void )
 		RSI_motor_set_power(spLt->stPort.iMotor.iLeftWheel, (int)spLt->stBacanceControl.scPwmLeft);
 	}
 	
-	/* ‰EÔ—Ö */
+	/* å³è»Šè¼ª */
 	if (spLt->stBacanceControl.scPwmRight == 0)
 	{
 		RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);

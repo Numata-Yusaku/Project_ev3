@@ -6,7 +6,7 @@ void bt_set_SerialMessage( char* cpSendData, int iSize )
 	int iLoop = 0;
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* �O���[�o���̈�擾 */
+	/* グローバル領域取得 */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
@@ -41,10 +41,10 @@ int bt_get_SerialMessage( char* cpRecvData, int iSize )
 	//char cRecvData = ' ';
 	//char cRet = ' ';
 	//
-	///* ������ */
+	///* 初期化 */
 	//memset( &aTemp, 0x00, sizeof(aTemp) );
 	//
-	///* �O���[�o���̈�擾 */
+	///* グローバル領域取得 */
 	//spBt = bt_get_Global();
 	//if( (S_BT*)NULL == spBt )
 	//{
@@ -57,37 +57,37 @@ int bt_get_SerialMessage( char* cpRecvData, int iSize )
 	//	return ' ';
 	//}
 	//
-	///* �f�[�^��M */
+	///* データ受信 */
 	//cRecvData = fgetc( spBt->fpBtFile );
 	//if (EOF == cRecvData)
 	//{
-	//	/* ��M�f�[�^���Ȃ��ꍇ�����Ȃ� */
+	//	/* 受信データがない場合処理なし */
 	//	return ' ';
 	//}
 	//
-	///* �R�}���h���� */
+	///* コマンド判定 */
 	//iCheck = bt_check_SerialMessageCommand( cRecvData );
 	//if (D_BT_CHECK_OK != iCheck)
 	//{
-	//	/* �R�}���h�łȂ��f�[�^�͖��� */
+	//	/* コマンドでないデータは無視 */
 	//	return ' ';
 	//}
 	//
-	///* �R�}���h�ݒ� */
+	///* コマンド設定 */
 	//cRet = cRecvData;
 	//
-	///* �f�[�^����M(�Œ蒷) */
+	///* データ部受信(固定長) */
 	//for( iLoop = 0; iLoop < D_BT_RECVDATA_SIZE; iLoop++ )
 	//{
 	//	cRecvData = fgetc( spBt->fpBtFile );
 	//	if (EOF == cRecvData)
 	//	{
-	//		/* �I�[���B�����ꍇ�A�f�[�^���� or �����炸 */
-	//		/* ��M�ł����f�[�^�܂ł͕ۏ؂��� */
+	//		/* 終端到達した場合、データ欠損 or 桁足らず */
+	//		/* 受信できたデータまでは保証する */
 	//		break;
 	//	}
 	//	
-	//	/* ���l���� */
+	//	/* 数値判定 */
 	//	iCheck = bt_check_SerialMessageNumber( cRecvData );
 	//	if( D_BT_CHECK_OK == iCheck )
 	//	{
@@ -95,12 +95,12 @@ int bt_get_SerialMessage( char* cpRecvData, int iSize )
 	//	}
 	//	else
 	//	{
-	//		/* �I�[������邱�ƂŎ�M�ł����f�[�^�܂ł͕ۏ؂��� */
+	//		/* 終端をいれることで受信できたデータまでは保証する */
 	//		aTemp[iLoop] = 0x00;
 	//	}
 	//}
 	//
-	///* ��M�f�[�^�ݒ� */
+	///* 受信データ設定 */
 	//memcpy( cpData, &aTemp, D_BT_RECVDATA_SIZE );
 	//
 	return iRet;
@@ -116,24 +116,24 @@ void bt_check_SerialMessageRecv( void )
 	F_BT_RECVCMDFUNCPTR pvRecvCmdFunc = (F_BT_RECVCMDFUNCPTR)NULL;
 	char cCmd = ' ';
 	
-	/* �O���[�o���̈�擾 */
+	/* グローバル領域取得 */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		return;
 	}
 	
-	/* �R�}���h�擾 */
-	cCmd = fgetc( spBt->fpBtFile ); /* ��M */
+	/* コマンド取得 */
+	cCmd = fgetc( spBt->fpBtFile ); /* 受信 */
 	
-	/* �R�}���h�`�F�b�N */
+	/* コマンドチェック */
 	iCheck = bt_check_SerialMessageCommand( cCmd );
 	if ( D_BT_CHECK_OK != iCheck )
 	{
 		goto END;
 	}
 	
-	/* �p�����[�^�T�C�Y�擾 */
+	/* パラメータサイズ取得 */
 	iSize = bt_get_MessageSize( cCmd );
 	if ( 0 > iSize )
 	{
@@ -141,7 +141,7 @@ void bt_check_SerialMessageRecv( void )
 	}
 	else if( 0 < iSize )
 	{
-		/* �̈�m�� */
+		/* 領域確保 */
 		cpData = (char*)malloc( iSize );
 		if( (char*)NULL == cpData )
 		{
@@ -150,7 +150,7 @@ void bt_check_SerialMessageRecv( void )
 		
 		memset( cpData, 0x00, iSize );
 		
-		/* ��M�f�[�^�擾 */
+		/* 受信データ取得 */
 		iRet = bt_get_SerialMessage( cpData, iSize );
 		if( D_BT_OK != iRet )
 		{
@@ -159,15 +159,15 @@ void bt_check_SerialMessageRecv( void )
 	}
 	else
 	{
-		/* �T�C�Y��0�̏ꍇ�͎�M�f�[�^�擾���Ȃ� */
+		/* サイズが0の場合は受信データ取得しない */
 	}
 	
 	
-	/* ��M�R�}���h�֐��擾 */
+	/* 受信コマンド関数取得 */
 	pvRecvCmdFunc = bt_get_MessageRecvFunc( cCmd );
 	if( (F_BT_RECVCMDFUNCPTR)NULL != pvRecvCmdFunc)
 	{
-		/* ��M�R�}���h�֐����s */
+		/* 受信コマンド関数実行 */
 		pvRecvCmdFunc( cpData, iSize );
 	}
 
@@ -189,21 +189,21 @@ int bt_get_MessageSize( char cCmd )
 	int iLoop = 0;
 	S_BT_MESSAGE_TABLE* psMessageTable = (S_BT_MESSAGE_TABLE*)NULL;
 	
-	/* �e�[�u���ݒ� */
+	/* テーブル設定 */
 	psMessageTable =T_BT_MESSAGE_TABLE;
 	if((S_BT_MESSAGE_TABLE*)NULL == psMessageTable )
 	{
 		return D_BT_NG;
 	}
 	
-	/* �e�[�u���v�f���擾 */
+	/* テーブル要素数取得 */
 	iNum = sizeof( T_BT_MESSAGE_TABLE ) / sizeof( S_BT_MESSAGE_TABLE );
 	if( 0 >= iNum )
 	{
 		return D_BT_NG;
 	}
 	
-	/* ��M�֐��T�� */
+	/* 受信関数探索 */
 	for( iLoop = 0; iLoop < iNum; iLoop++ )
 	{
 		if( cCmd == psMessageTable[iLoop].cCommand )
@@ -223,21 +223,21 @@ F_BT_RECVCMDFUNCPTR bt_get_MessageRecvFunc( char cCmd )
 	int iLoop = 0;
 	S_BT_MESSAGE_TABLE* psMessageTable = (S_BT_MESSAGE_TABLE*)NULL;
 	
-	/* �e�[�u���ݒ� */
+	/* テーブル設定 */
 	psMessageTable =T_BT_MESSAGE_TABLE;
 	if((S_BT_MESSAGE_TABLE*)NULL == psMessageTable )
 	{
 		return (F_BT_RECVCMDFUNCPTR)NULL;
 	}
 	
-	/* �e�[�u���v�f���擾 */
+	/* テーブル要素数取得 */
 	iNum = sizeof( T_BT_MESSAGE_TABLE ) / sizeof( S_BT_MESSAGE_TABLE );
 	if( 0 >= iNum )
 	{
 		return (F_BT_RECVCMDFUNCPTR)NULL;
 	}
 	
-	/* ��M�֐��T�� */
+	/* 受信関数探索 */
 	for( iLoop = 0; iLoop < iNum; iLoop++ )
 	{
 		if( cCmd == psMessageTable[iLoop].cCommand )
@@ -281,7 +281,7 @@ void bt_recvCmd_s( char* cpRecvData, int iSize )
 {
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* �O���[�o���̈�擾 */
+	/* グローバル領域取得 */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{

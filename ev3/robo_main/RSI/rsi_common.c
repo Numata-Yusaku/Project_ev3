@@ -20,12 +20,12 @@ void rsi_set_Global( void )
 		return;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( spRsi, 0x00, sizeof(S_RSI) );
 	
-	/*** ‰Šú‰»’lÝ’è ***/
+	/*** åˆæœŸåŒ–å€¤è¨­å®š ***/
 	
-	/* ƒOƒ[ƒoƒ‹Ý’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®š */
 	gspRsi = spRsi;
 	
 	return;
@@ -54,10 +54,10 @@ void rsi_rsilog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚ÉÝ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spRsi->fpRsiLog = fpRsiLog;
 	
-	/* ƒwƒbƒ_o—Í */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
 	fprintf( spRsi->fpRsiLog , "Class,Info,Data1,Data2\n");
 	fflush( spRsi->fpRsiLog  );
 	

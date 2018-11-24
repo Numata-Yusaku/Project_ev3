@@ -1,7 +1,7 @@
 #ifndef	__BTIN_H__
 #define	__BTIN_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 /*** APL ***/
 #include <stdio.h>
 #include <string.h>
@@ -10,7 +10,7 @@
 /* BT */
 #include "bt.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_BT_FLAG_ON		(1)
 #define	D_BT_FLAG_OFF		(0)
 
@@ -19,36 +19,36 @@
 
 #define	D_BT_RECVDATA_SIZE	(128)
 
-/* ƒƒOƒtƒ@ƒCƒ‹ */
+/* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ« */
 #define	D_BT_FILENAME_STATUSLOG					"OutData/StatusLog_Bt.csv"
 
-/*** ƒƒOo—Í ***/
+/*** ãƒ­ã‚°å‡ºåŠ› ***/
 #define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_ON)
 
 
 enum EN_BT_STATUS
 {
-	E_BT_STATUS_READY = 0,		/* ‹N“®€”õ’† */
-	E_BT_STATUS_IDLE,			/* ‹N“®’† */
-	E_BT_STATUS_CALIBLATE,		/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’† */
-	E_BT_STATUS_WAITING,		/* ‘Ò‹@’† */	
-	E_BT_STATUS_RUN,			/* ‘–s’† */
-	E_BT_STATUS_STOP,			/* ’â~’† */
+	E_BT_STATUS_READY = 0,		/* èµ·å‹•æº–å‚™ä¸­ */
+	E_BT_STATUS_IDLE,			/* èµ·å‹•ä¸­ */
+	E_BT_STATUS_CALIBLATE,		/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ */
+	E_BT_STATUS_WAITING,		/* å¾…æ©Ÿä¸­ */	
+	E_BT_STATUS_RUN,			/* èµ°è¡Œä¸­ */
+	E_BT_STATUS_STOP,			/* åœæ­¢ä¸­ */
 	
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	E_BT_STATUS_INVALID = -1
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef void( *F_BT_RECVFUNCPTR )( S_MSG_DATA* spRecv );
 typedef void( *F_BT_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 
-/* í’“—Ìˆæ */
+/* å¸¸é§é ˜åŸŸ */
 typedef struct
 {
-	int iStatus;		/* ƒNƒ‰ƒXƒXƒe[ƒ^ƒX */
+	int iStatus;		/* ã‚¯ãƒ©ã‚¹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ */
 	int iWupChk;
-	FILE* fpBtFile;		/* Bluetoo’ÊMƒ|[ƒg */
+	FILE* fpBtFile;		/* Bluetooé€šä¿¡ãƒãƒ¼ãƒˆ */
 	FILE* fpStatusLog;
 }S_BT;
 
@@ -65,7 +65,7 @@ typedef struct
 	void* vpFunc;
 }S_BT_MESSAGE_TABLE;
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* startup */
 void bt_main( void );
 void bt_init( void );
@@ -87,21 +87,21 @@ void bt_recv( S_MSG_DATA* spRecv );
 F_BT_RECVFUNCPTR bt_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
-void bt_rcv_test_req( S_MSG_DATA* spRecv );							/* ƒeƒXƒg */
-void bt_rcv_Wupchk_req( S_MSG_DATA* spRecv );						/* ‹N“® */
-void bt_rcv_Stop_req( S_MSG_DATA* spRecv );							/* ’â~ */
-void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv );				/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“ŠJn */
-void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv );				/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“I—¹ */
-void bt_rcv_staRunning_req( S_MSG_DATA* spRecv );					/* ‘–sŠJn */
-void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MFƒWƒƒƒCƒ */
-void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MFƒJƒ‰[ */
+void bt_rcv_test_req( S_MSG_DATA* spRecv );							/* ãƒ†ã‚¹ãƒˆ */
+void bt_rcv_Wupchk_req( S_MSG_DATA* spRecv );						/* èµ·å‹• */
+void bt_rcv_Stop_req( S_MSG_DATA* spRecv );							/* åœæ­¢ */
+void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv );				/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ */
+void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv );				/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº† */
+void bt_rcv_staRunning_req( S_MSG_DATA* spRecv );					/* èµ°è¡Œé–‹å§‹ */
+void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ï¼šã‚¸ãƒ£ã‚¤ãƒ­ */
+void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ï¼šã‚«ãƒ©ãƒ¼ */
 
 /*** btin_send.c **/
-void bt_send_test_res( S_MSG_DATA* spSend );							/* ƒeƒXƒg */
-void bt_send_Wupchk_res( void );										/* ‹N“® */
-void bt_send_Stop_res( void );											/* ’â~ */
-void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“XV */
-void bt_send_RemoteStart_res( void );									/* ƒŠƒ‚[ƒgƒXƒ^[ƒg */
+void bt_send_test_res( S_MSG_DATA* spSend );							/* ãƒ†ã‚¹ãƒˆ */
+void bt_send_Wupchk_res( void );										/* èµ·å‹• */
+void bt_send_Stop_res( void );											/* åœæ­¢ */
+void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–° */
+void bt_send_RemoteStart_res( void );									/* ãƒªãƒ¢ãƒ¼ãƒˆã‚¹ã‚¿ãƒ¼ãƒˆ */
 
 /*** btin_message.c **/
 void bt_set_SerialMessage( char* cpSendData, int iSize );

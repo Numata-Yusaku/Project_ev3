@@ -18,10 +18,10 @@ void lt_log_Statuslog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚ÉÝ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spLt->fpStatusLog = fpStatusLog;
 	
-	/* ƒwƒbƒ_o—Í */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
 #if	(__VC_DEBUG__)
 #if	(D_LT_LOGMODE_STATUS_TIME)
 	fprintf( spLt->fpStatusLog, "Time(YYMMDD-hhmmss),");
@@ -56,17 +56,17 @@ void lt_log_Calibratelog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚ÉÝ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spLt->fpCalirateLog = fpCalirateLog;
 	
-	/* ƒwƒbƒ_o—Í */
-	/* ƒWƒƒƒCƒ */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
+	/* ã‚¸ãƒ£ã‚¤ãƒ­ */
 	fprintf( spLt->fpCalirateLog, "iGyro,");
 	
-	/* • */
+	/* é»’ */
 	fprintf( spLt->fpCalirateLog, "stBlack.iColor,");
 	fprintf( spLt->fpCalirateLog, "stBlack.iReflect,");
-	/* ”’s */
+	/* ç™½s */
 	fprintf( spLt->fpCalirateLog, "stWhite.iColor,");
 	fprintf( spLt->fpCalirateLog, "stWhite.iReflect,");
 	
@@ -94,12 +94,12 @@ void lt_log_Systemlog_open( void )
 		return;
 	}
 	
-	/* ƒOƒ[ƒoƒ‹‚ÉÝ’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ã«è¨­å®š */
 	spLt->fpSystemLog = fpSystemLog;
 	
-	/* ƒwƒbƒ_o—Í */
+	/* ãƒ˜ãƒƒãƒ€å‡ºåŠ› */
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
-	/* ƒoƒ‰ƒ“ƒX§Œäî•ñ */
+	/* ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡æƒ…å ± */
 	fprintf( spLt->fpSystemLog, "fErr_theta,");
 	fprintf( spLt->fpSystemLog, "fPsi,");
 	fprintf( spLt->fpSystemLog, "fThetaLpf,");
@@ -108,7 +108,7 @@ void lt_log_Systemlog_open( void )
 #endif	/* D_LT_LOGMODE_SYSTEM_BALANCEINFO */
 	
 #if	(D_LT_LOGMODE_SYSTEM_BALANCECONTROL)
-	/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ */
+	/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 	fprintf( spLt->fpSystemLog, "fCmdForward,");
 	fprintf( spLt->fpSystemLog, "fCmdTurn,");
 	fprintf( spLt->fpSystemLog, "fGyro,");
@@ -131,7 +131,7 @@ void lt_log_set_Statuslog( void )
 #if	(D_LT_LOGMODE_STATUS)
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -148,7 +148,7 @@ void lt_log_set_Statuslog( void )
 	time_t stTime = 0;
 	struct tm* spLocalTime = (struct tm*)NULL;
 	
-	/* Žž‚ðŽæ“¾ */
+	/* æ™‚åˆ»ã‚’å–å¾— */
 	stTime = time(NULL);
 	spLocalTime = localtime(&stTime);
 	
@@ -192,7 +192,7 @@ void lt_log_set_Calibratelog( void )
 #if	(D_LT_LOGMODE_CALIBRATE)
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -204,7 +204,7 @@ void lt_log_set_Calibratelog( void )
 		return;
 	}
 	
-	/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ */
+	/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.iGyro);
 	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stBlack.iColor);
 	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stBlack.iReflect);
@@ -223,7 +223,7 @@ void lt_log_set_Systemlog( void )
 #if	(D_LT_LOGMODE_SYSTEM)
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
@@ -236,7 +236,7 @@ void lt_log_set_Systemlog( void )
 	}
 	
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
-	/* ƒoƒ‰ƒ“ƒX§Œäî•ñ */
+	/* ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡æƒ…å ± */
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fErr_theta);
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fPsi);
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fThetaLpf);
@@ -245,7 +245,7 @@ void lt_log_set_Systemlog( void )
 #endif	/* D_LT_LOGMODE_SYSTEM_BALANCEINFO */
 	
 #if	(D_LT_LOGMODE_SYSTEM_BALANCECONTROL)
-	/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ */
+	/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fCmdForward);
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fCmdTurn);
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fGyro);

@@ -2,12 +2,12 @@
 #define	__TASK_MSGID_H__
 
 /***************************************************************/
-/* MSG�̒�`�́uREQ:��v�uRES:�����v�ƂȂ�悤�ɒ�`���邱�� */
+/* MSGの定義は「REQ:奇数」「RES:偶数」となるように定義すること */
 /***************************************************************/
 
-/***** �C���N���[�h *****/
+/***** インクルード *****/
 
-/***** �萔 *****/
+/***** 定数 *****/
 enum EN_TASK_TASKID
 {
 	E_TASK_TASKID_MAIN = 0,
@@ -16,7 +16,7 @@ enum EN_TASK_TASKID
 	/* APL */
 	E_TASK_TASKID_LT,
 
-	/* ��������ɒ�`���邱�� */
+	/* ここより上に定義すること */
 	E_TASK_TASKID_NUM,
 };
 
@@ -25,7 +25,7 @@ enum EN_MSGID_MAIN
 	E_MSGID_MAIN_TEST_REQ =			( ( E_TASK_TASKID_MAIN << 24) | 0x00000001 ),
 	E_MSGID_MAIN_TEST_RES,
 	
-	/* ��������ɒ�`���邱�� */
+	/* ここより上に定義すること */
 	E_MSGID_MAIN_INVALID = 0x00000000,
 };
 /* GEN */
@@ -54,7 +54,7 @@ enum EN_MSGID_BT
 	E_MSGID_BT_SETCLIENTSEND_COLOR_REQ,
 	E_MSGID_BT_SETCLIENTSEND_COLOR_RES,
 
-	/* ��������ɒ�`���邱�� */
+	/* ここより上に定義すること */
 	E_MSGID_BT_INVALID = 0x00000000,
 };
 
@@ -82,15 +82,15 @@ enum EN_MSGID_LT
 	E_MSGID_LT_CENTERBUTTON_REQ,
 	E_MSGID_LT_CENTERBUTTON_RES,
 
-	/* ��������ɒ�`���邱�� */
+	/* ここより上に定義すること */
 	E_MSGID_LT_INVALID = 0x00000000,
 };
 
-/***** �\���� *****/
+/***** 構造体 *****/
 
-/***** �֐��v���g�^�C�v *****/
+/***** 関数プロトタイプ *****/
 
-/***** �e�[�u�� *****/
+/***** テーブル *****/
 
 
 #endif	/* __TASK_MSGID_H__ */

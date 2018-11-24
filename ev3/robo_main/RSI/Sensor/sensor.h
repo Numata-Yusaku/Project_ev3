@@ -1,7 +1,7 @@
 #ifndef	__SENSOR_H__
 #define	__SENSOR_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include "rsi_common.h"
 
@@ -14,77 +14,77 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define		D_RSI_SENSOR_IR_RED_UP_BUTTON		(1)
 #define		D_RSI_SENSOR_IR_RED_DOWN_BUTTON		(2)
 #define		D_RSI_SENSOR_IR_BLUE_UP_BUTTON		(4)
 #define		D_RSI_SENSOR_IR_BLUE_DOWN_BUTTON	(8)
 #define		D_RSI_SENSOR_IR_BEACON_BUTTON		(16)
 
-#define		D_RSI_SENSOR_CHANNEL_NUM			(4)		/* ƒ`ƒƒƒ“ƒlƒ‹” */
+#define		D_RSI_SENSOR_CHANNEL_NUM			(4)		/* ãƒãƒ£ãƒ³ãƒãƒ«æ•° */
 
 
 
 enum EN_RSI_SENSOR_PORT
 {
-	E_RSI_SENSOR_PORT_1 = 0,		/* ƒ|[ƒg1 */
-	E_RSI_SENSOR_PORT_2,			/* ƒ|[ƒg2 */
-	E_RSI_SENSOR_PORT_3,			/* ƒ|[ƒg3 */
-	E_RSI_SENSOR_PORT_4,			/* ƒ|[ƒg4 */
+	E_RSI_SENSOR_PORT_1 = 0,		/* ãƒãƒ¼ãƒˆ1 */
+	E_RSI_SENSOR_PORT_2,			/* ãƒãƒ¼ãƒˆ2 */
+	E_RSI_SENSOR_PORT_3,			/* ãƒãƒ¼ãƒˆ3 */
+	E_RSI_SENSOR_PORT_4,			/* ãƒãƒ¼ãƒˆ4 */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_SENSOR_PORT_NUM,			/* ƒ|[ƒg” */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_SENSOR_PORT_NUM,			/* ãƒãƒ¼ãƒˆæ•° */
 };
 
 enum EN_RSI_SENSOR_TYPE
 {
-	E_RSI_SENSOR_TYPE_NONE = 0,			/* ƒZƒ“ƒT–¢Ú‘± */
-	E_RSI_SENSOR_TYPE_ULTRASONIC,		/* ’´‰¹”gƒZƒ“ƒT */
-	E_RSI_SENSOR_TYPE_GYRO,				/* ƒWƒƒƒCƒƒZƒ“ƒT */
-	E_RSI_SENSOR_TYPE_TOUCH,			/* ƒ^ƒbƒ`ƒZƒ“ƒT */
-	E_RSI_SENSOR_TYPE_COLOR,			/* ƒJƒ‰[ƒZƒ“ƒT */
-	E_RSI_SENSOR_TYPE_HT_NXT_ACCEL,		/* ‰Á‘¬“xƒZƒ“ƒT */
-	E_RSI_SENSOR_TYPE_NXT_TEMP,			/* NXT‰·“xƒZƒ“ƒT */
+	E_RSI_SENSOR_TYPE_NONE = 0,			/* ã‚»ãƒ³ã‚µæœªæŽ¥ç¶š */
+	E_RSI_SENSOR_TYPE_ULTRASONIC,		/* è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µ */
+	E_RSI_SENSOR_TYPE_GYRO,				/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µ */
+	E_RSI_SENSOR_TYPE_TOUCH,			/* ã‚¿ãƒƒãƒã‚»ãƒ³ã‚µ */
+	E_RSI_SENSOR_TYPE_COLOR,			/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µ */
+	E_RSI_SENSOR_TYPE_HT_NXT_ACCEL,		/* åŠ é€Ÿåº¦ã‚»ãƒ³ã‚µ */
+	E_RSI_SENSOR_TYPE_NXT_TEMP,			/* NXTæ¸©åº¦ã‚»ãƒ³ã‚µ */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_SENSOR_TYPE_NUM,				/* ƒZƒ“ƒTƒ^ƒCƒv” */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_SENSOR_TYPE_NUM,				/* ã‚»ãƒ³ã‚µã‚¿ã‚¤ãƒ—æ•° */
 };
 
 enum EN_RSI_SENSOR_COLOR
 {
-	E_RSI_SENSOR_COLOR_NONE = 0,		/* –³F */
-	E_RSI_SENSOR_COLOR_BLACK,			/* • */
-	E_RSI_SENSOR_COLOR_BLUE,			/* Â */
-	E_RSI_SENSOR_COLOR_GREEN,			/* —Î */
-	E_RSI_SENSOR_COLOR_YELLOW,			/* ‰© */
-	E_RSI_SENSOR_COLOR_RED,				/* Ô */
-	E_RSI_SENSOR_COLOR_WHITE,			/* ”’ */
-	E_RSI_SENSOR_COLOR_BROWN,			/* ’ƒ */
+	E_RSI_SENSOR_COLOR_NONE = 0,		/* ç„¡è‰² */
+	E_RSI_SENSOR_COLOR_BLACK,			/* é»’ */
+	E_RSI_SENSOR_COLOR_BLUE,			/* é’ */
+	E_RSI_SENSOR_COLOR_GREEN,			/* ç·‘ */
+	E_RSI_SENSOR_COLOR_YELLOW,			/* é»„ */
+	E_RSI_SENSOR_COLOR_RED,				/* èµ¤ */
+	E_RSI_SENSOR_COLOR_WHITE,			/* ç™½ */
+	E_RSI_SENSOR_COLOR_BROWN,			/* èŒ¶ */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_SENSOR_COLOR_NUM,				/* ƒJƒ‰[” */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_SENSOR_COLOR_NUM,				/* ã‚«ãƒ©ãƒ¼æ•° */
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef struct
 {
-	unsigned short usR;			/* Ô */
-	unsigned short usG;			/* —Î */
-	unsigned short usB;			/* Â */
+	unsigned short usR;			/* èµ¤ */
+	unsigned short usG;			/* ç·‘ */
+	unsigned short usB;			/* é’ */
 }S_RSI_SENSOR_RGB_RAW;
 
 typedef struct
 {
-	signed char scHeading[D_RSI_SENSOR_CHANNEL_NUM];	/* ‘Sƒ`ƒƒƒ“ƒlƒ‹‚Ì•ûˆÊ */
-	signed char scDistance[D_RSI_SENSOR_CHANNEL_NUM];	/* ‘Sƒ`ƒƒƒ“ƒlƒ‹‚Ì‹——£ */
+	signed char scHeading[D_RSI_SENSOR_CHANNEL_NUM];	/* å…¨ãƒãƒ£ãƒ³ãƒãƒ«ã®æ–¹ä½ */
+	signed char scDistance[D_RSI_SENSOR_CHANNEL_NUM];	/* å…¨ãƒãƒ£ãƒ³ãƒãƒ«ã®è·é›¢ */
 }S_RSI_SENSOR_IR_SEEK;
 
 typedef struct
 {
-	signed char scChannel[D_RSI_SENSOR_CHANNEL_NUM];	/* ‘Sƒ`ƒƒƒ“ƒlƒ‹‚Ìƒ{ƒ^ƒ““ü—Íƒpƒ^[ƒ“d */
+	signed char scChannel[D_RSI_SENSOR_CHANNEL_NUM];	/* å…¨ãƒãƒ£ãƒ³ãƒãƒ«ã®ãƒœã‚¿ãƒ³å…¥åŠ›ãƒ‘ã‚¿ãƒ¼ãƒ³d */
 }S_RSI_SENSOR_IR_REMOTE;
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* sensor */
 int RSI_sensor_config( int iPort, int iType );
 unsigned int RSI_sensor_get_type( int iPort );
@@ -119,7 +119,7 @@ int RSI_ht_nxt_accel_sensor_measure( int iPort, signed short ssAxes );
 int RSI_nxt_temp_sensor_measure( int iPort, float* fpTemp );
 
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __SENSOR_H__ */

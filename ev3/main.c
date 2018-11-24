@@ -3,13 +3,13 @@
 #if (__VC_DEBUG__)
 int main(void)
 {
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	MAIN_init();
 	
-	/* ƒXƒŒƒbƒh‚Ì¶¬ */
+	/* ã‚¹ãƒ¬ãƒƒãƒ‰ã®ç”Ÿæˆ */
 	main_make_thread();
 	
-	/* ƒƒCƒ“ƒ^ƒXƒN‹N“® */
+	/* ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¹ã‚¯èµ·å‹• */
 	MAIN_task();
 }
 
@@ -26,13 +26,13 @@ void main_make_thread( void )
 
 void MAIN_init( void )
 {
-	/* TASK‰Šú‰» */
+	/* TASKåˆæœŸåŒ– */
 	TASK_init();
 	
-	/* RSI‰Šú‰» */
+	/* RSIåˆæœŸåŒ– */
 	RSI_init();
 	
-	/* ƒfƒBƒXƒvƒŒƒC€”õ */
+	/* ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤æº–å‚™ */
 	main_DispReady();
 	
 	return;
@@ -43,28 +43,28 @@ void MAIN_task(void)
 	int iRet = D_MAIN_NG;
 	S_MSG_DATA* psRecvData = (S_MSG_DATA*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if((S_MSG_DATA*)NULL == psRecvData)
 	{
 		goto END;
 	}
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* MAIN_TASK */
 	while(1)	/* loop sta*/
 	{
-		/* MSGóM */
+		/* MSGå—ä¿¡ */
 		iRet = TASK_msgrecv( E_TASK_TASKID_MAIN, psRecvData );
 		if ( ( D_TASK_OK == iRet) &&
 				( E_MSGID_MAIN_INVALID != psRecvData->iMsgid ) )
 		{
 			
-			/* óMˆ— */
+			/* å—ä¿¡å‡¦ç† */
 			main_recv( psRecvData );
 			
-			/* óMƒf[ƒ^ƒNƒŠƒA */
+			/* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ */
 			if ((void*)NULL != psRecvData->vpPara)
 			{
 				free( psRecvData->vpPara );
@@ -73,11 +73,11 @@ void MAIN_task(void)
 			memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 		}
 		
-		/* ƒL[“ü—Í‚ÌŠÄ‹ */
+		/* ã‚­ãƒ¼å…¥åŠ›ã®ç›£è¦– */
 #if	(__VC_DEBUG__)
 		main_recv_cmd();
 #else	/* __VC_DEBUG__ */
-		/* ‘–s‘Ì‚Å‚ÍƒƒCƒ“ƒ^ƒXƒN‚ª•s—v */
+		/* èµ°è¡Œä½“ã§ã¯ãƒ¡ã‚¤ãƒ³ã‚¿ã‚¹ã‚¯ãŒä¸è¦ */
 		main_shutdown();
 #endif	/* __VC_DEBUG__ */
 	}			/* loop end */
@@ -85,7 +85,7 @@ void MAIN_task(void)
 	return;
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psRecvData)
 	{
 		free( psRecvData );
@@ -111,7 +111,7 @@ void main_recv( S_MSG_DATA* spRecv)
 
 void main_DispReady( void )
 {
-	/* ‰æ–Ê‰Šú‰» */
+	/* ç”»é¢åˆæœŸåŒ– */
 	RSI_lcd_fill_rect( 0, 0, 178, 128, 0 );
 	RSI_lcd_draw_string((const char*)"INIT OK", 0, 10);
 	
@@ -133,47 +133,47 @@ void main_recv_cmd( void )
 {
 	int iKey = 0;
 	
-	/* ƒL[“ü—Í‚ª‚ ‚éê‡ */
+	/* ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã‚‹å ´åˆ */
 	if ( _kbhit() )
 	{
-		/* ƒL[‚ğæ“¾ */
+		/* ã‚­ãƒ¼ã‚’å–å¾— */
 		iKey = _getch();
 		switch( iKey )
 		{
-			case 'e':	/* ƒAƒvƒŠƒP[ƒVƒ‡ƒ“I—¹ */
+			case 'e':	/* ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº† */
 				main_shutdown();
 				break;
 				
-			case 't':	/* ƒeƒXƒg’ÊM */
+			case 't':	/* ãƒ†ã‚¹ãƒˆé€šä¿¡ */
 				main_rcv_cmd_t();
 				break;
 			
-			/* ‘–s‘Ì‹^—ƒgƒŠƒK[ */
-			case 'T':	/* ƒ^ƒbƒ`ƒZƒ“ƒT‰Ÿ‰º */
+			/* èµ°è¡Œä½“ç–‘ä¼¼ãƒˆãƒªã‚¬ãƒ¼ */
+			case 'T':	/* ã‚¿ãƒƒãƒã‚»ãƒ³ã‚µæŠ¼ä¸‹ */
 				main_rcv_cmd_T();
 				break;
 				
-			case 'L':	/* ¶ƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'L':	/* å·¦ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_L();
 				break;
 				
-			case 'R':	/* ‰Eƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'R':	/* å³ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_R();
 				break;
 				
-			case 'U':	/* ãƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'U':	/* ä¸Šãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_U();
 				break;
 				
-			case 'D':	/* ‰ºƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'D':	/* ä¸‹ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_D();
 				break;
 				
-			case 'C':	/* ’†‰›ƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'C':	/* ä¸­å¤®ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_C();
 				break;
 				
-			case 'B':	/* ƒoƒbƒNƒ{ƒ^ƒ“‰Ÿ‰º */
+			case 'B':	/* ãƒãƒƒã‚¯ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_B();
 				break;
 				
@@ -213,35 +213,35 @@ void main_recv_ButtonPressed( void )
 		iKey = E_RSI_HW_BUTTON_BACK;
 	}
 	
-	/* ƒL[“ü—Í‚ª‚ ‚éê‡ */
+	/* ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã‚‹å ´åˆ */
 	if( E_RSI_HW_BUTTON_INVALID != iKey )
 	{
 		switch( iKey )
 		{
-			case E_RSI_HW_BUTTON_LEFT:	/* ¶ƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_LEFT:	/* å·¦ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_L();
 				break;
 				
-			case E_RSI_HW_BUTTON_RIGHT:	/* ‰Eƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_RIGHT:	/* å³ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_R();
 				break;
 				
-			case E_RSI_HW_BUTTON_UP:	/* ãƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_UP:	/* ä¸Šãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_U();
 				break;
 				
-			case E_RSI_HW_BUTTON_DOWN:	/* ‰ºƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_DOWN:	/* ä¸‹ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_D();
 				break;
 				
-			case E_RSI_HW_BUTTON_ENTER:	/* ’†‰›ƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_ENTER:	/* ä¸­å¤®ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_C();
 				break;
 				
-			case E_RSI_HW_BUTTON_BACK:	/* ƒoƒbƒNƒ{ƒ^ƒ“‰Ÿ‰º */
+			case E_RSI_HW_BUTTON_BACK:	/* ãƒãƒƒã‚¯ãƒœã‚¿ãƒ³æŠ¼ä¸‹ */
 				main_rcv_cmd_B();
 				
-				/* T.B.D :ƒfƒoƒbƒO‚Ì‚½‚ß‚É‹­§’Eo(LT‚ªÀ‘•‚Å‚«‚½‚çíœ)*/
+				/* T.B.D :ãƒ‡ãƒãƒƒã‚°ã®ãŸã‚ã«å¼·åˆ¶è„±å‡º(LTãŒå®Ÿè£…ã§ããŸã‚‰å‰Šé™¤)*/
 				main_shutdown();
 				break;
 				
@@ -257,56 +257,56 @@ void main_recv_ButtonPressed( void )
 
 void main_rcv_cmd_t( void )
 {
-	/* ƒeƒXƒg‘—M */
+	/* ãƒ†ã‚¹ãƒˆé€ä¿¡ */
 	main_send_test_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_T( void )
 {
-	/* ƒ{ƒ^ƒ“(ƒ^ƒbƒ`ƒZƒ“ƒT)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(ã‚¿ãƒƒãƒã‚»ãƒ³ã‚µ)æŠ¼ä¸‹ */
 	main_send_TouchButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_B( void )
 {
-	/* ƒ{ƒ^ƒ“(ƒoƒbƒNƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(ãƒãƒƒã‚¯ãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_BackButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_U( void )
 {
-	/* ƒ{ƒ^ƒ“(ãƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(ä¸Šãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_UpButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_D( void )
 {
-	/* ƒ{ƒ^ƒ“(‰ºƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(ä¸‹ãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_DownButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_L( void )
 {
-	/* ƒ{ƒ^ƒ“(¶ƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(å·¦ãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_LeftButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_R( void )
 {
-	/* ƒ{ƒ^ƒ“(‰Eƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(å³ãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_RightButton_req( NULL );
 	return;
 }
 
 void main_rcv_cmd_C( void )
 {
-	/* ƒ{ƒ^ƒ“(’†‰›ƒ{ƒ^ƒ“)‰Ÿ‰º */
+	/* ãƒœã‚¿ãƒ³(ä¸­å¤®ãƒœã‚¿ãƒ³)æŠ¼ä¸‹ */
 	main_send_CenterButton_req( NULL );
 	return;
 }
@@ -317,7 +317,7 @@ void main_send_test_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -330,16 +330,16 @@ void main_send_test_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_TEST_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -352,7 +352,7 @@ void main_send_test_req( S_MSG_DATA* spSend )
 /* TEST */
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -374,7 +374,7 @@ void main_send_TouchButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -387,16 +387,16 @@ void main_send_TouchButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_TOUCHBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -404,7 +404,7 @@ void main_send_TouchButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -426,7 +426,7 @@ void main_send_BackButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -439,16 +439,16 @@ void main_send_BackButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_BACKBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -456,7 +456,7 @@ void main_send_BackButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -478,7 +478,7 @@ void main_send_UpButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -491,16 +491,16 @@ void main_send_UpButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_UPBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -508,7 +508,7 @@ void main_send_UpButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -530,7 +530,7 @@ void main_send_DownButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -543,16 +543,16 @@ void main_send_DownButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_DOWNBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -560,7 +560,7 @@ void main_send_DownButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -582,7 +582,7 @@ void main_send_LeftButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -595,16 +595,16 @@ void main_send_LeftButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_LEFTBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -612,7 +612,7 @@ void main_send_LeftButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -634,7 +634,7 @@ void main_send_RightButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -647,16 +647,16 @@ void main_send_RightButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_RIGHTBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -664,7 +664,7 @@ void main_send_RightButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -686,7 +686,7 @@ void main_send_CenterButton_req( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -699,16 +699,16 @@ void main_send_CenterButton_req( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_LT_CENTERBUTTON_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -716,7 +716,7 @@ void main_send_CenterButton_req( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );

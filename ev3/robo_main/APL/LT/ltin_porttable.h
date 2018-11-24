@@ -1,10 +1,10 @@
 #ifndef	__LTIN_PORTTABLE_H__
 #define	__LTIN_PORTTABLE_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include "ltin.h"
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 S_LT_PORTINFO T_LT_SENSORPORT_TABLE[E_RSI_SENSOR_PORT_NUM] =
 {
 	{ E_LT_PARTS_TOUCH_SENSOR	, E_RSI_SENSOR_PORT_1		, E_RSI_SENSOR_TYPE_TOUCH	},

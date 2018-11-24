@@ -1,7 +1,7 @@
 #ifndef	__RSI_COMMON_H__
 #define	__RSI_COMMON_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -16,7 +16,7 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define		D_RSI_OK		(0)
 #define		D_RSI_NG		(-1)
 
@@ -25,30 +25,30 @@
 
 #define		D_RSI_TMAX_FILENAME_LEN (255)
 
-/* ƒƒOo—Í */
+/* ãƒ­ã‚°å‡ºåŠ› */
 #define	D_RSI_FILENAME_MSGLOG		"OutData/RsiLog.csv"
 
 #define	D_RSI_LOGMODE				(D_RSI_TRUE)
 
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef struct
 {
-	void*			buffer;		/* ‚±‚Ìƒtƒ@ƒCƒ‹‚ªŠi”[‚³‚ê‚Ä‚¢‚éƒoƒbƒtƒ@‚Ö‚Ìƒ|ƒCƒ“ƒ^ */
-	unsigned int	filesz;		/* ƒtƒ@ƒCƒ‹‚ÌÀÛ‚ÌƒTƒCƒY */
-	unsigned int	buffersz;	/* ƒoƒbƒtƒ@‚ÌÅ‘åƒTƒCƒY */
+	void*			buffer;		/* ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒæ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒãƒƒãƒ•ã‚¡ã¸ã®ãƒã‚¤ãƒ³ã‚¿ */
+	unsigned int	filesz;		/* ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿéš›ã®ã‚µã‚¤ã‚º */
+	unsigned int	buffersz;	/* ãƒãƒƒãƒ•ã‚¡ã®æœ€å¤§ã‚µã‚¤ã‚º */
 }S_RSI_MEMFILE;
 
 
 typedef struct
 {
-	unsigned int	size;									/* ƒtƒ@ƒCƒ‹‚ÌƒTƒCƒY */
-	unsigned short	date;									/* ƒtƒ@ƒCƒ‹‚ÌLast modified date */
-	unsigned short	time;									/* ƒtƒ@ƒCƒ‹‚ÌLast modified time */
-	int				is_dir;									/* ƒtƒHƒ‹ƒ_‚Å‚ ‚é‚±‚Æ‚ğ•\‚·ƒtƒ‰ƒO */
-	int				is_readonly;							/* “Ç‚İo‚µê—p‚Å‚ ‚é‚±‚Æ‚ğ•\‚·ƒtƒ‰ƒO */
-	int				is_hidden;								/* ‰B‚µƒtƒ@ƒCƒ‹‚Å‚ ‚é‚±‚Æ‚ğ•\‚·ƒtƒ‰ƒO */
-	char			name[D_RSI_TMAX_FILENAME_LEN + 1];		/* ƒtƒ@ƒCƒ‹–¼ */
+	unsigned int	size;									/* ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µã‚¤ã‚º */
+	unsigned short	date;									/* ãƒ•ã‚¡ã‚¤ãƒ«ã®Last modified date */
+	unsigned short	time;									/* ãƒ•ã‚¡ã‚¤ãƒ«ã®Last modified time */
+	int				is_dir;									/* ãƒ•ã‚©ãƒ«ãƒ€ã§ã‚ã‚‹ã“ã¨ã‚’è¡¨ã™ãƒ•ãƒ©ã‚° */
+	int				is_readonly;							/* èª­ã¿å‡ºã—å°‚ç”¨ã§ã‚ã‚‹ã“ã¨ã‚’è¡¨ã™ãƒ•ãƒ©ã‚° */
+	int				is_hidden;								/* éš ã—ãƒ•ã‚¡ã‚¤ãƒ«ã§ã‚ã‚‹ã“ã¨ã‚’è¡¨ã™ãƒ•ãƒ©ã‚° */
+	char			name[D_RSI_TMAX_FILENAME_LEN + 1];		/* ãƒ•ã‚¡ã‚¤ãƒ«å */
 }S_RSI_FILEINFO;
 
 typedef struct
@@ -56,13 +56,13 @@ typedef struct
 	FILE* fpRsiLog;
 }S_RSI;
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 void RSI_init( void );
 void rsi_set_Global( void );
 S_RSI* rsi_get_Global( void );
 void rsi_rsilog_open( void );
 void rsi_set_rsilog( const char* cpClass, const char* cpInfo, int iData1, int iData2 );
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __RSI_COMMON_H__ */

@@ -1,7 +1,7 @@
 #ifndef	__MOTOR_H__
 #define	__MOTOR_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include "rsi_common.h"
 
@@ -14,32 +14,32 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 enum EN_RSI_MOTOR_PORT
 {
-	E_RSI_MOTOR_PORT_A = 0,		/* ƒ|[ƒgA */
-	E_RSI_MOTOR_PORT_B,			/* ƒ|[ƒgB */
-	E_RSI_MOTOR_PORT_C,			/* ƒ|[ƒgC */
-	E_RSI_MOTOR_PORT_D,			/* ƒ|[ƒgD */
+	E_RSI_MOTOR_PORT_A = 0,		/* ãƒãƒ¼ãƒˆA */
+	E_RSI_MOTOR_PORT_B,			/* ãƒãƒ¼ãƒˆB */
+	E_RSI_MOTOR_PORT_C,			/* ãƒãƒ¼ãƒˆC */
+	E_RSI_MOTOR_PORT_D,			/* ãƒãƒ¼ãƒˆD */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_MOTOR_PORT_NUM,		/* ƒ|[ƒg” */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_MOTOR_PORT_NUM,		/* ãƒãƒ¼ãƒˆæ•° */
 };
 
 enum EN_RSI_MOTOR_TYPE
 {
-	E_RSI_MOTOR_TYPE_NONE = 0,		/* ƒ‚[ƒ^–¢Ú‘± */
-	E_RSI_MOTOR_TYPE_MEDIUM,		/* ƒT[ƒ{ƒ‚[ƒ^M */
-	E_RSI_MOTOR_TYPE_LARGE,			/* ƒT[ƒ{ƒ‚[ƒ^L */
-	E_RSI_MOTOR_TYPE_UNREGULATED,	/* –¢’²®ƒ‚[ƒ^ */
+	E_RSI_MOTOR_TYPE_NONE = 0,		/* ãƒ¢ãƒ¼ã‚¿æœªæŽ¥ç¶š */
+	E_RSI_MOTOR_TYPE_MEDIUM,		/* ã‚µãƒ¼ãƒœãƒ¢ãƒ¼ã‚¿M */
+	E_RSI_MOTOR_TYPE_LARGE,			/* ã‚µãƒ¼ãƒœãƒ¢ãƒ¼ã‚¿L */
+	E_RSI_MOTOR_TYPE_UNREGULATED,	/* æœªèª¿æ•´ãƒ¢ãƒ¼ã‚¿ */
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_RSI_MOTOR_TYPE_NUM,			/* ƒ‚[ƒ^ƒ^ƒCƒv” */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_RSI_MOTOR_TYPE_NUM,			/* ãƒ¢ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ—æ•° */
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* motor */
 int RSI_motor_config( int iPort,  int iType );
 unsigned int RSI_motor_get_type( int iPort );
@@ -51,7 +51,7 @@ int RSI_motor_stop( int iPort, int iBrake );
 int RSI_motor_rotate( int iPort, int iDegrees, signed int siSpeedAbs, int iBlocking );
 int RSI_motor_steer( int iLeftMotor, int iRightMotor, int iPower, int iTurnRatio);
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __MOTOR_H__ */

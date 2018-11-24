@@ -1,11 +1,11 @@
 #ifndef	__TASK_H__
 #define	__TASK_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include "task_msgid.h"
 #include "task_msgdata.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_TASK_OK				(0)
 #define	D_TASK_NG				(-1)
 
@@ -14,7 +14,7 @@
 
 #define	D_TASK_QUE_MAX			(256)
 
-/* ƒ^ƒXƒNƒTƒCƒNƒ‹ */
+/* ã‚¿ã‚¹ã‚¯ã‚µã‚¤ã‚¯ãƒ« */
 #define	D_TASK_CYCLE_LT			(5)
 #define	D_TASK_CYCLE_BT			(100)
 
@@ -24,7 +24,7 @@ enum EN_TASK_MSGDIR
 	E_TASK_MSGDIR_RECV,
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef struct
 {
 	int		iMsgid;
@@ -45,15 +45,15 @@ typedef struct
 	S_MSG_STATUS stStatus;
 	S_MSG_DATA stData[D_TASK_QUE_MAX];
 }S_MSG_QUE;
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 void TASK_init( void );
 void TASK_sleep( int iCycle );
 
-/* ƒCƒxƒ“ƒg */
+/* ã‚¤ãƒ™ãƒ³ãƒˆ */
 int TASK_msgsend( int iTask, S_MSG_DATA* spPara );
 int TASK_msgrecv( int iTask, S_MSG_DATA* spPara );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __TASK_H__ */

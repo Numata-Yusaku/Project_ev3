@@ -1,7 +1,7 @@
-### Makefileパス
+### Makefile繝代せ
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
-### ソースオブジェクトファイル
+### 繧ｽ繝ｼ繧ｹ繧ｪ繝悶ず繧ｧ繧ｯ繝医ヵ繧｡繧､繝ｫ
 APPL_COBJS +=	\
 			main.o \
 			common.o \
@@ -27,7 +27,7 @@ APPL_COBJS +=	\
 			ltin_balance.o \
 			ltin_log.o \
 
-### ソースパス
+### 繧ｽ繝ｼ繧ｹ繝代せ
 APPL_DIR +=		\
 			$(mkfile_path)robo_main \
 			$(mkfile_path)robo_main/RSI \
@@ -42,7 +42,7 @@ APPL_DIR +=		\
 			$(mkfile_path)robo_main/GEN/BT \
 			$(mkfile_path)robo_main/APL/LT \
 
-### ヘッダパス
+### 繝倥ャ繝繝代せ
 INCLUDES +=		\
 			-I$(mkfile_path)robo_main \
 			-I$(mkfile_path)robo_main/RSI \

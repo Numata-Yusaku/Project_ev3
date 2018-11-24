@@ -1,7 +1,7 @@
 #ifndef	__LCD_H__
 #define	__LCD_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 #include <stdio.h>
 #include "rsi_common.h"
 
@@ -14,24 +14,24 @@
 
 /*** APL ***/
 
-/***** ’è” *****/
-#define	D_RSI_LCD_WIDTH			(178)	/* LCD‰æ–Ê‚Ì• */
-#define	D_RSI_LCD_HEIGHT		(128)	/* LCD‰æ–Ê‚Ì‚‚³ */
+/***** å®šæ•° *****/
+#define	D_RSI_LCD_WIDTH			(178)	/* LCDç”»é¢ã®å¹… */
+#define	D_RSI_LCD_HEIGHT		(128)	/* LCDç”»é¢ã®é«˜ã• */
 
 
 enum EN_RSI_LCD_FONT
 {
-	E_RSI_LCD_FONT_SMALL = 0,		/* ¬‚³‚¢ƒTƒCƒY‚ÌƒtƒHƒ“ƒg */
-	E_RSI_LCD_FONT_MEDIUM,			/* •’ÊƒTƒCƒY‚ÌƒtƒHƒ“ƒg */
+	E_RSI_LCD_FONT_SMALL = 0,		/* å°ã•ã„ã‚µã‚¤ã‚ºã®ãƒ•ã‚©ãƒ³ãƒˆ */
+	E_RSI_LCD_FONT_MEDIUM,			/* æ™®é€šã‚µã‚¤ã‚ºã®ãƒ•ã‚©ãƒ³ãƒˆ */
 };
 
 enum EN_RSI_LCD_COLOR
 {
-	E_RSI_LCD_COLOR_WHITE = 0,		/* ”’ */
-	E_RSI_LCD_COLOR_BLACK,			/* • */
+	E_RSI_LCD_COLOR_WHITE = 0,		/* ç™½ */
+	E_RSI_LCD_COLOR_BLACK,			/* é»’ */
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef struct
 {
 	signed int	width;
@@ -39,7 +39,7 @@ typedef struct
 	void*		vpData;
 }S_RSI_LCD_IMAGE;
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 /* font */
 int RSI_lcd_set_font( int iFont );
 int RSI_lcd_font_get_size( int iFont, signed int* sipWidth, signed int* sipHeight );
@@ -58,7 +58,7 @@ void RSI_lcd_draw_stringAndDec( const char* str, int iDecValue, signed int siXpo
 void RSI_lcd_draw_stringAndHex( const char* str, int iHexValue, signed int siXpoint, signed int siYpoint );
 void RSI_lcd_draw_stringAndPoint( const char* str, void* iPointValue, signed int siXpoint, signed int siYpoint );
 
-/***** ƒe[ƒuƒ‹ *****/
+/***** ãƒ†ãƒ¼ãƒ–ãƒ« *****/
 
 
 #endif	/* __LCD_H__ */

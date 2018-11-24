@@ -3,7 +3,7 @@
 /*** motor ***/
 
 /********************************************************/
-/* ƒ‚[ƒ^ƒ|[ƒg‚ğİ’è‚·‚é								*/
+/* ãƒ¢ãƒ¼ã‚¿ãƒãƒ¼ãƒˆã‚’è¨­å®šã™ã‚‹								*/
 /********************************************************/
 int RSI_motor_config( int iPort,  int iType )
 {
@@ -17,11 +17,11 @@ int RSI_motor_config( int iPort,  int iType )
 	rsi_set_rsilog( "[MOTOR]","Motor Set",iPort ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^ƒ|[ƒg‚Ìƒ‚[ƒ^ƒ^ƒCƒv‚ğæ“¾‚·‚é					*/
+/* ãƒ¢ãƒ¼ã‚¿ãƒãƒ¼ãƒˆã®ãƒ¢ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ—ã‚’å–å¾—ã™ã‚‹					*/
 /********************************************************/
 unsigned int RSI_motor_get_type( int iPort )
 {
@@ -33,11 +33,11 @@ unsigned int RSI_motor_get_type( int iPort )
 	iRet = (int)ev3_motor_get_type( (motor_port_t)iPort );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFƒ‚[ƒ^ƒ^ƒCƒv */
+	return iRet;	/* Retï¼šãƒ¢ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ— */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚ÌŠpˆÊ’u‚ğæ“¾‚·‚é								*/
+/* ãƒ¢ãƒ¼ã‚¿ã®è§’ä½ç½®ã‚’å–å¾—ã™ã‚‹								*/
 /********************************************************/
 int RSI_motor_get_counts( int iPort )
 {
@@ -51,11 +51,11 @@ int RSI_motor_get_counts( int iPort )
 	rsi_set_rsilog( "[MOTOR]","@@Counts@@",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŠpˆÊ’u */
+	return iRet;	/* Retï¼šè§’ä½ç½® */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚ÌŠpˆÊ’u‚ğƒ[ƒ‚ÉƒŠƒZƒbƒg‚·‚é					*/
+/* ãƒ¢ãƒ¼ã‚¿ã®è§’ä½ç½®ã‚’ã‚¼ãƒ­ã«ãƒªã‚»ãƒƒãƒˆã™ã‚‹					*/
 /********************************************************/
 int RSI_motor_reset_counts( int iPort )
 {
@@ -69,11 +69,11 @@ int RSI_motor_reset_counts( int iPort )
 	rsi_set_rsilog( "[MOTOR]","@@Counts Reset@@",iPort ,0 );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚Ìƒpƒ[‚ğİ’è‚·‚é								*/
+/* ãƒ¢ãƒ¼ã‚¿ã®ãƒ‘ãƒ¯ãƒ¼ã‚’è¨­å®šã™ã‚‹								*/
 /********************************************************/
 int RSI_motor_set_power( int iPort, int iPower )
 {
@@ -87,11 +87,11 @@ int RSI_motor_set_power( int iPort, int iPower )
 	rsi_set_rsilog( "[MOTOR]","@@Set Power@@",iPort ,iPower );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚Ìƒpƒ[‚ğæ“¾‚·‚é								*/
+/* ãƒ¢ãƒ¼ã‚¿ã®ãƒ‘ãƒ¯ãƒ¼ã‚’å–å¾—ã™ã‚‹								*/
 /********************************************************/
 int RSI_motor_get_power( int iPort )
 {
@@ -105,11 +105,11 @@ int RSI_motor_get_power( int iPort )
 	rsi_set_rsilog( "[MOTOR]","@@Get Power@@",iPort ,iRet );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFƒ‚[ƒ^‚Ìƒpƒ[ */
+	return iRet;	/* Retï¼šãƒ¢ãƒ¼ã‚¿ã®ãƒ‘ãƒ¯ãƒ¼ */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚ğ’â~‚·‚é										*/
+/* ãƒ¢ãƒ¼ã‚¿ã‚’åœæ­¢ã™ã‚‹										*/
 /********************************************************/
 int RSI_motor_stop( int iPort, int iBrake )
 {
@@ -123,11 +123,11 @@ int RSI_motor_stop( int iPort, int iBrake )
 	rsi_set_rsilog( "[MOTOR]","@@Motor Stop@@",iPort ,iBrake );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ƒ‚[ƒ^‚ğw’è‚µ‚½Šp“x‚¾‚¯‰ñ“]‚³‚¹‚é					*/
+/* ãƒ¢ãƒ¼ã‚¿ã‚’æŒ‡å®šã—ãŸè§’åº¦ã ã‘å›è»¢ã•ã›ã‚‹					*/
 /********************************************************/
 int RSI_motor_rotate( int iPort, int iDegrees, signed int siSpeedAbs, int iBlocking )
 {
@@ -141,11 +141,11 @@ int RSI_motor_rotate( int iPort, int iDegrees, signed int siSpeedAbs, int iBlock
 	rsi_set_rsilog( "[MOTOR]","Deg/SPD",iDegrees ,siSpeedAbs );
 #endif	/* D_RSI_LOGMODE */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 /********************************************************/
-/* ‚Q‚Â‚Ìƒ‚[ƒ^‚Åƒƒ{ƒbƒg‚ÌƒXƒeƒAƒŠƒ“ƒO‘€ì‚ğs‚¤		*/
+/* ï¼’ã¤ã®ãƒ¢ãƒ¼ã‚¿ã§ãƒ­ãƒœãƒƒãƒˆã®ã‚¹ãƒ†ã‚¢ãƒªãƒ³ã‚°æ“ä½œã‚’è¡Œã†		*/
 /********************************************************/
 int RSI_motor_steer( int iLeftMotor, int iRightMotor, int iPower, int iTurnRatio)
 {
@@ -157,7 +157,7 @@ int RSI_motor_steer( int iLeftMotor, int iRightMotor, int iPower, int iTurnRatio
 	iRet = (int)ev3_motor_steer( (motor_port_t)iLeftMotor, (motor_port_t)iRightMotor, iPower, iTurnRatio );
 #endif	/* __VC_DEBUG__ */
 	
-	return iRet;	/* RetFŒ‹‰Ê */
+	return iRet;	/* Retï¼šçµæœ */
 }
 
 

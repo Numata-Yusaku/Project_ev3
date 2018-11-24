@@ -7,7 +7,7 @@ void bt_send_test_res( S_MSG_DATA* spSend )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -20,16 +20,16 @@ void bt_send_test_res( S_MSG_DATA* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_BT_TEST_RES;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_MAIN, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -37,7 +37,7 @@ void bt_send_test_res( S_MSG_DATA* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -59,7 +59,7 @@ void bt_send_Wupchk_res( void )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -72,17 +72,17 @@ void bt_send_Wupchk_res( void )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_BT_WUPCHK_RES;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -90,7 +90,7 @@ void bt_send_Wupchk_res( void )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -112,7 +112,7 @@ void bt_send_Stop_res( void )
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
 	void* psSendPara = (void*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -125,17 +125,17 @@ void bt_send_Stop_res( void )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_BT_STOP_RES;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* MSG‘—M */
+	/* MSGé€ä¿¡ */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 	if( D_TASK_OK != iRet )
 	{
@@ -143,7 +143,7 @@ void bt_send_Stop_res( void )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -166,14 +166,14 @@ void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend )
 	S_TASK_CHGCALIBRATION_RES* psSendPara = (void*)NULL;
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		goto END;
 	}
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -186,25 +186,25 @@ void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( S_TASK_CHGCALIBRATION_RES ) );
 	
-	/* ‘—Mƒpƒ‰ƒ[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š */
 	psSendPara->cCmd = spSend->cCmd;
 	psSendPara->iSize= spSend->iSize;
 	memcpy( psSendPara->aData, spSend->aData, spSend->iSize );
 
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_BT_CHGCALIBRATION_RES;
 	psSendData->iSize = sizeof( S_TASK_CHGCALIBRATION_RES );
 	psSendData->vpPara = (void*)psSendPara;
 	
-	/* CHG’Ê’m‰Â”\‚Èó‘Ô‚©ƒ`ƒFƒbƒN */
+	/* CHGé€šçŸ¥å¯èƒ½ãªçŠ¶æ…‹ã‹ãƒã‚§ãƒƒã‚¯ */
 	if( ( E_BT_STATUS_CALIBLATE == spBt->iStatus) ||
 		( E_BT_STATUS_WAITING == spBt->iStatus) )
 	{
-		/* MSG‘—M */
+		/* MSGé€ä¿¡ */
 		iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 		if( D_TASK_OK != iRet )
 		{
@@ -213,7 +213,7 @@ void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_TASK_CHGCALIBRATION_RES*)NULL != psSendPara)
 	{
 		free( psSendPara );
@@ -236,14 +236,14 @@ void bt_send_RemoteStart_res( void )
 	void* psSendPara = (void*)NULL;
 	S_BT* spBt = (S_BT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		goto END;
 	}
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psSendData)
 	{
@@ -256,19 +256,19 @@ void bt_send_RemoteStart_res( void )
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
-	/* ‘—Mƒf[ƒ^İ’è */
+	/* é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 	psSendData->iMsgid = E_MSGID_BT_REMOTESTART_RES;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
-	/* ƒŠƒ‚[ƒgƒXƒ^[ƒg’Ê’m‰Â”\‚Èó‘Ô‚©ƒ`ƒFƒbƒN */
+	/* ãƒªãƒ¢ãƒ¼ãƒˆã‚¹ã‚¿ãƒ¼ãƒˆé€šçŸ¥å¯èƒ½ãªçŠ¶æ…‹ã‹ãƒã‚§ãƒƒã‚¯ */
 	if ( E_BT_STATUS_WAITING == spBt->iStatus)
 	{
-		/* MSG‘—M */
+		/* MSGé€ä¿¡ */
 		iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
 		if (D_TASK_OK != iRet)
 		{
@@ -277,7 +277,7 @@ void bt_send_RemoteStart_res( void )
 	}
 
 END:
-	/*** ‰ğ•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((void*)NULL != psSendPara)
 	{
 		free( psSendPara );

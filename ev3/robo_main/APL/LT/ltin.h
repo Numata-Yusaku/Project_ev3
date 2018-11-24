@@ -1,7 +1,7 @@
 #ifndef	__LTIN_H__
 #define	__LTIN_H__
 
-/***** ƒCƒ“ƒNƒ‹[ƒh *****/
+/***** ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ *****/
 /*** APL ***/
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +11,7 @@
 /* LT */
 #include "lt.h"
 
-/***** ’è” *****/
+/***** å®šæ•° *****/
 #define	D_LT_FLAG_ON		(1)
 #define	D_LT_FLAG_OFF		(0)
 
@@ -21,23 +21,23 @@
 /* Wait */
 #define	D_LT_CALIBRATEEND_WAIT					(100)
 
-/* ƒNƒ‰ƒCƒAƒ“ƒg‘—M–—¹ƒJƒEƒ“ƒ^ */
+/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡æº€äº†ã‚«ã‚¦ãƒ³ã‚¿ */
 #define	D_LT_CLIENTSENDTIME_GYRO				( 1000 / ( D_TASK_CYCLE_BT ) )
 
-/* ƒTƒ“ƒvƒŠƒ“ƒOŠúŠÔ */
-/* uƒNƒ‰ƒCƒAƒ“ƒg‘—M‚ªˆê’èŠÔ‚³‚ê‚È‚­‚È‚Á‚½ v= uƒTƒ“ƒvƒŠƒ“ƒO‚ªˆÀ’è‚µ‚½v */
+/* ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°æœŸé–“ */
+/* ã€Œã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ãŒä¸€å®šæ™‚é–“ã•ã‚Œãªããªã£ãŸ ã€= ã€Œã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ãŒå®‰å®šã—ãŸã€ */
 #define	D_LT_SAMPLETIME_GYRO					( D_LT_CLIENTSENDTIME_GYRO * 50 )
 
-/* “]“|ƒ^ƒCƒ€ƒAƒEƒg */
+/* è»¢å€’ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ */
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
-/* ƒƒOƒtƒ@ƒCƒ‹ */
+/* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ« */
 #define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
 #define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
 
-/*** ƒƒOo—Í ***/
-/* ƒƒOƒtƒ@ƒCƒ‹ */
+/*** ãƒ­ã‚°å‡ºåŠ› ***/
+/* ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ« */
 #define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_OFF)
 
@@ -47,36 +47,36 @@
 #define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
 
-/* ƒVƒŠƒAƒ‹ƒƒO */
+/* ã‚·ãƒªã‚¢ãƒ«ãƒ­ã‚° */
 #define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
 
 
-/* ‰¹‹¿ */
-#define	D_LT_TONE_VOLUME				(1)		/* ‰¹—Ê */
-#define	D_LT_TONE_DURATION				(100)	/* ‰¹‹¿Œp‘±ŠÔ */
+/* éŸ³éŸ¿ */
+#define	D_LT_TONE_VOLUME				(1)		/* éŸ³é‡ */
+#define	D_LT_TONE_DURATION				(100)	/* éŸ³éŸ¿ç¶™ç¶šæ™‚é–“ */
 
-/* K”ö */
-#define	D_LT_TAIL_CALIBRATE_DEGREES		(88)	/* K”ö‰ñ“]Šp“x */
-#define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* K”ö‰ñ“]‘¬“x */
+/* å°»å°¾ */
+#define	D_LT_TAIL_CALIBRATE_DEGREES		(88)	/* å°»å°¾å›è»¢è§’åº¦ */
+#define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* å°»å°¾å›è»¢é€Ÿåº¦ */
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
 #define	D_LT_TAIL_STANDUP_BACK_DEGREES	(D_LT_TAIL_CALIBRATE_DEGREES + D_LT_TAIL_STANDUP_KICK_DEGREES)
 #define	D_LT_TAIL_STANDUP_SPEED			(50)
 
-#define	D_LT_RECVDATA_SIZE				(4)		/* óMƒf[ƒ^ƒTƒCƒY */
+#define	D_LT_RECVDATA_SIZE				(4)		/* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º */
 
-/* F */
-#define	D_LT_COLORSENSOR_REFLECT_BLACK		(0)		/* • */
-#define	D_LT_COLORSENSOR_REFLECT_WHITE		(55)	/* ”’ */
+/* è‰² */
+#define	D_LT_COLORSENSOR_REFLECT_BLACK		(0)		/* é»’ */
+#define	D_LT_COLORSENSOR_REFLECT_WHITE		(55)	/* ç™½ */
 
-/* ’´‰¹”gƒZƒ“ƒT */
-#define	D_LT_SONAR_ARERT_NON_OBSTRUCTION	(0)	/* áŠQ‚È‚µ */
-#define	D_LT_SONAR_ARERT_OBSTRUCTION		(1)	/* áŠQ‚ ‚è */
+/* è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µ */
+#define	D_LT_SONAR_ARERT_NON_OBSTRUCTION	(0)	/* éšœå®³ãªã— */
+#define	D_LT_SONAR_ARERT_OBSTRUCTION		(1)	/* éšœå®³ã‚ã‚Š */
 
-#define D_LT_SONAR_ALERT_DISTANCE			(30) /* ’´‰¹”gƒZƒ“ƒT‚É‚æ‚éáŠQ•¨ŒŸ’m‹——£[cm] */
+#define D_LT_SONAR_ALERT_DISTANCE			(30) /* è¶…éŸ³æ³¢ã‚»ãƒ³ã‚µã«ã‚ˆã‚‹éšœå®³ç‰©æ¤œçŸ¥è·é›¢[cm] */
 
-/*** ‘–sw—ß’l ***/
-/* ‘OŒãiw—ß */
+/*** èµ°è¡ŒæŒ‡ä»¤å€¤ ***/
+/* å‰å¾Œé€²æŒ‡ä»¤ */
 #define	D_LT_FORWORD_LOWSPEED				(0)
 //#define	D_LT_FORWORD_LOWSPEED				(30)
 #define	D_LT_FORWORD_PAUSE					(0)
@@ -85,97 +85,97 @@
 #define	D_LT_PWM_MAX						(100)
 #define	D_LT_PWM_MIN						(-100)
 
-/* ù‰ñw—ß */
-#define	D_LT_TURN_STOP						(0)		/* ù‰ñ‚µ‚È‚¢ */
-#define	D_LT_TURN_RUN						(1)		/* ù‰ñ‚·‚é */
-#define	D_LT_TURN_RIGHT						(-20)	/* ù‰ñ‚·‚éF‰Eù‰ñ */
-#define	D_LT_TURN_LEFT						(20)	/* ù‰ñ‚·‚éF‰Eù‰ñ */
+/* æ—‹å›æŒ‡ä»¤ */
+#define	D_LT_TURN_STOP						(0)		/* æ—‹å›ã—ãªã„ */
+#define	D_LT_TURN_RUN						(1)		/* æ—‹å›ã™ã‚‹ */
+#define	D_LT_TURN_RIGHT						(-20)	/* æ—‹å›ã™ã‚‹ï¼šå³æ—‹å› */
+#define	D_LT_TURN_LEFT						(20)	/* æ—‹å›ã™ã‚‹ï¼šå³æ—‹å› */
 
 #define rt_SATURATE(sig,ll,ul)	(((sig) >= (ul)) ? (ul) : (((sig) <= (ll)) ? (ll) : (sig)) )
 
-/* ƒoƒbƒNƒ‰ƒbƒVƒ… */
-#define	D_LT_BACKLASH_HALF		(4)			/* ƒoƒbƒNƒ‰ƒbƒVƒ…‚Ì”¼•ª[deg] */
+/* ãƒãƒƒã‚¯ãƒ©ãƒƒã‚·ãƒ¥ */
+#define	D_LT_BACKLASH_HALF		(4)			/* ãƒãƒƒã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã®åŠåˆ†[deg] */
 
-/* ƒWƒƒƒCƒƒIƒtƒZƒbƒg */
+/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚ªãƒ•ã‚»ãƒƒãƒˆ */
 #define	D_LT_GYRO_OFFSET		(0)
 
-/*** ƒoƒ‰ƒ“ƒX§Œä’l ***/
-#define	D_LT_CMD_MAX			(100.0F)			/* ‘Oi/ù‰ñ–½—ßâ‘ÎÅ‘å’l */
-#define	D_LT_DEG2RAD			(0.01745329238F)	/* Šp“x’PˆÊ•ÏŠ·ŒW”(=pi/180) */
-#define	D_LT_EXEC_PERIOD		(0.00500000000F)	/* ƒoƒ‰ƒ“ƒX§ŒäÀsüŠú(•b) */
+/*** ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡å€¤ ***/
+#define	D_LT_CMD_MAX			(100.0F)			/* å‰é€²/æ—‹å›å‘½ä»¤çµ¶å¯¾æœ€å¤§å€¤ */
+#define	D_LT_DEG2RAD			(0.01745329238F)	/* è§’åº¦å˜ä½å¤‰æ›ä¿‚æ•°(=pi/180) */
+#define	D_LT_EXEC_PERIOD		(0.00500000000F)	/* ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡å®Ÿè¡Œå‘¨æœŸ(ç§’) */
 
-#define	D_LT_A_D				(0.8F)				/* ƒ[ƒpƒXƒtƒBƒ‹ƒ^ŒW”(¶‰EÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x—p) */
-#define	D_LT_A_R				(0.996F)			/* ƒ[ƒpƒXƒtƒBƒ‹ƒ^ŒW”(¶‰EÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp“x—p) */
+#define	D_LT_A_D				(0.8F)				/* ãƒ­ãƒ¼ãƒ‘ã‚¹ãƒ•ã‚£ãƒ«ã‚¿ä¿‚æ•°(å·¦å³è»Šè¼ªã®å¹³å‡å›è»¢è§’åº¦ç”¨) */
+#define	D_LT_A_R				(0.996F)			/* ãƒ­ãƒ¼ãƒ‘ã‚¹ãƒ•ã‚£ãƒ«ã‚¿ä¿‚æ•°(å·¦å³è»Šè¼ªã®ç›®æ¨™å¹³å‡å›è»¢è§’åº¦ç”¨) */
 
-#if 1	/* ƒQƒCƒ“’²® */
-/* ó‘ÔƒtƒB[ƒhƒoƒbƒNŒW” */
-/* ***2018”N“x*** */
-#define	D_LT_K_F1				(-5.0F)			/* Ô—Ö‰ñ“]Šp“xŒW” */
-#define	D_LT_K_F2				(-40.0F)		/* Ô‘ÌŒXÎŠp“xŒW” */
-#define	D_LT_K_F3				(-2.0F)			/* Ô—Ö‰ñ“]Šp‘¬“xŒW” */
-#define	D_LT_K_F4				(-4.0F)			/* Ô‘ÌŒXÎŠp‘¬“xŒW” */
+#if 1	/* ã‚²ã‚¤ãƒ³èª¿æ•´ */
+/* çŠ¶æ…‹ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•° */
+/* ***2018å¹´åº¦*** */
+#define	D_LT_K_F1				(-5.0F)			/* è»Šè¼ªå›è»¢è§’åº¦ä¿‚æ•° */
+#define	D_LT_K_F2				(-40.0F)		/* è»Šä½“å‚¾æ–œè§’åº¦ä¿‚æ•° */
+#define	D_LT_K_F3				(-2.0F)			/* è»Šè¼ªå›è»¢è§’é€Ÿåº¦ä¿‚æ•° */
+#define	D_LT_K_F4				(-4.0F)			/* è»Šä½“å‚¾æ–œè§’é€Ÿåº¦ä¿‚æ•° */
 
-#define	D_LT_K_I				(-0.2F)			/* ƒT[ƒ{§Œä—pÏ•ªƒtƒB[ƒhƒoƒbƒNŒW” */
-#define	D_LT_K_PHIDOT			(25.0F*2.75F)	/* Ô‘Ì–Ú•Wù‰ñŠp‘¬“xŒW” */
-#define	D_LT_K_THETADOT			(6.00F)			/* ƒ‚[ƒ^–Ú•W‰ñ“]Šp‘¬“xŒW” */
+#define	D_LT_K_I				(-0.2F)			/* ã‚µãƒ¼ãƒœåˆ¶å¾¡ç”¨ç©åˆ†ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•° */
+#define	D_LT_K_PHIDOT			(25.0F*2.75F)	/* è»Šä½“ç›®æ¨™æ—‹å›è§’é€Ÿåº¦ä¿‚æ•° */
+#define	D_LT_K_THETADOT			(6.00F)			/* ãƒ¢ãƒ¼ã‚¿ç›®æ¨™å›è»¢è§’é€Ÿåº¦ä¿‚æ•° */
 
-#define	D_LT_BATTERY_GAIN		(0.001089F)		/* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ŒW” */
-#define	D_LT_BATTERY_OFFSET		(0.625F)		/* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ƒIƒtƒZƒbƒg */
+#define	D_LT_BATTERY_GAIN		(0.001089F)		/* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ä¿‚æ•° */
+#define	D_LT_BATTERY_OFFSET		(0.625F)		/* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ã‚ªãƒ•ã‚»ãƒƒãƒˆ */
 
-#define D_LT_P_GAIN					(2.5F)		/* Š®‘S’â~—pƒ‚[ƒ^[§Œä”ä—áŒW” */
-#define D_LT_PWM_ABS_MAX			(60)		/* Š®‘S’â~—pƒ‚[ƒ^[§ŒäPWMâ‘ÎÅ‘å’l */
-#else	/* ƒQƒCƒ“’²® */
-:/* ƒTƒ“ƒvƒ‹‰Šú’l */
-:/* ó‘ÔƒtƒB[ƒhƒoƒbƒNŒW” */
-:#define	D_LT_K_F1				(-0.86526F)			/* Ô—Ö‰ñ“]Šp“xŒW” */
-:#define	D_LT_K_F2				(-30.73965F)		/* Ô‘ÌŒXÎŠp“xŒW” */
-:#define	D_LT_K_F3				(-1.14828F*0.70F)	/* Ô—Ö‰ñ“]Šp‘¬“xŒW” */
-:#define	D_LT_K_F4				(-2.29757F)			/* Ô‘ÌŒXÎŠp‘¬“xŒW” */
-:#define	D_LT_K_I				(-0.44721F)			/* ƒT[ƒ{§Œä—pÏ•ªƒtƒB[ƒhƒoƒbƒNŒW” */
-:#define	D_LT_K_PHIDOT			(25.0F*2.75F)		/* Ô‘Ì–Ú•Wù‰ñŠp‘¬“xŒW” */
-:#define	D_LT_K_THETADOT			(6.00F)				/* ƒ‚[ƒ^–Ú•W‰ñ“]Šp‘¬“xŒW” */
+#define D_LT_P_GAIN					(2.5F)		/* å®Œå…¨åœæ­¢ç”¨ãƒ¢ãƒ¼ã‚¿ãƒ¼åˆ¶å¾¡æ¯”ä¾‹ä¿‚æ•° */
+#define D_LT_PWM_ABS_MAX			(60)		/* å®Œå…¨åœæ­¢ç”¨ãƒ¢ãƒ¼ã‚¿ãƒ¼åˆ¶å¾¡PWMçµ¶å¯¾æœ€å¤§å€¤ */
+#else	/* ã‚²ã‚¤ãƒ³èª¿æ•´ */
+:/* ã‚µãƒ³ãƒ—ãƒ«åˆæœŸå€¤ */
+:/* çŠ¶æ…‹ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•° */
+:#define	D_LT_K_F1				(-0.86526F)			/* è»Šè¼ªå›è»¢è§’åº¦ä¿‚æ•° */
+:#define	D_LT_K_F2				(-30.73965F)		/* è»Šä½“å‚¾æ–œè§’åº¦ä¿‚æ•° */
+:#define	D_LT_K_F3				(-1.14828F*0.70F)	/* è»Šè¼ªå›è»¢è§’é€Ÿåº¦ä¿‚æ•° */
+:#define	D_LT_K_F4				(-2.29757F)			/* è»Šä½“å‚¾æ–œè§’é€Ÿåº¦ä¿‚æ•° */
+:#define	D_LT_K_I				(-0.44721F)			/* ã‚µãƒ¼ãƒœåˆ¶å¾¡ç”¨ç©åˆ†ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•° */
+:#define	D_LT_K_PHIDOT			(25.0F*2.75F)		/* è»Šä½“ç›®æ¨™æ—‹å›è§’é€Ÿåº¦ä¿‚æ•° */
+:#define	D_LT_K_THETADOT			(6.00F)				/* ãƒ¢ãƒ¼ã‚¿ç›®æ¨™å›è»¢è§’é€Ÿåº¦ä¿‚æ•° */
 
-:#define	D_LT_BATTERY_GAIN		(0.001089F)			/* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ŒW” */
-:#define	D_LT_BATTERY_OFFSET		(0.625F)			/* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ƒIƒtƒZƒbƒg */
+:#define	D_LT_BATTERY_GAIN		(0.001089F)			/* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ä¿‚æ•° */
+:#define	D_LT_BATTERY_OFFSET		(0.625F)			/* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ã‚ªãƒ•ã‚»ãƒƒãƒˆ */
 
-:#define D_LT_P_GAIN				(2.5F)				/* Š®‘S’â~—pƒ‚[ƒ^[§Œä”ä—áŒW” */
-:#define D_LT_PWM_ABS_MAX			(60)				/* Š®‘S’â~—pƒ‚[ƒ^[§ŒäPWMâ‘ÎÅ‘å’l */
-#endif	/* ƒQƒCƒ“’²® */
+:#define D_LT_P_GAIN				(2.5F)				/* å®Œå…¨åœæ­¢ç”¨ãƒ¢ãƒ¼ã‚¿ãƒ¼åˆ¶å¾¡æ¯”ä¾‹ä¿‚æ•° */
+:#define D_LT_PWM_ABS_MAX			(60)				/* å®Œå…¨åœæ­¢ç”¨ãƒ¢ãƒ¼ã‚¿ãƒ¼åˆ¶å¾¡PWMçµ¶å¯¾æœ€å¤§å€¤ */
+#endif	/* ã‚²ã‚¤ãƒ³èª¿æ•´ */
 
 enum EN_LT_STATUS
 {
-	E_LT_STATUS_READY = 0,			/* ‹N“®€”õ’† */
-	E_LT_STATUS_IDLE,				/* ‹N“®’† */
-	E_LT_STATUS_CALIBLATE_GYRO,		/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’†(ƒWƒƒƒCƒ) */
-	E_LT_STATUS_CALIBLATE_TAIL,		/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’†(K”ö) */
-	E_LT_STATUS_CALIBLATE_BLACK,	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’†(•) */
-	E_LT_STATUS_CALIBLATE_WHITE,	/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“’†(”’) */
-	E_LT_STATUS_WAITING,			/* ‘Ò‹@’† */
-	E_LT_STATUS_RUN_STANDUP,		/* ‘–s’†(‹N“®) */
-	E_LT_STATUS_RUN_LOWSPEED,		/* ‘–s’†(’á‘¬) */
-	E_LT_STATUS_RUN_PAUSE,			/* ‘–s’†(’â~) */
-	E_LT_STATUS_STOP_WAIT,			/* ‘–s‘ÌŠ®‘S’â~‘Ò‚¿ */
-	E_LT_STATUS_STOP,				/* ‘–s‘ÌŠ®‘S’â~ */
+	E_LT_STATUS_READY = 0,			/* èµ·å‹•æº–å‚™ä¸­ */
+	E_LT_STATUS_IDLE,				/* èµ·å‹•ä¸­ */
+	E_LT_STATUS_CALIBLATE_GYRO,		/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­(ã‚¸ãƒ£ã‚¤ãƒ­) */
+	E_LT_STATUS_CALIBLATE_TAIL,		/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­(å°»å°¾) */
+	E_LT_STATUS_CALIBLATE_BLACK,	/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­(é»’) */
+	E_LT_STATUS_CALIBLATE_WHITE,	/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ä¸­(ç™½) */
+	E_LT_STATUS_WAITING,			/* å¾…æ©Ÿä¸­ */
+	E_LT_STATUS_RUN_STANDUP,		/* èµ°è¡Œä¸­(èµ·å‹•) */
+	E_LT_STATUS_RUN_LOWSPEED,		/* èµ°è¡Œä¸­(ä½é€Ÿ) */
+	E_LT_STATUS_RUN_PAUSE,			/* èµ°è¡Œä¸­(åœæ­¢) */
+	E_LT_STATUS_STOP_WAIT,			/* èµ°è¡Œä½“å®Œå…¨åœæ­¢å¾…ã¡ */
+	E_LT_STATUS_STOP,				/* èµ°è¡Œä½“å®Œå…¨åœæ­¢ */
 	
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	E_LT_STATUS_INVALID = -1
 };
 
-/* WUPCHKŠÇ—ƒ‚ƒWƒ…[ƒ‹ */
+/* WUPCHKç®¡ç†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ« */
 enum EN_LT_WUPCHK
 {
 	E_LT_WUPCHK_BT = 0,
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	E_LT_WUPCHK_NUM
 };
 
-/* STOPŠÇ—ƒ‚ƒWƒ…[ƒ‹ */
+/* STOPç®¡ç†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ« */
 enum EN_LT_STOP
 {
 	E_LT_STOP_BT = 0,
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	E_LT_STOP_NUM
 };
 
@@ -189,24 +189,24 @@ enum EN_LT_PARTS
 	E_LT_PARTS_RIGHT_MOTOR,
 	E_LT_PARTS_TAIL_MOTOR,
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
-	E_LT_PARTS_NONE = 0,			/* –¢İ’è */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
+	E_LT_PARTS_NONE = 0,			/* æœªè¨­å®š */
 };
 
-/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MƒJƒEƒ“ƒ^ */
+/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ã‚«ã‚¦ãƒ³ã‚¿ */
 enum EN_LT_CLIENTSEND
 {
 	E_LT_CLIENTSEND_GYRO = 0,
 	E_LT_CLIENTSEND_COLOR,
 
-	/* ‚±‚±‚æ‚èã‚É’è‹`‚·‚é‚±‚Æ */
+	/* ã“ã“ã‚ˆã‚Šä¸Šã«å®šç¾©ã™ã‚‹ã“ã¨ */
 	E_LT_CLIENTSEND_NUM
 };
 
-/***** \‘¢‘Ì *****/
+/***** æ§‹é€ ä½“ *****/
 typedef void( *F_LT_RECVFUNCPTR )(S_MSG_DATA* spRecv);
 
-/* ƒZƒ“ƒT[ */
+/* ã‚»ãƒ³ã‚µãƒ¼ */
 typedef struct
 {
 	int iTouch;
@@ -215,7 +215,7 @@ typedef struct
 	int iSonar;
 }S_LT_PORT_SENSOR;
 
-/* ƒ‚[ƒ^ */
+/* ãƒ¢ãƒ¼ã‚¿ */
 typedef struct
 {
 	int iLeftWheel;
@@ -223,21 +223,21 @@ typedef struct
 	int iTail;
 }S_LT_PORT_MOTOR;
 
-/* ƒ|[ƒg */
+/* ãƒãƒ¼ãƒˆ */
 typedef struct
 {
 	S_LT_PORT_SENSOR iSensor;
 	S_LT_PORT_MOTOR iMotor;
 }S_LT_PORT;
 
-/* ƒJƒ‰[ƒZƒ“ƒT */
+/* ã‚«ãƒ©ãƒ¼ã‚»ãƒ³ã‚µ */
 typedef struct
 {
 	int iColor;
 	int iReflect;
 }S_LT_COLORINFO;
 
-/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“î•ñ */
+/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ± */
 typedef struct
 {
 	int iGyro;
@@ -245,31 +245,31 @@ typedef struct
 	S_LT_COLORINFO stWhite;
 }S_LT_CALIBRATEINFO;
 
-/* ƒoƒ‰ƒ“ƒX§Œäî•ñ */
+/* ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡æƒ…å ± */
 typedef struct
 {
-	float	fErr_theta;			/* ¶‰EÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x(ƒÆ)–Ú•WŒë·ó‘Ô’l */
-	float	fPsi;				/* Ô‘Ìƒsƒbƒ`Šp“x(ƒÕ)ó‘Ô’l */
-	float	fThetaLpf;			/* ¶‰EÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x(ƒÆ)ó‘Ô’l */
-	float	fThetaRef;			/* ¶‰EÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp“x(ƒÆ)ó‘Ô’l */
-	float	fThetadotCmdLpf;	/* ¶‰EÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp‘¬“x(dƒÆ/dt)ó‘Ô’l */
+	float	fErr_theta;			/* å·¦å³è»Šè¼ªã®å¹³å‡å›è»¢è§’åº¦(Î¸)ç›®æ¨™èª¤å·®çŠ¶æ…‹å€¤ */
+	float	fPsi;				/* è»Šä½“ãƒ”ãƒƒãƒè§’åº¦(Ïˆ)çŠ¶æ…‹å€¤ */
+	float	fThetaLpf;			/* å·¦å³è»Šè¼ªã®å¹³å‡å›è»¢è§’åº¦(Î¸)çŠ¶æ…‹å€¤ */
+	float	fThetaRef;			/* å·¦å³è»Šè¼ªã®ç›®æ¨™å¹³å‡å›è»¢è§’åº¦(Î¸)çŠ¶æ…‹å€¤ */
+	float	fThetadotCmdLpf;	/* å·¦å³è»Šè¼ªã®ç›®æ¨™å¹³å‡å›è»¢è§’é€Ÿåº¦(dÎ¸/dt)çŠ¶æ…‹å€¤ */
 }S_LT_BALANCEINFO;
 
-/* ƒoƒ‰ƒ“ƒXƒRƒ“ƒgƒ[ƒ‹ */
+/* ãƒãƒ©ãƒ³ã‚¹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ« */
 typedef struct
 {
-	float			fCmdForward;		/* ‘OŒãi–½—ß’l		100(‘OiÅ‘å)`100(ŒãiÅ‘å) */
-	float			fCmdTurn;			/* ù‰ñ–½—ß’l		100(‰Eù‰ñÅ‘å)`-100(¶ù‰ñÅ‘å) */
-	float			fGyro;				/* ƒWƒƒƒCƒƒZƒ“ƒT’l */
-	float			fGyroOffset;		/* ƒWƒƒƒCƒƒZƒ“ƒTƒIƒtƒZƒbƒg’l */
-	float			fThetaMLeft;		/* ¶ƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l[“x] */
-	float			fThetaMRight;		/* ‰Eƒ‚[ƒ^ƒGƒ“ƒR[ƒ_’l[“x] */
-	float			fBattery;			/* ƒoƒbƒeƒŠ“dˆ³’l[mV] */
-	signed char		scPwmLeft;			/* ¶ƒ‚[ƒ^ PWM o—Í’l */
-	signed char		scPwmRight;			/* ‰Eƒ‚[ƒ^ PWM o—Í’l */
+	float			fCmdForward;		/* å‰å¾Œé€²å‘½ä»¤å€¤		100(å‰é€²æœ€å¤§)ï½100(å¾Œé€²æœ€å¤§) */
+	float			fCmdTurn;			/* æ—‹å›å‘½ä»¤å€¤		100(å³æ—‹å›æœ€å¤§)ï½-100(å·¦æ—‹å›æœ€å¤§) */
+	float			fGyro;				/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µå€¤ */
+	float			fGyroOffset;		/* ã‚¸ãƒ£ã‚¤ãƒ­ã‚»ãƒ³ã‚µã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ */
+	float			fThetaMLeft;		/* å·¦ãƒ¢ãƒ¼ã‚¿ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€å€¤[åº¦] */
+	float			fThetaMRight;		/* å³ãƒ¢ãƒ¼ã‚¿ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€å€¤[åº¦] */
+	float			fBattery;			/* ãƒãƒƒãƒ†ãƒªé›»åœ§å€¤[mV] */
+	signed char		scPwmLeft;			/* å·¦ãƒ¢ãƒ¼ã‚¿ PWM å‡ºåŠ›å€¤ */
+	signed char		scPwmRight;			/* å³ãƒ¢ãƒ¼ã‚¿ PWM å‡ºåŠ›å€¤ */
 }S_LT_BALANCE_CONTROL;
 
-/* í’“—Ìˆæ */
+/* å¸¸é§é ˜åŸŸ */
 typedef struct
 {
 	int							iStatus;
@@ -283,7 +283,7 @@ typedef struct
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
-	S_LT_BALANCEINFO			stBalanceInfo;					/* ƒoƒ‰ƒ“ƒX§Œäî•ñ */
+	S_LT_BALANCEINFO			stBalanceInfo;					/* ãƒãƒ©ãƒ³ã‚¹åˆ¶å¾¡æƒ…å ± */
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 }S_LT;
 
@@ -293,7 +293,7 @@ typedef struct
 	void*	func;
 }S_LT_RECV_TABLE;
 
-/* ƒ|[ƒgî•ñ */
+/* ãƒãƒ¼ãƒˆæƒ…å ± */
 typedef struct
 {
 	int		iParts;
@@ -301,7 +301,7 @@ typedef struct
 	int		iType;
 }S_LT_PORTINFO;
 
-/***** ŠÖ”ƒvƒƒgƒ^ƒCƒv *****/
+/***** é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ— *****/
 
 /*** ltin_recv.c **/
 /* startup */
@@ -358,32 +358,32 @@ void lt_recv( S_MSG_DATA* spRecv );
 F_LT_RECVFUNCPTR lt_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
-void lt_rcv_test_req( S_MSG_DATA* spRecv );					/* ƒeƒXƒg */
-void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFTouchButton‰Ÿ‰º */
-void lt_rcv_BackButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFBackButton‰Ÿ‰º */
-void lt_rcv_UpButton_req( S_MSG_DATA* spRecv );				/* ƒL[ƒ{[ƒhFUpButton‰Ÿ‰º */
-void lt_rcv_DownButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFDownButton‰Ÿ‰º */
-void lt_rcv_LeftButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFLeftButton‰Ÿ‰º */
-void lt_rcv_RightButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFRightButton‰Ÿ‰º */
-void lt_rcv_CenterButton_req( S_MSG_DATA* spRecv );			/* ƒL[ƒ{[ƒhFCenterButton‰Ÿ‰º */
-void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* ‹N“® */
-void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* ’â~ */
-void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“XV */
-void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* ƒŠƒ‚[ƒgƒXƒ^[ƒg */
+void lt_rcv_test_req( S_MSG_DATA* spRecv );					/* ãƒ†ã‚¹ãƒˆ */
+void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šTouchButtonæŠ¼ä¸‹ */
+void lt_rcv_BackButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šBackButtonæŠ¼ä¸‹ */
+void lt_rcv_UpButton_req( S_MSG_DATA* spRecv );				/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šUpButtonæŠ¼ä¸‹ */
+void lt_rcv_DownButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šDownButtonæŠ¼ä¸‹ */
+void lt_rcv_LeftButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šLeftButtonæŠ¼ä¸‹ */
+void lt_rcv_RightButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šRightButtonæŠ¼ä¸‹ */
+void lt_rcv_CenterButton_req( S_MSG_DATA* spRecv );			/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ï¼šCenterButtonæŠ¼ä¸‹ */
+void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* èµ·å‹• */
+void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* åœæ­¢ */
+void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–° */
+void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* ãƒªãƒ¢ãƒ¼ãƒˆã‚¹ã‚¿ãƒ¼ãƒˆ */
 
 /*** ltin_send.c **/
-void lt_send_test_res( S_MSG_DATA* spSend );								/* ƒeƒXƒg */
-int lt_send_Wupchk_req( void );												/* ‹N“® */
-void lt_send_Wupchk_bt_req( void );											/* ‹N“®FBT */
-int lt_send_Stop_req( void );												/* ’â~ */
-void lt_send_Stop_bt_req( void );											/* ’â~FBT */
-void lt_send_ShutDown_res( void );											/* ƒVƒƒƒbƒgƒ_ƒEƒ“ */
-void lt_send_staCalibration_req( void );									/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“ŠJn */
-void lt_send_endCalibration_req( void );									/* ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“I—¹ */
-void lt_send_staRunning_req( void );										/* ‘–sŠJn */
-void lt_send_endRunning_req( void );										/* ‘–s’â~ */
-void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MFƒWƒƒƒCƒ */
-void lt_send_setClientSendColor_req( void );								/* ƒNƒ‰ƒCƒAƒ“ƒg‘—MFƒJƒ‰[ */
+void lt_send_test_res( S_MSG_DATA* spSend );								/* ãƒ†ã‚¹ãƒˆ */
+int lt_send_Wupchk_req( void );												/* èµ·å‹• */
+void lt_send_Wupchk_bt_req( void );											/* èµ·å‹•ï¼šBT */
+int lt_send_Stop_req( void );												/* åœæ­¢ */
+void lt_send_Stop_bt_req( void );											/* åœæ­¢ï¼šBT */
+void lt_send_ShutDown_res( void );											/* ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³ */
+void lt_send_staCalibration_req( void );									/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ */
+void lt_send_endCalibration_req( void );									/* ã‚­ãƒ£ãƒªãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº† */
+void lt_send_staRunning_req( void );										/* èµ°è¡Œé–‹å§‹ */
+void lt_send_endRunning_req( void );										/* èµ°è¡Œåœæ­¢ */
+void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ï¼šã‚¸ãƒ£ã‚¤ãƒ­ */
+void lt_send_setClientSendColor_req( void );								/* ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé€ä¿¡ï¼šã‚«ãƒ©ãƒ¼ */
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );

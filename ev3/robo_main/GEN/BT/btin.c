@@ -8,17 +8,17 @@ void bt_main( void )
 	int iRet				= D_BT_NG;
 	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
 	
-	/* —ÌˆæŠm•Û */
+	/* é ˜åŸŸç¢ºä¿ */
 	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
 	if ((S_MSG_DATA*)NULL == psRecvData)
 	{
 		goto END;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* ‹N“®€”õ */
+	/* èµ·å‹•æº–å‚™ */
 	bt_init();
 	
 	/* BT_TASK */
@@ -28,12 +28,12 @@ void bt_main( void )
 		if( ( D_TASK_OK == iRet ) &&
 			( E_MSGID_BT_INVALID != psRecvData->iMsgid) )
 		{
-			/* ŽóMˆ— */
+			/* å—ä¿¡å‡¦ç† */
 			bt_recv( psRecvData );
 			
 		}
 		
-		/* ŽóMƒf[ƒ^ƒNƒŠƒA */
+		/* å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒªã‚¢ */
 		if ((void*)NULL != psRecvData->vpPara)
 		{
 			free( psRecvData->vpPara );
@@ -42,15 +42,15 @@ void bt_main( void )
 		
 		memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 		
-		/* í’“ˆ— */
+		/* å¸¸é§å‡¦ç† */
 		bt_proc();
 		
-		/* ƒ^ƒXƒNƒTƒCƒNƒ‹(ms) */
+		/* ã‚¿ã‚¹ã‚¯ã‚µã‚¤ã‚¯ãƒ«(ms) */
 		TASK_sleep( D_TASK_CYCLE_BT );
 	}
 
 END:
-	/*** ‰ð•úˆ— ***/
+	/*** è§£æ”¾å‡¦ç† ***/
 	if ((S_MSG_DATA*)NULL != psRecvData)
 	{
 		free( psRecvData );
@@ -66,7 +66,7 @@ void bt_init( void )
 {
 	bt_set_Global();
 	
-	/* ƒƒO */
+	/* ãƒ­ã‚° */
 	bt_log_Statuslog_open();
 	return;
 }
@@ -91,12 +91,12 @@ void bt_set_Global( void )
 		return;
 	}
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( spBt, 0x00, sizeof(S_BT) );
 	
-	/* ‰Šú‰»’lÝ’è */
+	/* åˆæœŸåŒ–å€¤è¨­å®š */
 
-	/* ƒOƒ[ƒoƒ‹Ý’è */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®š */
 	gspBt = spBt;
 	
 	return;
@@ -119,17 +119,17 @@ void bt_proc( void )
 		return;
 	}
 	
-	/* ƒNƒ‰ƒXƒXƒe[ƒ^ƒXŽæ“¾ */
+	/* ã‚¯ãƒ©ã‚¹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹å–å¾— */
 	iStatus = spBt->iStatus;
 	if( E_BT_STATUS_INVALID == iStatus )
 	{
 		return;
 	}
 	
-	/* ƒƒOo—Í */
+	/* ãƒ­ã‚°å‡ºåŠ› */
 	bt_log_set_Statuslog();
 	
-	/* ó‘Ô‚É‰ž‚¶‚Äˆ—ŽÀs */
+	/* çŠ¶æ…‹ã«å¿œã˜ã¦å‡¦ç†å®Ÿè¡Œ */
 	switch (iStatus)
 	{
 		case E_BT_STATUS_READY:
@@ -137,7 +137,7 @@ void bt_proc( void )
 			break;
 		
 		case E_BT_STATUS_IDLE:
-			/* ˆ—‚µ‚È‚¢ */
+			/* å‡¦ç†ã—ãªã„ */
 			break;
 		
 		case E_BT_STATUS_CALIBLATE:
@@ -149,7 +149,7 @@ void bt_proc( void )
 			break;
 			
 		case E_BT_STATUS_RUN:
-			/* ˆ—‚µ‚È‚¢ */
+			/* å‡¦ç†ã—ãªã„ */
 			break;
 		
 		default:
@@ -165,21 +165,21 @@ void bt_proc_Ready( void )
 	S_BT* spBt = (S_BT*)NULL;
 	FILE* fpBtFile = (FILE*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spBt = bt_get_Global();
 	if( (S_BT*)NULL == spBt )
 	{
 		return;
 	}
 	
-	/* Ú‘±ó‹µŠm”F */
+	/* æŽ¥ç¶šçŠ¶æ³ç¢ºèª */
 	iConnect = RSI_fs_bluetooth_is_connected();
 	if( D_RSI_TRUE != iConnect )
 	{
 		return;
 	}
 	
-	/* Bluetooth’ÊMŠm—§ */
+	/* Bluetoothé€šä¿¡ç¢ºç«‹ */
 	fpBtFile = RSI_fs_serial_open_file( E_RSI_FS_SERIALPORT_BT );
 	if( (FILE*)NULL == fpBtFile )
 	{
@@ -187,11 +187,11 @@ void bt_proc_Ready( void )
 	}
 	else
 	{
-		/* ƒOƒ[ƒoƒ‹•ÛŽ */
+		/* ã‚°ãƒ­ãƒ¼ãƒãƒ«ä¿æŒ */
 		spBt->fpBtFile = fpBtFile;
 	}
 	
-	/* ó‘Ô‘JˆÚ */
+	/* çŠ¶æ…‹é·ç§» */
 	spBt->iStatus = E_BT_STATUS_IDLE;
 	
 	return;
