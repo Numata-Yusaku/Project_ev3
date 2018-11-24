@@ -91,7 +91,7 @@ void lt_main_debug( void )
 	lt_init();
 	
 	/* LT_TASK */
-	while (1)
+	while(1)
 	{
 		iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
 		if ((D_TASK_OK == iRet) &&

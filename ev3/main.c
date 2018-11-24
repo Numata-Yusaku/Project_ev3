@@ -53,7 +53,7 @@ void MAIN_task(void)
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* MAIN_TASK */
-	while (1)	/* loop sta*/
+	while(1)	/* loop sta*/
 	{
 		/* MSGéÛêM */
 		iRet = TASK_msgrecv( E_TASK_TASKID_MAIN, psRecvData );
