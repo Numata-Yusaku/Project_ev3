@@ -860,9 +860,6 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	lt_balance_set_BalanceInfo();
 	
 	/* ÉÇÅ[É^â“ì≠ */
-#if	(__VC_DEBUG__)
-	lt_balance_set_DummyMotorPower();
-#endif	/* __VC_DEBUG__ */
 	iRet = lt_balance_set_MotorPower();
 	if( D_LT_OK != iRet )
 	{

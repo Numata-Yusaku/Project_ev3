@@ -44,7 +44,7 @@
 #define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_ON)
 
 #define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_OFF)
+#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
 
 /* シリアルログ */
@@ -102,7 +102,7 @@
 /*** バランス制御値 ***/
 #define	D_LT_CMD_MAX			(100.0F)			/* 前進/旋回命令絶対最大値 */
 #define	D_LT_DEG2RAD			(0.01745329238F)	/* 角度単位変換係数(=pi/180) */
-#define	D_LT_EXEC_PERIOD		(0.00450000000F)	/* バランス制御実行周期(秒) */
+#define	D_LT_EXEC_PERIOD		(0.00500000000F)	/* バランス制御実行周期(秒) */
 
 #define	D_LT_A_D				(0.8F)				/* ローパスフィルタ係数(左右車輪の平均回転角度用) */
 #define	D_LT_A_R				(0.996F)			/* ローパスフィルタ係数(左右車輪の目標平均回転角度用) */
@@ -390,7 +390,6 @@ void lt_balance_init( void );
 void lt_balance_set_BalanceInfo( void );
 void lt_balance_set_BacklashCancel( void );
 int lt_balance_set_MotorPower( void );
-void lt_balance_set_DummyMotorPower( void );
 
 /*** ltin_log.c **/
 void lt_log_Statuslog_open( void );
