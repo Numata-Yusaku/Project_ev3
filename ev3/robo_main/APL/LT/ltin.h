@@ -38,10 +38,10 @@
 
 /*** ログ出力 ***/
 /* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_OFF)
 
-#define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_OFF)
 
 #define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
@@ -77,9 +77,8 @@
 
 /*** 走行指令値 ***/
 /* 前後進指令 */
-#define	D_LT_FORWORD_LOWSPEED				(0)
-//#define	D_LT_FORWORD_LOWSPEED				(30)
-#define	D_LT_FORWORD_PAUSE					(0)
+#define	D_LT_FORWORD_LOWSPEED				(40)
+#define	D_LT_FORWORD_PAUSE					(40)
 
 /* PWM */
 #define	D_LT_PWM_MAX						(100)

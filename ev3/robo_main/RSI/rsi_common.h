@@ -28,7 +28,7 @@
 /* ログ出力 */
 #define	D_RSI_FILENAME_MSGLOG		"OutData/RsiLog.csv"
 
-#define	D_RSI_LOGMODE				(D_RSI_TRUE)
+#define	D_RSI_LOGMODE				(D_RSI_FALSE)
 
 
 /***** 構造体 *****/

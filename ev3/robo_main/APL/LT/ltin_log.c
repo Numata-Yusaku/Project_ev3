@@ -98,6 +98,7 @@ void lt_log_Systemlog_open( void )
 	spLt->fpSystemLog = fpSystemLog;
 	
 	/* ヘッダ出力 */
+	fprintf( spLt->fpSystemLog, "SysClock(msec),");
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	fprintf( spLt->fpSystemLog, "fErr_theta,");
@@ -126,6 +127,7 @@ void lt_log_Systemlog_open( void )
 	return;
 }
 
+
 void lt_log_set_Statuslog( void )
 {
 #if	(D_LT_LOGMODE_STATUS)
@@ -142,7 +144,12 @@ void lt_log_set_Statuslog( void )
 	{
 		return;
 	}
-	
+
+	SYSTIM	stime;
+
+	get_tim(&stime);
+
+	fprintf( spLt->fpStatusLog, "%8ld,",stime );
 #if	(__VC_DEBUG__)
 #if	(D_LT_LOGMODE_STATUS_TIME)
 	time_t stTime = 0;
@@ -235,6 +242,12 @@ void lt_log_set_Systemlog( void )
 		return;
 	}
 	
+#if	(__VC_DEBUG__)
+#else	/* __VC_DEBUG__ */
+	SYSTIM	stime;
+	get_tim(&stime);
+	fprintf( spLt->fpSystemLog, "%08ld,",stime );
+#endif	/* __VC_DEBUG__ */
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fErr_theta);

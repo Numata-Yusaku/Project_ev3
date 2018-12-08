@@ -23,7 +23,7 @@
 #define	D_BT_FILENAME_STATUSLOG					"OutData/StatusLog_Bt.csv"
 
 /*** ログ出力 ***/
-#define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_ON)
+#define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_OFF)
 
 
 enum EN_BT_STATUS
