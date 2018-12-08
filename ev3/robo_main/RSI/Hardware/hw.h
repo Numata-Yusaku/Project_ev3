@@ -1,4 +1,4 @@
-#ifndef	__HW_H__
+﻿#ifndef	__HW_H__
 #define	__HW_H__
 
 /***** インクルード *****/

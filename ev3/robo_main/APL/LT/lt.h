@@ -1,4 +1,4 @@
-#ifndef	__LT_H__
+﻿#ifndef	__LT_H__
 #define	__LT_H__
 
 /***** インクルード *****/

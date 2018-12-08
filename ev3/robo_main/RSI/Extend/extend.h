@@ -1,4 +1,4 @@
-#ifndef	__EXTEND_H__
+﻿#ifndef	__EXTEND_H__
 #define	__EXTEND_H__
 
 /***** インクルード *****/

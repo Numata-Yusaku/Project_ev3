@@ -1,4 +1,4 @@
-#include "ltin.h"
+﻿#include "ltin.h"
 
 void lt_log_Statuslog_open( void )
 {

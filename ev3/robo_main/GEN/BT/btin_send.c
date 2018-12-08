@@ -1,4 +1,4 @@
-#include "bt.h"
+﻿#include "bt.h"
 #include "btin.h"
 
 void bt_send_test_res( S_MSG_DATA* spSend )

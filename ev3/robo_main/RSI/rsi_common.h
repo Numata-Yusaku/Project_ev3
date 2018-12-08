@@ -1,4 +1,4 @@
-#ifndef	__RSI_COMMON_H__
+﻿#ifndef	__RSI_COMMON_H__
 #define	__RSI_COMMON_H__
 
 /***** インクルード *****/

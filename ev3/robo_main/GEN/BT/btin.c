@@ -1,4 +1,4 @@
-#include "btin.h"
+﻿#include "btin.h"
 
 S_BT* gspBt = (S_BT*)NULL;
 

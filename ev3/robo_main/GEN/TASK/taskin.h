@@ -1,4 +1,4 @@
-#ifndef	__TASKIN_H__
+﻿#ifndef	__TASKIN_H__
 #define	__TASKIN_H__
 
 /***** インクルード *****/

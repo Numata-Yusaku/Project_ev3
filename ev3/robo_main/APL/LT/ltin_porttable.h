@@ -1,4 +1,4 @@
-#ifndef	__LTIN_PORTTABLE_H__
+﻿#ifndef	__LTIN_PORTTABLE_H__
 #define	__LTIN_PORTTABLE_H__
 
 /***** インクルード *****/

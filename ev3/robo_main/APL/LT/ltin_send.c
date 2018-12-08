@@ -1,4 +1,4 @@
-#include "lt.h"
+﻿#include "lt.h"
 #include "ltin.h"
 
 void lt_send_test_res( S_MSG_DATA* spSend )

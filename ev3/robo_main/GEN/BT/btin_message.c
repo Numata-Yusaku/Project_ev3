@@ -1,4 +1,4 @@
-#include "btin.h"
+﻿#include "btin.h"
 #include "btin_messagetable.h"
 
 void bt_set_SerialMessage( char* cpSendData, int iSize )

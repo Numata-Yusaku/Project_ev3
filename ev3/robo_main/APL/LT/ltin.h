@@ -1,4 +1,4 @@
-#ifndef	__LTIN_H__
+﻿#ifndef	__LTIN_H__
 #define	__LTIN_H__
 
 /***** インクルード *****/

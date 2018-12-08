@@ -1,4 +1,4 @@
-#ifndef	__TASK_MSGDATA_H__
+﻿#ifndef	__TASK_MSGDATA_H__
 #define	__TASK_MSGDATA_H__
 
 /*************************************************************/

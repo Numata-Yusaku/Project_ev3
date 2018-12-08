@@ -1,4 +1,4 @@
-### Makefileパス
+﻿### Makefileパス
 mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 ### ソースオブジェクトファイル

@@ -1,4 +1,4 @@
-#ifndef	__BTIN_MESSAGETABLE_H__
+﻿#ifndef	__BTIN_MESSAGETABLE_H__
 #define	__BTIN_MESSAGETABLE_H__
 
 /***** インクルード *****/

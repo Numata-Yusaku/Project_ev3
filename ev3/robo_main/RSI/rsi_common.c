@@ -1,4 +1,4 @@
-#include "rsi_common.h"
+﻿#include "rsi_common.h"
 
 S_RSI* gspRsi = (S_RSI*)NULL;
 

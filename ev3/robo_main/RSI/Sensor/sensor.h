@@ -1,4 +1,4 @@
-#ifndef	__SENSOR_H__
+﻿#ifndef	__SENSOR_H__
 #define	__SENSOR_H__
 
 /***** インクルード *****/

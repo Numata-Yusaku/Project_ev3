@@ -1,4 +1,4 @@
-#ifndef	__LTIN_RECVTABLE_H__
+﻿#ifndef	__LTIN_RECVTABLE_H__
 #define	__LTIN_RECVTABLE_H__
 
 /***** インクルード *****/

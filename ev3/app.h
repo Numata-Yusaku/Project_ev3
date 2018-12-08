@@ -1,4 +1,4 @@
-#ifndef	__APP_H__
+﻿#ifndef	__APP_H__
 #define	__APP_H__
 
 /* ターゲット依存の定義 */

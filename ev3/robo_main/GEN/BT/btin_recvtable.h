@@ -1,4 +1,4 @@
-#ifndef	__BTIN_RECVTABLE_H__
+﻿#ifndef	__BTIN_RECVTABLE_H__
 #define	__BTIN_RECVTABLE_H__
 
 /***** インクルード *****/
