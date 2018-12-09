@@ -14,11 +14,11 @@ void task_init_que( void )
 void task_sleep( int iCycle )
 {
 	
-#if	(__VC_DEBUG__)
-	Sleep(iCycle);
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	tslp_tsk(iCycle);
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	Sleep(iCycle);
+#endif	/* __TARGET_EV3__ */
 	return;
 }
 

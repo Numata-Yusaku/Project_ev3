@@ -6,10 +6,9 @@
 
 #include "rsi_common.h"
 
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 #include "ev3api.h"
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 /*** GEN ***/
 
 /*** APL ***/

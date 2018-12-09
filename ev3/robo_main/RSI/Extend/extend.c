@@ -8,10 +8,9 @@
 int RSI_extend_sta_cyc( signed int siCycId )
 {
 	int iRet = D_RSI_OK;
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_sta_cyc( siCycId );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	return iRet;
 }
 
@@ -21,9 +20,8 @@ int RSI_extend_sta_cyc( signed int siCycId )
 int RSI_extend_stp_cyc( signed int siCycId )
 {
 	int iRet = D_RSI_OK;
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_sta_cyc( siCycId );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	return iRet;
 }

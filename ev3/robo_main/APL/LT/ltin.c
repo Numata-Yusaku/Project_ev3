@@ -732,11 +732,11 @@ void lt_set_CalibrateBlack( void )
 	}
 	
 	/* 反射光の強さを取得 */
-#if	(__VC_DEBUG__)
-	iColor = E_RSI_SENSOR_COLOR_BLACK;
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iColor = RSI_color_sensor_get_color( spLt->stPort.iSensor.iColor );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	iColor = E_RSI_SENSOR_COLOR_BLACK;
+#endif	/* __TARGET_EV3__ */
 	
 	/* 反射光の強さを取得 */
 	iReflect = RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
@@ -771,11 +771,11 @@ void lt_set_CalibrateWhite( void )
 	}
 	
 	/* 反射光の強さを取得 */
-#if	(__VC_DEBUG__)
-	iColor = E_RSI_SENSOR_COLOR_WHITE;
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iColor = RSI_color_sensor_get_color( spLt->stPort.iSensor.iColor );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	iColor = E_RSI_SENSOR_COLOR_WHITE;
+#endif	/* __TARGET_EV3__ */
 	
 	/* 反射光の強さを取得 */
 	iReflect = RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );

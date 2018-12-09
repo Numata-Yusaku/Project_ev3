@@ -74,12 +74,12 @@ void MAIN_task(void)
 		}
 		
 		/* キー入力の監視 */
-#if	(__VC_DEBUG__)
-		main_recv_cmd();
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 		/* 走行体ではメインタスクが不要 */
 		main_shutdown();
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+		main_recv_cmd();
+#endif	/* __TARGET_EV3__ */
 	}			/* loop end */
 	
 	return;
@@ -120,70 +120,15 @@ void main_DispReady( void )
 
 void main_shutdown( void )
 {
-#if	(__VC_DEBUG__)
-	exit(1);
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	ext_tsk();
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	exit(1);
+#endif	/* __TARGET_EV3__ */
 		return;
 }
 
-#if	(__VC_DEBUG__)
-void main_recv_cmd( void )
-{
-	int iKey = 0;
-	
-	/* キー入力がある場合 */
-	if ( _kbhit() )
-	{
-		/* キーを取得 */
-		iKey = _getch();
-		switch( iKey )
-		{
-			case 'e':	/* アプリケーション終了 */
-				main_shutdown();
-				break;
-				
-			case 't':	/* テスト通信 */
-				main_rcv_cmd_t();
-				break;
-			
-			/* 走行体疑似トリガー */
-			case 'T':	/* タッチセンサ押下 */
-				main_rcv_cmd_T();
-				break;
-				
-			case 'L':	/* 左ボタン押下 */
-				main_rcv_cmd_L();
-				break;
-				
-			case 'R':	/* 右ボタン押下 */
-				main_rcv_cmd_R();
-				break;
-				
-			case 'U':	/* 上ボタン押下 */
-				main_rcv_cmd_U();
-				break;
-				
-			case 'D':	/* 下ボタン押下 */
-				main_rcv_cmd_D();
-				break;
-				
-			case 'C':	/* 中央ボタン押下 */
-				main_rcv_cmd_C();
-				break;
-				
-			case 'B':	/* バックボタン押下 */
-				main_rcv_cmd_B();
-				break;
-				
-			default:
-				break;
-		}
-	}	
-	return;
-}
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 void main_recv_ButtonPressed( void )
 {
 	int iKey =E_RSI_HW_BUTTON_INVALID;
@@ -253,7 +198,63 @@ void main_recv_ButtonPressed( void )
 	RSI_lcd_draw_stringAndDec((const char*)"INIT OK", iKey , 10, 10);
 	return;
 }
-#endif	/* __VC_DEBUG__ */
+
+#else	/* __TARGET_EV3__ */
+void main_recv_cmd( void )
+{
+	int iKey = 0;
+	
+	/* キー入力がある場合 */
+	if ( _kbhit() )
+	{
+		/* キーを取得 */
+		iKey = _getch();
+		switch( iKey )
+		{
+			case 'e':	/* アプリケーション終了 */
+				main_shutdown();
+				break;
+				
+			case 't':	/* テスト通信 */
+				main_rcv_cmd_t();
+				break;
+			
+			/* 走行体疑似トリガー */
+			case 'T':	/* タッチセンサ押下 */
+				main_rcv_cmd_T();
+				break;
+				
+			case 'L':	/* 左ボタン押下 */
+				main_rcv_cmd_L();
+				break;
+				
+			case 'R':	/* 右ボタン押下 */
+				main_rcv_cmd_R();
+				break;
+				
+			case 'U':	/* 上ボタン押下 */
+				main_rcv_cmd_U();
+				break;
+				
+			case 'D':	/* 下ボタン押下 */
+				main_rcv_cmd_D();
+				break;
+				
+			case 'C':	/* 中央ボタン押下 */
+				main_rcv_cmd_C();
+				break;
+				
+			case 'B':	/* バックボタン押下 */
+				main_rcv_cmd_B();
+				break;
+				
+			default:
+				break;
+		}
+	}	
+	return;
+}
+#endif	/* __TARGET_EV3__ */
 
 void main_rcv_cmd_t( void )
 {

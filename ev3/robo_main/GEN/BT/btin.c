@@ -73,10 +73,9 @@ void bt_init( void )
 
 void bt_shutdown( void )
 {
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	ter_tsk( BT_TASK );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	return;
 }
 
@@ -201,7 +200,6 @@ void bt_proc_Calibrate( void )
 {
 #if	(__VC_DEBUG__)
 	bt_check_SerialMessageRecv();
-#else	/* __VC_DEBUG__ */
 #endif	/* __VC_DEBUG__ */
 	return;
 }

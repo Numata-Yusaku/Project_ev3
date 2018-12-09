@@ -9,10 +9,9 @@ int RSI_hw_battery_current_mA( void )
 {
 	int iRet = 0;
 	
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = ev3_battery_current_mA();
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 #if	(D_RSI_LOGMODE)
 	rsi_set_rsilog( "[BATTERY]","mA",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
@@ -27,11 +26,11 @@ int RSI_hw_battery_voltage_mV( void )
 {
 	int iRet = 0;
 	
-#if	(__VC_DEBUG__)
-	iRet = 7500;
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = ev3_battery_voltage_mV();
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	iRet = 7500;
+#endif	/* __TARGET_EV3__ */
 #if	(D_RSI_LOGMODE)
 	rsi_set_rsilog( "[BATTERY]","mV",iRet ,0 );
 #endif	/* D_RSI_LOGMODE */
@@ -48,11 +47,11 @@ int RSI_hw_button_is_pressed( int iButton )
 {
 	int iRet = 0;
 	
-#if	(__VC_DEBUG__)
-	iRet = D_RSI_TRUE;
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_button_is_pressed( (button_t)iButton );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	iRet = D_RSI_TRUE;
+#endif	/* __TARGET_EV3__ */
 #if	(D_RSI_LOGMODE)
 	rsi_set_rsilog( "[BUTTON]","Button/Pressed",iButton ,iRet );
 #endif	/* D_RSI_LOGMODE */
@@ -68,10 +67,9 @@ int RSI_hw_button_set_on_clicked( int iButton, void* vpHandler, intptr_t exinf )
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_button_set_on_clicked( (button_t)iButton, (ISR)vpHandler, exinf );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	printf("[BUTTON],Button,%d\n",iButton);
 	
 	return iRet;	/* Ret：設定結果 */
@@ -86,11 +84,11 @@ int RSI_hw_led_set_color( int iColor )
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-	printf("[LED],Set Color,%d\n",iColor);
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_led_set_color( (ledcolor_t)iColor );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	printf("[LED],Set Color,%d\n",iColor);
+#endif	/* __TARGET_EV3__ */
 #if	(D_RSI_LOGMODE)
 	rsi_set_rsilog( "[LED]","Set Color",iColor ,0 );
 #endif	/* D_RSI_LOGMODE */
@@ -107,10 +105,9 @@ int RSI_hw_speaker_set_volume( unsigned char ucVolume )
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_speaker_set_volume( (uint8_t)ucVolume );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	printf("[SPK],Set Volume,%d\n",ucVolume);
 	
 	return iRet;	/* Ret：設定結果 */
@@ -123,11 +120,9 @@ int RSI_hw_speaker_play_tone( unsigned short usFrequency, signed int siDuration 
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-//	printf("\a");
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_speaker_play_tone( (uint16_t)usFrequency, (int32_t)siDuration );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 #if	(D_RSI_LOGMODE)
 	rsi_set_rsilog( "[SPK]","Freq/Dur",usFrequency ,siDuration );
 #endif	/* D_RSI_LOGMODE */
@@ -142,11 +137,11 @@ int RSI_hw_speaker_play_file( const S_RSI_FILEINFO* spMemfile, signed int siDura
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-	printf("[SPK],Durration,%d\n", siDuration );
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_speaker_play_file( (const memfile_t*)spMemfile, (int32_t)siDuration );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	printf("[SPK],Durration,%d\n", siDuration );
+#endif	/* __TARGET_EV3__ */
 	
 	return iRet;	/* Ret：結果 */
 }
@@ -158,11 +153,11 @@ int RSI_hw_speaker_stop( void )
 {
 	int iRet = D_RSI_OK;
 	
-#if	(__VC_DEBUG__)
-	printf("[SPK],Sound Stop\n");
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)ev3_speaker_stop();
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+	printf("[SPK],Sound Stop\n");
+#endif	/* __TARGET_EV3__ */
 	
 	return iRet;	/* Ret：結果 */
 }

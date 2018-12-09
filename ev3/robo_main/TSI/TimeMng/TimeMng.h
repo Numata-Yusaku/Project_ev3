@@ -5,10 +5,6 @@
 #include <stdio.h>
 #include "tsi_common.h"
 
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
-#endif	/* __VC_DEBUG__ */
-
 /*** GEN ***/
 
 /*** APL ***/

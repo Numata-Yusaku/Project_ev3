@@ -8,10 +8,9 @@
 int TSI_TimeMng_get_tim( unsigned long int* uiSystime )
 {
 	int iRet = D_TSI_OK;
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	iRet = (int)get_tim( (SYSTIM*)uiSystime );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	return iRet;
 }
 

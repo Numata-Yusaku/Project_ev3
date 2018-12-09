@@ -241,12 +241,11 @@ void lt_log_set_Systemlog( void )
 		return;
 	}
 	
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 	SYSTIM	stime;
 	get_tim(&stime);
 	fprintf( spLt->fpSystemLog, "%08ld,",stime );
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fErr_theta);

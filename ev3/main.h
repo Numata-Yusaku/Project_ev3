@@ -33,11 +33,11 @@ void main_DispReady( void );
 void main_shutdown( void );
 
 void main_recv( S_MSG_DATA* spRecv );
-#if	(__VC_DEBUG__)
-void main_recv_cmd( void );
-#else	/* __VC_DEBUG__ */
+#if	(__TARGET_EV3__)
 void main_recv_ButtonPressed( void );
-#endif	/* __VC_DEBUG__ */
+#else	/* __TARGET_EV3__ */
+void main_recv_cmd( void );
+#endif	/* __TARGET_EV3__ */
 
 void main_rcv_cmd_t( void );
 void main_rcv_cmd_T( void );
