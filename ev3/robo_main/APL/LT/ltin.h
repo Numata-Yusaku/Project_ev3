@@ -38,7 +38,7 @@
 
 /*** ログ出力 ***/
 /* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_OFF)
+#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_OFF)
 
 #define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_OFF)

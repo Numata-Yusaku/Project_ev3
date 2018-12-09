@@ -7,11 +7,13 @@
 #include <Windows.h>
 #include <process.h>
 #else	/* __VC_DEBUG__ */
-#include <kernel.h>
 #endif	/* __VC_DEBUG__ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/* TSI */
+#include "TimeMng.h"
 
 /* RSI */
 #include "fs.h"

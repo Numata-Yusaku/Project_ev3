@@ -5,6 +5,8 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 APPL_COBJS +=	\
 			main.o \
 			common.o \
+			tsi_common.o \
+			TimeMng.o \
 			rsi_common.o \
 			fs.o \
 			hw.o \
@@ -30,6 +32,8 @@ APPL_COBJS +=	\
 ### ソースパス
 APPL_DIR +=		\
 			$(mkfile_path)robo_main \
+			$(mkfile_path)robo_main/TSI \
+			$(mkfile_path)robo_main/TSI/TimeMng \
 			$(mkfile_path)robo_main/RSI \
 			$(mkfile_path)robo_main/RSI/Filesystem \
 			$(mkfile_path)robo_main/RSI/Hardware \
@@ -45,6 +49,8 @@ APPL_DIR +=		\
 ### ヘッダパス
 INCLUDES +=		\
 			-I$(mkfile_path)robo_main \
+			-I$(mkfile_path)robo_main/TSI \
+			-I$(mkfile_path)robo_main/TSI/TimeMng \
 			-I$(mkfile_path)robo_main/RSI \
 			-I$(mkfile_path)robo_main/RSI/Filesystem \
 			-I$(mkfile_path)robo_main/RSI/Hardware \

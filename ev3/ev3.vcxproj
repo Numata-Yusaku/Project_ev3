@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__VC_DEBUG__</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Project)robo_main\TSI;$(Project)robo_main\TSI\TimeMng;$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;__VC_DEBUG__</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Project)robo_main\TSI;$(Project)robo_main\TSI\TimeMng;$(Project)robo_main\RSI;$(Project)robo_main\RSI\Extend;$(Project)robo_main\RSI\Filesystem;$(Project)robo_main\RSI\Hardware;$(Project)robo_main\RSI\Lcd;$(Project)robo_main\RSI\Motor;$(Project)robo_main\RSI\Sensor;$(Project)robo_main\GEN\COMMON;$(Project)robo_main\GEN\TASK;$(Project)robo_main\GEN\BT;$(Project)robo_main\APL\LT;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -177,6 +177,8 @@
     <ClCompile Include="robo_main\RSI\Motor\motor.c" />
     <ClCompile Include="robo_main\RSI\rsi_common.c" />
     <ClCompile Include="robo_main\RSI\Sensor\sensor.c" />
+    <ClCompile Include="robo_main\TSI\TimeMng\TimeMng.c" />
+    <ClCompile Include="robo_main\TSI\tsi_common.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />
@@ -200,6 +202,8 @@
     <ClInclude Include="robo_main\RSI\Motor\motor.h" />
     <ClInclude Include="robo_main\RSI\rsi_common.h" />
     <ClInclude Include="robo_main\RSI\Sensor\sensor.h" />
+    <ClInclude Include="robo_main\TSI\TimeMng\TimeMng.h" />
+    <ClInclude Include="robo_main\TSI\tsi_common.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

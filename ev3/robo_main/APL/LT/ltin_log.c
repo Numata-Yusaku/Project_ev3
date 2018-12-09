@@ -132,6 +132,7 @@ void lt_log_set_Statuslog( void )
 {
 #if	(D_LT_LOGMODE_STATUS)
 	S_LT* spLt = (S_LT*)NULL;
+	unsigned long int uiSystime = 0;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -144,12 +145,10 @@ void lt_log_set_Statuslog( void )
 	{
 		return;
 	}
+	
+	TSI_TimeMng_get_tim(&uiSystime);
 
-	SYSTIM	stime;
-
-	get_tim(&stime);
-
-	fprintf( spLt->fpStatusLog, "%8ld,",stime );
+	fprintf( spLt->fpStatusLog, "%ld,",uiSystime );
 #if	(__VC_DEBUG__)
 #if	(D_LT_LOGMODE_STATUS_TIME)
 	time_t stTime = 0;
