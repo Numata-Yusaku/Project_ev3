@@ -12,8 +12,9 @@ void Main_task(intptr_t exinf )
 
 void MAIN_ev3_cyc_run(intptr_t exinf )
 {
-	LT_main();
-
+#if	(__TARGET_EV3__)
+	act_tsk( LT_TASK );
+#endif	/* __TARGET_EV3__ */
 	return;
 }
 
@@ -26,11 +27,12 @@ void Bluetooth_task( intptr_t exinf )
 
 void LineTrace_task( intptr_t exinf )
 {
+#if	(__TARGET_EV3__)
+	LT_main();
+	ext_tsk();
+#else	/* __TARGET_EV3__ */
 	TASK_sleep( D_MAIN_STARTUP_WAIT );
-#if	(__VC_DEBUG__)
 	LT_main_debug();
-#else	/* __VC_DEBUG__ */
-	LT_startup();
-#endif	/* __VC_DEBUG__ */
+#endif	/* __TARGET_EV3__ */
 	return;
 }

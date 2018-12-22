@@ -5,11 +5,11 @@
 #include "target_test.h"
 
 /* タスクの優先度 */
-#define	D_APP_PRIORITY_MAIN			(5)	/* メインタスク(※優先度が最上位となること) */
+#define	D_APP_PRIORITY_MAIN			(10)	/* メインタスク(※優先度が最下位となること) */
 
-#define D_APP_PRIORITY_HIGH			(9)
-#define D_APP_PRIORITY_MID			(10)
-#define D_APP_PRIORITY_LOW			(11)
+#define D_APP_PRIORITY_HIGH			(1)
+#define D_APP_PRIORITY_MID			(5)
+//#define D_APP_PRIORITY_LOW		(11)
 
 /* ターゲットに依存する可能性のある定数の定義 */
 #define	D_APP_STACK_SIZE			(4096)	/* タスクのスタックサイズ */

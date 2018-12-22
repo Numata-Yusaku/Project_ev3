@@ -98,7 +98,10 @@ void lt_log_Systemlog_open( void )
 	spLt->fpSystemLog = fpSystemLog;
 	
 	/* ヘッダ出力 */
+#if	(__TARGET_EV3__)
 	fprintf( spLt->fpSystemLog, "SysClock(msec),");
+#endif	/* __TARGET_EV3__ */
+	
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	fprintf( spLt->fpSystemLog, "fErr_theta,");
@@ -132,7 +135,6 @@ void lt_log_set_Statuslog( void )
 {
 #if	(D_LT_LOGMODE_STATUS)
 	S_LT* spLt = (S_LT*)NULL;
-	unsigned long int uiSystime = 0;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -146,11 +148,13 @@ void lt_log_set_Statuslog( void )
 		return;
 	}
 	
-	TSI_TimeMng_get_tim(&uiSystime);
-
-	fprintf( spLt->fpStatusLog, "%ld,",uiSystime );
-#if	(__VC_DEBUG__)
 #if	(D_LT_LOGMODE_STATUS_TIME)
+#if	(__TARGET_EV3__)
+	SYSTIM	stime;
+	get_tim(&stime);
+	fprintf( spLt->fpStatusLog, "%08ld,",stime );
+//	TSI_TimeMng_get_tim(&uiSystime);
+#else	/* __TARGET_EV3__ */
 	time_t stTime = 0;
 	struct tm* spLocalTime = (struct tm*)NULL;
 	
@@ -165,24 +169,8 @@ void lt_log_set_Statuslog( void )
 		spLocalTime->tm_hour,
 		spLocalTime->tm_min,
 		spLocalTime->tm_sec );
-	
-#else	/* D_LT_LOGMODE_STATUS_TIME */
-	static clock_t stStartClock = 0;
-	clock_t stNowClock = 0;
-	clock_t stClock = 0;
-	if (0 == stStartClock)
-	{
-		stStartClock = clock();
-	}
-	else
-	{
-		stNowClock = clock();
-		stClock = stNowClock - stStartClock;
-	}
-	
-	fprintf( spLt->fpStatusLog, "%08ld,",stClock);
+#endif	/* __TARGET_EV3__ */
 #endif	/* D_LT_LOGMODE_STATUS_TIME */
-#endif	/* __VC_DEBUG__ */
 	
 	fprintf( spLt->fpStatusLog, "%d,",spLt->iStatus);
 	
@@ -246,6 +234,7 @@ void lt_log_set_Systemlog( void )
 	get_tim(&stime);
 	fprintf( spLt->fpSystemLog, "%08ld,",stime );
 #endif	/* __TARGET_EV3__ */
+	
 #if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fErr_theta);

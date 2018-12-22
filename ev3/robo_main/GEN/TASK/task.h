@@ -15,8 +15,8 @@
 #define	D_TASK_QUE_MAX			(256)
 
 /* タスクサイクル */
-#define	D_TASK_CYCLE_LT			(5)
-#define	D_TASK_CYCLE_BT			(100)
+#define	D_TASK_CYCLE_LT			(4)
+#define	D_TASK_CYCLE_BT			(1000)
 
 enum EN_TASK_MSGDIR
 {

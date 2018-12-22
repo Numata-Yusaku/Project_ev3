@@ -67,8 +67,6 @@ END:
 		psRecvData = (S_MSG_DATA*)NULL;
 	}
 	
-	lt_shutdown();
-	
 	return;
 }
 
@@ -484,16 +482,8 @@ void lt_proc_StandUp( void )
 	lt_balance_init();
 
 	/*** 尻尾制御 ***/
-#if 1	/* T.B.D ▲1 */
-//	/* キックスタート */
-//	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_STANDUP_KICK_DEGREES, D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
-	
 	/* 尻尾を戻す */
-	RSI_motor_rotate( spLt->stPort.iMotor.iTail, -(D_LT_TAIL_CALIBRATE_DEGREES), D_LT_TAIL_STANDUP_SPEED, D_LT_TRUE );
-
-#else	/* T.B.D ▲1 */
-	lt_set_TailAngle( -(D_LT_TAIL_CALIBRATE_DEGREES) );
-#endif	/* T.B.D */
+	RSI_motor_rotate( spLt->stPort.iMotor.iTail, -(D_LT_TAIL_CALIBRATE_DEGREES), D_LT_TAIL_STANDUP_SPEED, D_LT_FALSE );
 	
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_RUN );
@@ -878,6 +868,7 @@ int lt_get_RunningTurnDir( void )
 	int iTurnDir = D_LT_TURN_STOP;
 	int iReflect = 0;
 	int iThreshold = 0;
+	int iDeviation = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -896,22 +887,23 @@ int lt_get_RunningTurnDir( void )
 #else	/* T.B.D ▲3 */
 	iThreshold = ( spLt->stCalibrateInfo.stWhite.iReflect + spLt->stCalibrateInfo.stBlack.iReflect ) / 2;
 #endif	/* T.B.D ▲3 */
-	if ( iReflect >= iThreshold )
-	{
-		iTurnDir = D_LT_TURN_LEFT;		/* 左旋回命令 */
-	}
-	else
-	{
-		iTurnDir = D_LT_TURN_RIGHT;		/* 右旋回命令 */
-	}	
+	/* ライン閾値からの偏差取得 */
+	iDeviation = iThreshold - iReflect;
+	
+	iTurnDir = lt_get_ControlLedValiable( iDeviation );
 	
 	return iTurnDir;		/* 旋回方向 */
 }
 
-/* other I/F */
-void lt_set_TailAngle( int iAngle )
+int lt_get_ControlLedValiable( int iDeviation )
 {
-	signed int pwm = 0;
+	int iTurn = 0;				/* 旋回命令: -100 (左旋回) ～ 100 (右旋回) */	
+	int iBrightness_P = 0;		/* P成分 */
+	int iBrightness_I = 0;		/* I成分 */
+	int iBrightness_D = 0;		/* D成分 */
+	int iTurn_P = 0;			/* P項演算値 */
+	int iTurn_I = 0;			/* I項演算値 */
+	int iTurn_D = 0;			/* D項演算値 */
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -921,28 +913,42 @@ void lt_set_TailAngle( int iAngle )
 		return;
 	}
 	
-	pwm = (signed int)( (iAngle - RSI_motor_get_counts( spLt->stPort.iMotor.iTail )) * D_LT_P_GAIN );
-	/* PWM出力飽和処理 */
-	if (pwm > D_LT_PWM_ABS_MAX)
+	iBrightness_P = iDeviation;
+	iBrightness_I = spLt->stLineTraceInfo.iIntegral + iBrightness_P;
+	iBrightness_D = iBrightness_P - spLt->stLineTraceInfo.iDeviation;
+	
+	/* 次回演算用に記憶 */
+	spLt->stLineTraceInfo.iDeviation = iBrightness_P;
+	spLt->stLineTraceInfo.iIntegral = iBrightness_I;
+	
+	/* P項演算 */
+	iTurn_P = (int)( D_LT_LINETRACE_P * (float)iBrightness_P );
+	iTurn_P *= D_LT_KPID_EDGE_FACTOR;
+	
+	/* I項演算 */
+	iTurn_I = (int)( D_LT_LINETRACE_I * (float)iBrightness_I );
+	iTurn_I *= D_LT_KPID_EDGE_FACTOR;
+	
+	/* D項演算 */
+	iTurn_D = (int)( D_LT_LINETRACE_D * (float)iBrightness_D );
+	iTurn_D *= D_LT_KPID_EDGE_FACTOR;
+	
+	/* 旋回指示値設定   */
+	iTurn = iTurn_P + iTurn_I + iTurn_D;
+	
+	if ( iTurn >= D_LT_PWM_MAX )
 	{
-		pwm = D_LT_PWM_ABS_MAX;
+		iTurn = D_LT_PWM_MAX;
 	}
-	else if (pwm < -D_LT_PWM_ABS_MAX)
+	else if (iTurn <= D_LT_PWM_MIN )
 	{
-		pwm = -D_LT_PWM_ABS_MAX;
+		iTurn = D_LT_PWM_MIN;
 	}
 	
-	if (pwm == 0)
-	{
-		RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_TRUE);
-	}
-	else
-	{
-		RSI_motor_set_power( spLt->stPort.iMotor.iTail, (signed char)pwm);
-	}
-	return;
+	return iTurn;
 }
 
+/* other I/F */
 int lt_get_SonarAlert( void )
 {
 /* T.B.D ▲2 */

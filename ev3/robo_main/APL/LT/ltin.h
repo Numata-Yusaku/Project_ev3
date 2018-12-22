@@ -38,13 +38,13 @@
 
 /*** ログ出力 ***/
 /* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_OFF)
+#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_OFF)
+#define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
 
 #define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_OFF)
 
 #define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
 
 /* シリアルログ */
@@ -97,6 +97,14 @@
 
 /* ジャイロオフセット */
 #define	D_LT_GYRO_OFFSET		(0)
+
+/*** ライントレース制御値 ***/
+#define	D_LT_LINETRACE_P		(1.2F)
+#define	D_LT_LINETRACE_I		(0.0F)
+#define	D_LT_LINETRACE_D		(0.3F)
+
+#define D_LT_KPID_EDGE_FACTOR	(-1)	/* ライントレース方向 1 or -1 */
+#define D_LT_KPID_TURN_LIMIT	(100)	/* 旋回指示値 限界値 */
 
 /*** バランス制御値 ***/
 #define	D_LT_CMD_MAX			(100.0F)			/* 前進/旋回命令絶対最大値 */
@@ -247,6 +255,13 @@ typedef struct
 /* バランス制御情報 */
 typedef struct
 {
+	int iIntegral;
+	int iDeviation;
+}S_LT_LINETRACEINFO;
+
+/* バランス制御情報 */
+typedef struct
+{
 	float	fErr_theta;			/* 左右車輪の平均回転角度(θ)目標誤差状態値 */
 	float	fPsi;				/* 車体ピッチ角度(ψ)状態値 */
 	float	fThetaLpf;			/* 左右車輪の平均回転角度(θ)状態値 */
@@ -282,6 +297,7 @@ typedef struct
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
+	S_LT_LINETRACEINFO			stLineTraceInfo;
 	S_LT_BALANCEINFO			stBalanceInfo;					/* バランス制御情報 */
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 }S_LT;
@@ -345,9 +361,9 @@ void lt_set_CalibrateWhite( void );
 /* running */
 void lt_Running( int iForwardLevel, int iTurnMode );
 int lt_get_RunningTurnDir( void );
+int lt_get_ControlLedValiable( int iDeviation );
 
 /* other I/F */
-void lt_set_TailAngle( int iAngle );
 int lt_get_SonarAlert( void );
 int lt_get_StopState( void );
 

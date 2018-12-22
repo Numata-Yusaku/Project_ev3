@@ -52,6 +52,9 @@ void MAIN_task(void)
 	/* 初期化 */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
+	/* LTタスク起動 */
+	LT_startup();
+	
 	/* MAIN_TASK */
 	while(1)	/* loop sta*/
 	{
