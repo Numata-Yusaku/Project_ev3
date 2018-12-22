@@ -130,7 +130,6 @@ void lt_log_Systemlog_open( void )
 	return;
 }
 
-
 void lt_log_set_Statuslog( void )
 {
 #if	(D_LT_LOGMODE_STATUS)
