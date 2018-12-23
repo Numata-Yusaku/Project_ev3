@@ -123,6 +123,12 @@ void bt_check_SerialMessageRecv( void )
 		return;
 	}
 	
+	if( (FILE*)NULL == spBt->fpBtFile )
+	{
+		printf("Serial_set error\n");
+		return;
+	}
+	
 	/* コマンド取得 */
 	cCmd = fgetc( spBt->fpBtFile ); /* 受信 */
 	

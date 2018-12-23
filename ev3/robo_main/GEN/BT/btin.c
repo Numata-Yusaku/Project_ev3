@@ -173,21 +173,19 @@ void bt_proc_Ready( void )
 	
 	/* 接続状況確認 */
 	iConnect = RSI_fs_bluetooth_is_connected();
-	if( D_RSI_TRUE != iConnect )
+	if( D_RSI_TRUE == iConnect )
 	{
-		return;
-	}
-	
-	/* Bluetooth通信確立 */
-	fpBtFile = RSI_fs_serial_open_file( E_RSI_FS_SERIALPORT_BT );
-	if( (FILE*)NULL == fpBtFile )
-	{
-		return;
-	}
-	else
-	{
-		/* グローバル保持 */
-		spBt->fpBtFile = fpBtFile;
+		/* Bluetooth通信確立 */
+		fpBtFile = RSI_fs_serial_open_file( E_RSI_FS_SERIALPORT_BT );
+		if( (FILE*)NULL == fpBtFile )
+		{
+			return;
+		}
+		else
+		{
+			/* グローバル保持 */
+			spBt->fpBtFile = fpBtFile;
+		}
 	}
 	
 	/* 状態遷移 */
