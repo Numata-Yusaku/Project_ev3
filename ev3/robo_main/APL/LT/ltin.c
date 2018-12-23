@@ -910,7 +910,7 @@ int lt_get_ControlLedValiable( int iDeviation )
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
-		return;
+		return iTurn;
 	}
 	
 	iBrightness_P = iDeviation;

@@ -13,7 +13,11 @@
 /* ログ出力 */
 #define	D_TASK_FILENAME_MSGLOG		"OutData/msglog.csv"
 
+#if	(__TARGET_EV3__)
 #define	D_TASK_LOGMODE				(D_TASK_MODE_OFF)
+#else	/* __TARGET_EV3__ */
+#define	D_TASK_LOGMODE				(D_TASK_MODE_ON)
+#endif	/* __TARGET_EV3__ */
 
 /***** 構造体 *****/
 /* 常駐領域 */

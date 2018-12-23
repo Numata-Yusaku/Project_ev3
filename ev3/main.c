@@ -18,6 +18,7 @@ void main_make_thread( void )
 	int iMsgThId = 0;
 	/* GEN */
 	HANDLE	hBt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)BT_main, NULL, 0, &iMsgThId);
+	HANDLE	hLd = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LD_main, NULL, 0, &iMsgThId);
 	/* APL */
 	HANDLE	hLt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LT_main_debug, NULL, 0, &iMsgThId);
 	return;

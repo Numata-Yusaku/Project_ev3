@@ -163,6 +163,10 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv )
 			spLt->iWupChk[E_LT_WUPCHK_BT] = D_LT_FLAG_ON;
 			break;
 		
+		case E_MSGID_LD_WUPCHK_RES:
+			spLt->iWupChk[E_LT_WUPCHK_LD] = D_LT_FLAG_ON;
+			break;
+		
 		default:
 			/* フェール処理 */
 			break;
@@ -187,6 +191,10 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 	{
 		case E_MSGID_BT_STOP_RES:
 			spLt->iStopChk[E_LT_STOP_BT] = D_LT_FLAG_ON;
+			break;
+		
+		case E_MSGID_LD_STOP_RES:
+			spLt->iStopChk[E_LT_STOP_LD] = D_LT_FLAG_ON;
 			break;
 		
 		default:

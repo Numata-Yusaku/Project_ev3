@@ -37,6 +37,7 @@
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
 
 /*** ログ出力 ***/
+#if	(__TARGET_EV3__)
 /* ログファイル */
 #define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
@@ -49,6 +50,20 @@
 
 /* シリアルログ */
 #define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
+#else	/* __TARGET_EV3__ */
+/* ログファイル */
+#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
+
+#define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_ON)
+
+#define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
+
+/* シリアルログ */
+#define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
+#endif	/* __TARGET_EV3__ */
 
 
 /* 音響 */
@@ -172,6 +187,7 @@ enum EN_LT_STATUS
 enum EN_LT_WUPCHK
 {
 	E_LT_WUPCHK_BT = 0,
+	E_LT_WUPCHK_LD,
 
 	/* ここより上に定義すること */
 	E_LT_WUPCHK_NUM
@@ -181,6 +197,7 @@ enum EN_LT_WUPCHK
 enum EN_LT_STOP
 {
 	E_LT_STOP_BT = 0,
+	E_LT_STOP_LD,
 
 	/* ここより上に定義すること */
 	E_LT_STOP_NUM
@@ -390,8 +407,10 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート
 void lt_send_test_res( S_MSG_DATA* spSend );								/* テスト */
 int lt_send_Wupchk_req( void );												/* 起動 */
 void lt_send_Wupchk_bt_req( void );											/* 起動：BT */
+void lt_send_Wupchk_ld_req( void );											/* 起動：LD */
 int lt_send_Stop_req( void );												/* 停止 */
 void lt_send_Stop_bt_req( void );											/* 停止：BT */
+void lt_send_Stop_ld_req( void );											/* 停止：LD */
 void lt_send_ShutDown_res( void );											/* シャットダウン */
 void lt_send_staCalibration_req( void );									/* キャリブレーション開始 */
 void lt_send_endCalibration_req( void );									/* キャリブレーション終了 */

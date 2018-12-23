@@ -25,6 +25,13 @@ void Bluetooth_task( intptr_t exinf )
 	return;
 }
 
+void LogDump_task( intptr_t exinf )
+{
+	TASK_sleep( D_MAIN_STARTUP_WAIT );
+	LD_main();
+	return;
+}
+
 void LineTrace_task( intptr_t exinf )
 {
 #if	(__TARGET_EV3__)

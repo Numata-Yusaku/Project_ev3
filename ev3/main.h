@@ -15,6 +15,7 @@
 /* メイン */
 #include "task.h"
 #include "bt.h"
+#include "ld.h"
 #include "lt.h"
 
 /***** 定数 *****/

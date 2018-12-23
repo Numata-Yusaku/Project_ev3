@@ -9,7 +9,9 @@ S_LT_RECV_TABLE T_LT_RECV_TABLE[] =
 {
 	/* MSGID							,	RecvFunc					*/
 	{ E_MSGID_BT_WUPCHK_RES				,	lt_rcv_Wupchk_res			},
+	{ E_MSGID_LD_WUPCHK_RES				,	lt_rcv_Wupchk_res			},
 	{ E_MSGID_BT_STOP_RES				,	lt_rcv_Stop_res				},
+	{ E_MSGID_LD_STOP_RES				,	lt_rcv_Stop_res				},
 	{ E_MSGID_LT_CENTERBUTTON_REQ		,	lt_rcv_CenterButton_req		},
 	{ E_MSGID_BT_CHGCALIBRATION_RES		,	lt_rcv_ChgCalibration_res	},
 	{ E_MSGID_BT_REMOTESTART_RES		,	lt_rcv_RemoteStart_res		},
