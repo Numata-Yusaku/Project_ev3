@@ -13,6 +13,7 @@ enum EN_TASK_TASKID
 	E_TASK_TASKID_MAIN = 0,
 	/* GEN */
 	E_TASK_TASKID_BT,
+	E_TASK_TASKID_TM,
 	E_TASK_TASKID_LD,
 	/* APL */
 	E_TASK_TASKID_LT,
@@ -57,6 +58,15 @@ enum EN_MSGID_BT
 
 	/* ここより上に定義すること */
 	E_MSGID_BT_INVALID = 0x00000000,
+};
+
+enum EN_MSGID_TM
+{
+	E_MSGID_TM_TEST_REQ =			( ( E_TASK_TASKID_TM << 24) | 0x00000001 ),
+	E_MSGID_TM_TEST_RES,
+
+	/* ここより上に定義すること */
+	E_MSGID_TM_INVALID = 0x00000000,
 };
 
 enum EN_MSGID_LD

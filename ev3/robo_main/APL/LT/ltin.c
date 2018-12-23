@@ -5,8 +5,8 @@ S_LT* gspLt = (S_LT*)NULL;
 
 void test( signed char* aaa )
 {
-//	signed char tmp = (signed char)(&(*aaa));
-//	printf("[%d]]\n",tmp);
+//	signed char ldp = (signed char)(&(*aaa));
+//	printf("[%d]]\n",ldp);
 	return;
 }
 
@@ -16,7 +16,7 @@ void lt_startup( void )
 	lt_init();
 	
 	/* サイクル起動 */
-	RSI_extend_sta_cyc( D_EV3_CYC_RUN );
+	RSI_extend_sta_cyc( D_EV3_CYC_RUN_LT );
 	
 	return;
 }
@@ -145,7 +145,7 @@ void lt_init( void )
 
 void lt_shutdown( void )
 {
-	RSI_extend_stp_cyc( D_EV3_CYC_RUN );
+	RSI_extend_stp_cyc( D_EV3_CYC_RUN_LT );
 	return;
 }
 
@@ -811,7 +811,7 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	}
 	
 #if	(__VC_DEBUG__)
-	printf("■\n");
+//	printf("■\n");
 #endif	/* __VC_DEBUG__ */
 	
 	/* 障害物判定 */

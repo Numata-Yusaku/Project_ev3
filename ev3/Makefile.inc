@@ -22,6 +22,10 @@ APPL_COBJS +=	\
 			btin_send.o \
 			btin_message.o \
 			btin_log.o \
+			tm.o \
+			tmin.o \
+			tmin_recv.o \
+			tmin_send.o \
 			ld.o \
 			ldin.o \
 			ldin_recv.o \
@@ -48,6 +52,7 @@ APPL_DIR +=		\
 			$(mkfile_path)robo_main/GEN/COMMON \
 			$(mkfile_path)robo_main/GEN/TASK \
 			$(mkfile_path)robo_main/GEN/BT \
+			$(mkfile_path)robo_main/GEN/TM \
 			$(mkfile_path)robo_main/GEN/LD \
 			$(mkfile_path)robo_main/APL/LT \
 
@@ -66,5 +71,6 @@ INCLUDES +=		\
 			-I$(mkfile_path)robo_main/GEN/COMMON \
 			-I$(mkfile_path)robo_main/GEN/TASK \
 			-I$(mkfile_path)robo_main/GEN/BT \
+			-I$(mkfile_path)robo_main/GEN/TM \
 			-I$(mkfile_path)robo_main/GEN/LD \
 			-I$(mkfile_path)robo_main/APL/LT \

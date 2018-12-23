@@ -17,6 +17,7 @@
 /* タスクサイクル */
 #define	D_TASK_CYCLE_LT			(4)
 #define	D_TASK_CYCLE_BT			(1000)
+#define	D_TASK_CYCLE_TM			(100)
 #define	D_TASK_CYCLE_LD			(1000)
 
 enum EN_TASK_MSGDIR

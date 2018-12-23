@@ -15,6 +15,7 @@
 /* メイン */
 #include "task.h"
 #include "bt.h"
+#include "tm.h"
 #include "ld.h"
 #include "lt.h"
 
@@ -32,6 +33,7 @@ void MAIN_init( void );
 void MAIN_task( void );
 void main_DispReady( void );
 void main_shutdown( void );
+void main_cyc_startup( void );
 
 void main_recv( S_MSG_DATA* spRecv );
 #if	(__TARGET_EV3__)

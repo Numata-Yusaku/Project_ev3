@@ -525,12 +525,22 @@ void lt_send_staRunning_req( void )
 	memset( psSendPara, 0x00, sizeof( int ) );
 	
 	/* 送信データ設定 */
-	psSendData->iMsgid = E_MSGID_BT_STARUNNING_REQ;
 	psSendData->iSize = sizeof( S_MSG_DATA );
 	psSendData->vpPara = psSendPara;
 	
+	/*** BT ***/
+	psSendData->iMsgid = E_MSGID_BT_STARUNNING_REQ;
 	/* MSG送信 */
 	iRet = TASK_msgsend( E_TASK_TASKID_BT, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+	
+	/*** LD ***/
+	psSendData->iMsgid = E_MSGID_LD_STARUNNING_REQ;
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
 	if( D_TASK_OK != iRet )
 	{
 		printf("MSG_send err\n");

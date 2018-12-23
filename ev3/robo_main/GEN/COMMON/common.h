@@ -29,7 +29,8 @@
 
 /***** 定数 *****/
 #if	(__VC_DEBUG__)
-#define	D_EV3_CYC_RUN				(1)		/* ダミー定義 */
+#define	D_EV3_CYC_RUN_LT				(1)		/* ダミー定義 */
+#define	D_EV3_CYC_RUN_TM				(2)		/* ダミー定義 */
 #endif	/* __VC_DEBUG__ */
 
 

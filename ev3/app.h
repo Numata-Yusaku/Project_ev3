@@ -16,8 +16,10 @@
 
 /* Tasks */
 extern void	Main_task(intptr_t exinf);
-extern void	MAIN_ev3_cyc_run(intptr_t exinf);
+extern void	MAIN_ev3_cyc_run_LT(intptr_t exinf);
+extern void	MAIN_ev3_cyc_run_TM(intptr_t exinf);
 extern void	Bluetooth_task(intptr_t exinf);
+extern void	Time_task(intptr_t exinf);
 extern void	LogDump_task(intptr_t exinf);
 extern void	LineTrace_task(intptr_t exinf);
 

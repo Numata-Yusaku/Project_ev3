@@ -8,6 +8,7 @@ void ld_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_LD_RECVFUNCPTR pvRecvFunc = (F_LD_RECVFUNCPTR)NULL;
 	
+//	printf("%08x\n",iMsgId);
 	/* 実行関数取得 */
 	pvRecvFunc = ld_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)

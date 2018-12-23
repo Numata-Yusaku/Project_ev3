@@ -8,6 +8,7 @@ void bt_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_BT_RECVFUNCPTR pvRecvFunc = (F_BT_RECVFUNCPTR)NULL;
 	
+//	printf("%08x\n",iMsgId);
 	/* 実行関数取得 */
 	pvRecvFunc = bt_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)

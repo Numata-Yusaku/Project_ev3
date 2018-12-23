@@ -18,6 +18,7 @@ void main_make_thread( void )
 	int iMsgThId = 0;
 	/* GEN */
 	HANDLE	hBt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)BT_main, NULL, 0, &iMsgThId);
+	HANDLE	htm = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)TM_main_debug, NULL, 0, &iMsgThId);
 	HANDLE	hLd = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LD_main, NULL, 0, &iMsgThId);
 	/* APL */
 	HANDLE	hLt = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)LT_main_debug, NULL, 0, &iMsgThId);
@@ -53,8 +54,8 @@ void MAIN_task(void)
 	/* 初期化 */
 	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
-	/* LTタスク起動 */
-	LT_startup();
+	/* 周期制御起動 */
+	main_cyc_startup();
 	
 	/* MAIN_TASK */
 	while(1)	/* loop sta*/
@@ -97,6 +98,14 @@ END:
 	}
 	
 	main_shutdown();
+	
+	return;
+}
+
+void main_cyc_startup( void )
+{
+	LT_startup();
+	TM_startup();
 	
 	return;
 }
@@ -354,6 +363,9 @@ void main_send_test_req( S_MSG_DATA* spSend )
 /* TEST */
 	psSendData->iMsgid = E_MSGID_BT_TEST_REQ;
 	iRet = TASK_msgsend( E_TASK_TASKID_BT, psSendData );
+
+	psSendData->iMsgid = E_MSGID_LD_TEST_REQ;
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
 /* TEST */
 
 END:

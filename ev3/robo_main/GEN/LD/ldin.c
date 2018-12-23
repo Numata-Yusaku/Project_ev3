@@ -125,6 +125,7 @@ void ld_proc( void )
 	
 	///* ログ出力 */
 	//ld_log_set_Statuslog();
+	//printf("%d",iStatus);
 	
 	/* 状態に応じて処理実行 */
 	switch (iStatus)
