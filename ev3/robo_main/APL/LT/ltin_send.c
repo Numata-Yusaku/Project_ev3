@@ -53,9 +53,125 @@ END:
 	return;
 }
 
-int lt_send_Wupchk_req( void )
+void lt_send_Timer_res( S_LT_TIMERINFO* spSend )
 {
-	int iWupChk = 0;
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	S_LT_TIMERINFO* psSendPara = (S_LT_TIMERINFO*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (S_LT_TIMERINFO*)malloc( sizeof( S_LT_TIMERINFO ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( S_LT_TIMERINFO ) );
+	
+	/* データ設定 */
+	psSendPara->iTimerId = spSend->iTimerId;
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_LT_TIMER_RES;
+	psSendData->iSize = sizeof( S_LT_TIMERINFO );
+	psSendData->vpPara = (void*)psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_Wupchk_req( void )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	void* psSendPara = (void*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (void*)malloc( sizeof( int ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( int ) );
+	
+	/* 送信データ設定 */
+	psSendData->iSize = sizeof( S_MSG_DATA );
+	psSendData->vpPara = psSendPara;
+	
+	/* BT */
+	psSendData->iMsgid = E_MSGID_BT_WUPCHK_REQ;
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_BT, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+	
+	/* LD */
+	psSendData->iMsgid = E_MSGID_LD_WUPCHK_REQ;
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_Wupchk_req_Retry( void )
+{
 	int iLoop = 0;
 	S_LT* spLt = (S_LT*)NULL;
 	
@@ -63,7 +179,7 @@ int lt_send_Wupchk_req( void )
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
-		return 0;
+		return;
 	}
 
 	for( iLoop = 0; iLoop < E_LT_WUPCHK_NUM; iLoop++ )
@@ -85,14 +201,9 @@ int lt_send_Wupchk_req( void )
 					break;
 			}
 		}
-		else
-		{
-			/* WUPCHK受信数インクリメント */
-			iWupChk++;
-		}
 	}
 	
-	return iWupChk;
+	return;
 }
 
 void lt_send_Wupchk_bt_req( void )

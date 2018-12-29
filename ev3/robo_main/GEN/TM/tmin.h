@@ -95,7 +95,6 @@ int tm_sta_Timer( int iId );
 int tm_stp_Timer( int iId );
 int tm_get_ModuleId( int iTimerId );
 int tm_get_EventId( int iTimerId );
-void tm_dummy( void );
 
 /*** tmin_recv.c **/
 /* FrameWork */

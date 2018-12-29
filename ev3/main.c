@@ -104,8 +104,8 @@ END:
 
 void main_cyc_startup( void )
 {
-	LT_startup();
 	TM_startup();
+	LT_startup();
 	
 	return;
 }

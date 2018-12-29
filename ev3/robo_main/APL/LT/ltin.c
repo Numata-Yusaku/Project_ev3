@@ -233,12 +233,12 @@ void lt_proc( void )
 			lt_proc_StandUp();
 			break;
 		
-		case E_LT_STATUS_RUN_PAUSE:
-			lt_proc_Pause();
-			break;
-		
 		case E_LT_STATUS_RUN_LOWSPEED:
 			lt_proc_LowSpeed();
+			break;
+		
+		case E_LT_STATUS_RUN_PAUSE:
+			lt_proc_Pause();
 			break;
 		
 		case E_LT_STATUS_STOP_WAIT:
@@ -268,11 +268,29 @@ void lt_proc_Ready( void )
 		return;
 	}
 	
-	/* WUPCHK */
-	iWupChk = lt_send_Wupchk_req();
-	if( E_LT_WUPCHK_NUM == iWupChk )
+	/* 起動調停 */
+	if( E_LT_WUPSTATE_READY == spLt->iWupStatus )
 	{
-		spLt->iStatus = E_LT_STATUS_IDLE;
+		/* WUPCHK要求 */
+		lt_send_Wupchk_req();
+		
+		/* 応答待ち */
+		spLt->iWupStatus = E_LT_WUPSTATE_WAIT;
+		
+		/* リトライタイマー開始 */
+		lt_cre_WupChkTimer();
+		lt_sta_WupChkTimer();
+		
+	}
+	else if( E_LT_WUPSTATE_WAIT == spLt->iWupStatus )
+	{
+		/* 応答状況確認 */
+		iWupChk = lt_get_WupchkNum();
+		if( E_LT_WUPCHK_NUM == iWupChk )
+		{
+			spLt->iWupStatus = E_LT_WUPSTATE_DONE;
+			spLt->iStatus = E_LT_STATUS_IDLE;
+		}
 	}
 	
 	return;
@@ -380,7 +398,7 @@ void lt_proc_CalibrateTail( void )
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iTail );
 	
 	/* 尻尾の回転 */
-	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_CALIBRATE_DEGREES, D_LT_TAIL_CALIBRATE_SPEED, D_LT_TRUE );
+	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_CALIBRATE_DEGREES, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE );
 	
 	/* 尻尾を固定 */
 	RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_TRUE );
@@ -474,10 +492,7 @@ void lt_proc_StandUp( void )
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iLeftWheel );
 	RSI_motor_reset_counts( spLt->stPort.iMotor.iRightWheel );
 	
-	/*** ジャイロ制御 ***/
-	/* ジャイロセンサリセット */
-//	RSI_gyro_sensor_reset( spLt->stPort.iSensor.iGyro );
-	
+	/*** ジャイロ制御 ***/	
 	/* 倒立振子初期化 */
 	lt_balance_init();
 
@@ -650,6 +665,50 @@ int lt_get_MotorPort( int iParts )
 	return iRet;		/* Ret:ポート */
 }
 
+int lt_chk_WupChkRetry( void )
+{
+	int iRetry = D_LT_RETRY;
+	int iWupChk = 0;
+	
+	/* 応答状況確認 */
+	iWupChk = lt_get_WupchkNum();
+	if( E_LT_WUPCHK_NUM != iWupChk )
+	{
+		iRetry = D_LT_RETRY;
+	}
+	else
+	{
+		iRetry = D_LT_NOTRETRY;
+	}
+	
+	return iRetry;
+}
+
+int lt_get_WupchkNum( void )
+{
+	int iWupChk = 0;
+	int iLoop = 0;
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return 0;
+	}
+
+	for( iLoop = 0; iLoop < E_LT_WUPCHK_NUM; iLoop++ )
+	{
+		if (D_LT_FLAG_ON == spLt->iWupChk[iLoop])
+		{
+			/* WUPCHK受信数インクリメント */
+			iWupChk++;
+		}
+	}
+	
+	return iWupChk;
+}
+
 /* calibrate */
 void lt_Caliblate( void )
 {
@@ -674,7 +733,9 @@ void lt_Caliblate( void )
 		
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_set_CalibrateWhite();
+#if (__VC_DEBUG__)
 			printf("Goto The Start Ready ...\n");
+#endif /* __VC_DEBUG__ */
 			break;
 		
 		default:
@@ -721,7 +782,7 @@ void lt_set_CalibrateBlack( void )
 		return;
 	}
 	
-	/* 反射光の強さを取得 */
+	/* 路面色を取得 */
 #if	(__TARGET_EV3__)
 	iColor = RSI_color_sensor_get_color( spLt->stPort.iSensor.iColor );
 #else	/* __TARGET_EV3__ */

@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+/* GEN */
+#include "tm.h"
+
 /* LT */
 #include "lt.h"
 
@@ -17,6 +20,9 @@
 
 #define	D_LT_TRUE			(1)
 #define	D_LT_FALSE			(0)
+
+#define	D_LT_NOTRETRY		(0)
+#define	D_LT_RETRY			(1)
 
 /* Wait */
 #define	D_LT_CALIBRATEEND_WAIT					(100)
@@ -39,12 +45,12 @@
 /*** ログ出力 ***/
 #if	(__TARGET_EV3__)
 /* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_OFF)
+#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
 #define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
 
 #define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_OFF)
 
-#define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
+#define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_OFF)
 #define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
 
@@ -183,6 +189,16 @@ enum EN_LT_STATUS
 	E_LT_STATUS_INVALID = -1
 };
 
+enum EN_LT_WUPSTATE
+{
+	E_LT_WUPSTATE_READY = 0,		/* 未起動 */
+	E_LT_WUPSTATE_WAIT,				/* 応答待ち */
+	E_LT_WUPSTATE_DONE,				/* 応答完了 */
+	
+	/* ここより上に定義すること */
+	E_LT_WUPSTATE_INVALID = -1
+};
+
 /* WUPCHK管理モジュール */
 enum EN_LT_WUPCHK
 {
@@ -229,6 +245,12 @@ enum EN_LT_CLIENTSEND
 
 /***** 構造体 *****/
 typedef void( *F_LT_RECVFUNCPTR )(S_MSG_DATA* spRecv);
+
+/* タイマー情報 */
+typedef struct
+{
+	int iTimerId;
+}S_LT_TIMERINFO;
 
 /* センサー */
 typedef struct
@@ -304,6 +326,7 @@ typedef struct
 typedef struct
 {
 	int							iStatus;
+	int							iWupStatus;
 	int							iWupChk[E_LT_WUPCHK_NUM];
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
@@ -369,6 +392,10 @@ int lt_get_SensorPort( int iParts );
 void lt_set_MotorPort( void );
 int lt_get_MotorPort( int iParts );
 
+/* WUPCHK */
+int lt_chk_WupChkRetry( void );
+int lt_get_WupchkNum( void );
+
 /* calibrate */
 void lt_Caliblate( void );
 void lt_set_CalibrateGyro( void );
@@ -391,6 +418,7 @@ F_LT_RECVFUNCPTR lt_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
 void lt_rcv_test_req( S_MSG_DATA* spRecv );					/* テスト */
+void lt_rcv_Timer_res( S_MSG_DATA* spRecv );				/* タイマーコールバック受信 */
 void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv );			/* キーボード：TouchButton押下 */
 void lt_rcv_BackButton_req( S_MSG_DATA* spRecv );			/* キーボード：BackButton押下 */
 void lt_rcv_UpButton_req( S_MSG_DATA* spRecv );				/* キーボード：UpButton押下 */
@@ -405,7 +433,9 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート
 
 /*** ltin_send.c **/
 void lt_send_test_res( S_MSG_DATA* spSend );								/* テスト */
-int lt_send_Wupchk_req( void );												/* 起動 */
+void lt_send_Timer_res( S_LT_TIMERINFO* spSend );							/* タイマーコールバック受信 */
+void lt_send_Wupchk_req( void );											/* 起動 */
+void lt_send_Wupchk_req_Retry( void );										/* 起動リトライ */
 void lt_send_Wupchk_bt_req( void );											/* 起動：BT */
 void lt_send_Wupchk_ld_req( void );											/* 起動：LD */
 int lt_send_Stop_req( void );												/* 停止 */
@@ -418,6 +448,12 @@ void lt_send_staRunning_req( void );										/* 走行開始 */
 void lt_send_endRunning_req( void );										/* 走行停止 */
 void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* クライアント送信：ジャイロ */
 void lt_send_setClientSendColor_req( void );								/* クライアント送信：カラー */
+
+/*** ltin_timer.c ***/
+int lt_cre_WupChkTimer( void );
+int lt_del_WupChkTimer( void );
+int lt_sta_WupChkTimer( void );
+void lt_WupChkTimer_CallBack( void );
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );

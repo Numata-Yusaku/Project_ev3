@@ -541,7 +541,6 @@ int tm_stp_Timer( int iId )
 	return D_TM_OK;
 }
 
-
 int tm_get_ModuleId( int iTimerId )
 {
 	int iModuleId = D_TM_NG;
@@ -558,9 +557,4 @@ int tm_get_EventId( int iTimerId )
 	iEventId = ( iTimerId & 0x00FFFFFF );
 	
 	return iEventId;
-}
-
-void tm_dummy( void )
-{
-	printf( "DummyTimerSet\n" );
 }

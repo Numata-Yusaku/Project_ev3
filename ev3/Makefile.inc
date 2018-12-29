@@ -34,6 +34,7 @@ APPL_COBJS +=	\
 			ltin.o \
 			ltin_recv.o \
 			ltin_send.o \
+			ltin_timer.o \
 			ltin_balance.o \
 			ltin_log.o \
 

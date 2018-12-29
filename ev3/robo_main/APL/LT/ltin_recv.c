@@ -60,6 +60,41 @@ void lt_rcv_test_req( S_MSG_DATA* spRecv )
 	return;
 }
 
+void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
+{
+	int iRetry = 0;
+	int iTimerId = 0;
+	S_LT_TIMERINFO* spTimerInfo = (S_LT_TIMERINFO*)NULL;
+	
+	spTimerInfo = (S_LT_TIMERINFO*)spRecv->vpPara;
+	iTimerId = spTimerInfo->iTimerId;
+	
+	switch( iTimerId )
+	{
+		case E_TIMERID_LT_WUPCHK:
+			/* 起動調停 */
+			iRetry = lt_chk_WupChkRetry();
+			if( D_LT_NOTRETRY == iRetry )
+			{
+				/* タイマ削除 */
+				lt_del_WupChkTimer();
+			}
+			else
+			{
+				/* リトライ */
+				lt_send_Wupchk_req_Retry();
+			}
+			
+			break;
+		
+		default:
+			/* フェール処理 */
+			break;
+	}
+	
+	return;
+}
+
 void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
@@ -250,7 +285,9 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+#if (__VC_DEBUG__)
 		printf("[Remote]Gooooooooooooo!!!\n");
+#endif /* __VC_DEBUG__ */
 	}
 	return;
 }
