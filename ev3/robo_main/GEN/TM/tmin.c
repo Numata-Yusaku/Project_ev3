@@ -218,10 +218,31 @@ void tm_proc_Ready( void )
 	/* 状態遷移 */
 	spTm->iStatus = E_TM_STATUS_IDLE;
 	
+/****/
+	//S_TM_TIMERINFO stTimerInfo;
+	//stTimerInfo.iId = E_TIMERID_LT_WUPCHK;
+	//stTimerInfo.iCycle = 1000;
+	//stTimerInfo.pFunc = (F_TM_CALLBACKFUNCPTR)tm_dummy;
+
+	//tm_cre_Timer( &stTimerInfo );
+	//tm_sta_Timer( E_TIMERID_LT_WUPCHK );
+/****/
+
 	return;
 }
 
 void tm_proc_Idle( void )
+{
+	/* カウンタ更新 */
+	tm_upd_Count();
+	
+	/* タイマーチェック */
+	tm_chk_Timer();
+	
+	return;
+}
+
+void tm_upd_Count( void )
 {
 	S_TM* spTm = (S_TM*)NULL;
 	
@@ -242,4 +263,304 @@ void tm_proc_Idle( void )
 	}
 	
 	return;
+}
+
+void tm_chk_Timer( void )
+{
+	int iLoopModuleId = 0;
+	int iLoopEventId = 0;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return;
+	}
+	
+	/* タイマ情報設定 */
+	for( iLoopModuleId = 0; iLoopModuleId < E_TASK_TASKID_NUM; iLoopModuleId++ )
+	{
+		for( iLoopEventId = 0; iLoopEventId < D_TM_TIMER_NUM; iLoopEventId++ )
+		{
+			if( D_TM_FLAG_ON == spTm->stTimerData[iLoopModuleId][iLoopEventId].iRegist )
+			{
+				if( D_TM_FLAG_ON == spTm->stTimerData[iLoopModuleId][iLoopEventId].iRunStat )
+				{
+					/* タイマカウンタ更新 */
+					spTm->stTimerData[iLoopModuleId][iLoopEventId].iCount++;
+					
+					/* タイマ満了 */
+					if( spTm->stTimerData[iLoopModuleId][iLoopEventId].iCycCount == spTm->stTimerData[iLoopModuleId][iLoopEventId].iCount )
+					{
+						/* タイマコールバック実施 */
+						if( (F_TM_CALLBACKFUNCPTR)NULL != spTm->stTimerData[iLoopModuleId][iLoopEventId].pFunc )
+						{
+							spTm->stTimerData[iLoopModuleId][iLoopEventId].pFunc();
+						}
+						
+						/* タイマカウンタクリア */
+						spTm->stTimerData[iLoopModuleId][iLoopEventId].iCount = 0;
+					}
+				}
+				else
+				{
+					/* タイマ停止中は何もしない */
+				}
+			}
+			else
+			{
+				/* タイマ削除 */
+				spTm->stTimerData[iLoopModuleId][iLoopEventId].iRunStat = D_TM_FLAG_OFF;
+				spTm->stTimerData[iLoopModuleId][iLoopEventId].iCount = 0;
+			}
+		}
+	}
+	
+	return;
+}
+
+int tm_cre_Timer( S_TM_TIMERINFO* spTimerInfo )
+{
+	int iModuleId = 0;
+	int iEventId = 0;
+	int iCycCount = 0;
+	int iLoopModuleId = 0;
+	int iLoopEventId = 0;
+	F_TM_CALLBACKFUNCPTR pFunc = (F_TM_CALLBACKFUNCPTR)NULL;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return D_TM_NG;
+	}
+	
+	/* 起動状態確認 */
+	if( E_TM_STATUS_READY == spTm->iStatus )
+	{
+		return D_TM_NG_READY;
+	}
+	
+	/* ID確認 */
+	iModuleId = tm_get_ModuleId( spTimerInfo->iId );
+	iEventId = tm_get_EventId( spTimerInfo->iId );
+	if( ( 0 > iModuleId) ||
+		( E_TASK_TASKID_NUM < iEventId ) )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマサイクル確認 */
+	/* ※100msecより小さい刻みは切り捨てる */
+	iCycCount = spTimerInfo->iCycle / D_TASK_CYCLE_TM;
+	if( 0 >= iCycCount )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマコールバック */
+	pFunc = spTimerInfo->pFunc;
+	if( (F_TM_CALLBACKFUNCPTR)NULL == pFunc )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマ情報設定 */
+	for( iLoopModuleId = 0; iLoopModuleId < E_TASK_TASKID_NUM; iLoopModuleId++ )
+	{
+		for( iLoopEventId = 0; iLoopEventId < D_TM_TIMER_NUM; iLoopEventId++ )
+		{
+			if( ( iModuleId == iLoopModuleId ) &&
+				( iEventId == iLoopEventId ) )
+			{
+				/* タイマサイクル */
+				spTm->stTimerData[iModuleId][iEventId].iCycCount = iCycCount;
+				/* タイマコールバック */
+				spTm->stTimerData[iModuleId][iEventId].pFunc = pFunc;
+				/* 登録状態 */
+				spTm->stTimerData[iModuleId][iEventId].iRegist = D_TM_FLAG_ON;
+				
+				break;
+			}
+		}
+	}
+	
+	return D_TM_OK;
+}
+
+int tm_del_Timer( int iId )
+{
+	int iModuleId = 0;
+	int iEventId = 0;
+	int iLoopModuleId = 0;
+	int iLoopEventId = 0;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return D_TM_NG;
+	}
+	
+	/* 起動状態確認 */
+	if( E_TM_STATUS_READY == spTm->iStatus )
+	{
+		return D_TM_NG_READY;
+	}
+	
+	/* ID確認 */
+	iModuleId = tm_get_ModuleId( iId );
+	iEventId = tm_get_EventId( iId );
+	if( ( 0 > iModuleId) ||
+		( E_TASK_TASKID_NUM < iEventId ) )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマ情報設定 */
+	for( iLoopModuleId = 0; iLoopModuleId < E_TASK_TASKID_NUM; iLoopModuleId++ )
+	{
+		for( iLoopEventId = 0; iLoopEventId < D_TM_TIMER_NUM; iLoopEventId++ )
+		{
+			if( ( iModuleId == iLoopModuleId ) &&
+				( iEventId == iLoopEventId ) )
+			{
+				/* タイマサイクル */
+				spTm->stTimerData[iModuleId][iEventId].iCycCount = 0;
+				/* タイマコールバック */
+				spTm->stTimerData[iModuleId][iEventId].pFunc = (F_TM_CALLBACKFUNCPTR)NULL;
+				/* 登録状態 */
+				spTm->stTimerData[iModuleId][iEventId].iRegist = D_TM_FLAG_OFF;
+				
+				break;
+			}
+		}
+	}
+	
+	return D_TM_OK;
+}
+
+int tm_sta_Timer( int iId )
+{
+	int iModuleId = 0;
+	int iEventId = 0;
+	int iLoopModuleId = 0;
+	int iLoopEventId = 0;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return D_TM_NG;
+	}
+	
+	/* 起動状態確認 */
+	if( E_TM_STATUS_READY == spTm->iStatus )
+	{
+		return D_TM_NG_READY;
+	}
+	
+	/* ID確認 */
+	iModuleId = tm_get_ModuleId( iId );
+	iEventId = tm_get_EventId( iId );
+	if( ( 0 > iModuleId) ||
+		( E_TASK_TASKID_NUM < iEventId ) )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマ情報設定 */
+	for( iLoopModuleId = 0; iLoopModuleId < E_TASK_TASKID_NUM; iLoopModuleId++ )
+	{
+		for( iLoopEventId = 0; iLoopEventId < D_TM_TIMER_NUM; iLoopEventId++ )
+		{
+			if( ( iModuleId == iLoopModuleId ) &&
+				( iEventId == iLoopEventId ) )
+			{
+				/* 実行状態 */
+				spTm->stTimerData[iModuleId][iEventId].iRunStat = D_TM_FLAG_ON;
+				
+				break;
+			}
+		}
+	}
+	
+	return D_TM_OK;
+}
+
+int tm_stp_Timer( int iId )
+{
+	int iModuleId = 0;
+	int iEventId = 0;
+	int iLoopModuleId = 0;
+	int iLoopEventId = 0;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return D_TM_NG;
+	}
+	
+	/* 起動状態確認 */
+	if( E_TM_STATUS_READY == spTm->iStatus )
+	{
+		return D_TM_NG_READY;
+	}
+	
+	/* ID確認 */
+	iModuleId = tm_get_ModuleId( iId );
+	iEventId = tm_get_EventId( iId );
+	if( ( 0 > iModuleId) ||
+		( E_TASK_TASKID_NUM < iEventId ) )
+	{
+		return D_TM_NG_PARA_ERR;
+	}
+	
+	/* タイマ情報設定 */
+	for( iLoopModuleId = 0; iLoopModuleId < E_TASK_TASKID_NUM; iLoopModuleId++ )
+	{
+		for( iLoopEventId = 0; iLoopEventId < D_TM_TIMER_NUM; iLoopEventId++ )
+		{
+			if( ( iModuleId == iLoopModuleId ) &&
+				( iEventId == iLoopEventId ) )
+			{
+				/* 実行状態 */
+				spTm->stTimerData[iModuleId][iEventId].iRunStat = D_TM_FLAG_OFF;
+				
+				break;
+			}
+		}
+	}
+	
+	return D_TM_OK;
+}
+
+
+int tm_get_ModuleId( int iTimerId )
+{
+	int iModuleId = D_TM_NG;
+	
+	iModuleId = ( iTimerId >> 24 );
+	
+	return iModuleId;
+}
+
+int tm_get_EventId( int iTimerId )
+{
+	int iEventId = D_TM_NG;
+	
+	iEventId = ( iTimerId & 0x00FFFFFF );
+	
+	return iEventId;
+}
+
+void tm_dummy( void )
+{
+	printf( "DummyTimerSet\n" );
 }
