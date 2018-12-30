@@ -77,7 +77,7 @@ void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
 			if( D_LT_NOTRETRY == iRetry )
 			{
 				/* タイマ削除 */
-				lt_del_WupChkTimer();
+				lt_del_Timer( E_TIMERID_LT_WUPCHK );
 			}
 			else
 			{

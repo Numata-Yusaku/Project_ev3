@@ -195,6 +195,7 @@
     <ClInclude Include="robo_main\APL\LT\ltin.h" />
     <ClInclude Include="robo_main\APL\LT\ltin_porttable.h" />
     <ClInclude Include="robo_main\APL\LT\ltin_recvtable.h" />
+    <ClInclude Include="robo_main\APL\LT\ltin_timertable.h" />
     <ClInclude Include="robo_main\GEN\BT\bt.h" />
     <ClInclude Include="robo_main\GEN\BT\btin.h" />
     <ClInclude Include="robo_main\GEN\BT\btin_messagetable.h" />

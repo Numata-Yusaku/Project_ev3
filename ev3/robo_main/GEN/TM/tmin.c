@@ -182,10 +182,6 @@ void tm_proc( void )
 		return;
 	}
 	
-	///* ログ出力 */
-	//tm_log_set_Statuslog();
-	//printf("%d",iStatus);
-	
 	/* 状態に応じて処理実行 */
 	switch (iStatus)
 	{
@@ -218,16 +214,6 @@ void tm_proc_Ready( void )
 	/* 状態遷移 */
 	spTm->iStatus = E_TM_STATUS_IDLE;
 	
-/****/
-	//S_TM_TIMERINFO stTimerInfo;
-	//stTimerInfo.iId = E_TIMERID_LT_WUPCHK;
-	//stTimerInfo.iCycle = 1000;
-	//stTimerInfo.pFunc = (F_TM_CALLBACKFUNCPTR)tm_dummy;
-
-	//tm_cre_Timer( &stTimerInfo );
-	//tm_sta_Timer( E_TIMERID_LT_WUPCHK );
-/****/
-
 	return;
 }
 

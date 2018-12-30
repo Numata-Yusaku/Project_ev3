@@ -278,8 +278,8 @@ void lt_proc_Ready( void )
 		spLt->iWupStatus = E_LT_WUPSTATE_WAIT;
 		
 		/* リトライタイマー開始 */
-		lt_cre_WupChkTimer();
-		lt_sta_WupChkTimer();
+		lt_cre_Timer( E_TIMERID_LT_WUPCHK );
+		lt_sta_Timer( E_TIMERID_LT_WUPCHK );
 		
 	}
 	else if( E_LT_WUPSTATE_WAIT == spLt->iWupStatus )

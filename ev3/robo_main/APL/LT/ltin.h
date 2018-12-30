@@ -450,9 +450,9 @@ void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* ク�
 void lt_send_setClientSendColor_req( void );								/* クライアント送信：カラー */
 
 /*** ltin_timer.c ***/
-int lt_cre_WupChkTimer( void );
-int lt_del_WupChkTimer( void );
-int lt_sta_WupChkTimer( void );
+int lt_cre_Timer( int iTimerId );
+int lt_del_Timer( int iTimerId );
+int lt_sta_Timer( int iTimerId );
 void lt_WupChkTimer_CallBack( void );
 
 /*** ltin_barance.c **/
