@@ -400,9 +400,6 @@ void lt_proc_CalibrateTail( void )
 	/* 尻尾の回転 */
 	RSI_motor_rotate( spLt->stPort.iMotor.iTail, D_LT_TAIL_CALIBRATE_DEGREES, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE );
 	
-	/* 尻尾を固定 */
-	RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_TRUE );
-	
 	/* 状態遷移 */
 	spLt->iStatus = E_LT_STATUS_CALIBLATE_BLACK;
 	
