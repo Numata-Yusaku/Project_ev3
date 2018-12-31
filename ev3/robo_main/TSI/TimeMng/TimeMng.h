@@ -15,7 +15,7 @@
 
 /***** 関数プロトタイプ *****/
 /*** システム時刻管理 ***/
-int TSI_TimeMng_get_tim( unsigned long int* uiSystime );
+unsigned long TSI_TimeMng_get_tim( void );
 
 /*** 周期ハンドラ ***/
 /*** アラームハンドラ ***/

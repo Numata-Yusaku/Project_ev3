@@ -130,3 +130,76 @@ void ld_rcv_staRunning_req( S_MSG_DATA* spRecv )
 	
 	return;
 }
+
+void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
+{
+	int iSendTaskId = 0;
+	int iLogNum = 0;
+	int iLoop = 0;
+	S_LD* spLd = (S_LD*)NULL;
+	FILE* fpWrite = (FILE*)NULL;
+	S_TASK_LOGINFO_STATUSLOG* psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+	S_TASK_LOGDATA_STATUSLOG stLogData[D_TASK_BUFFNUM_STATUSLOG];
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	memset( &stLogData, 0x00, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+	if( (S_TASK_LOGINFO_STATUSLOG*)NULL == spRecv->vpPara )
+	{
+		return;
+	}
+	
+	/* 受信データ取得 */
+	psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)spRecv->vpPara;
+	
+	iSendTaskId = psRecvPara->iTaskId;
+	iLogNum = psRecvPara->iLogNum;
+	memcpy( &stLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+//	/* ログ出力先指定 */
+//	switch( iSendTaskId )
+//	{
+//		case E_TASK_TASKID_LT:
+//			fpWrite = spLd->stFileInfo.fpStatusLog_Lt;
+//			break;
+//	
+//		default:
+//			fpWrite = (FILE*)NULL;
+//			break;
+//	}
+//	
+//	if( (FILE*)NULL == fpWrite )
+//	{
+//		return;
+//	}
+//	
+////	printf("recv:StatusLog\n");
+//	for( iLoop = 0; iLoop < iLogNum; iLoop++ )
+//	{
+//		fprintf( fpWrite, "%08ld\n",stLogData[iLoop].ulTime );
+//		//fprintf( fpWrite, "%d,",stLogData[iLoop].iStatus);
+//		
+//		//fprintf( fpWrite, "\n");
+//		//fflush( fpWrite );
+//	}
+	
+	return;
+}
+
+void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv )
+{
+	printf("recv:CalibrateLog\n");
+	return;
+}
+
+void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
+{
+	printf("recv:SystemLog\n");
+	return;
+}

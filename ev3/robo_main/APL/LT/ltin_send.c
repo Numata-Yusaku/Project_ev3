@@ -832,3 +832,172 @@ END:
 	
 	return;
 }
+
+void lt_send_setLog_StatusLog_req( S_LT_LOGINFO_STATUSLOG* spSend )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	S_TASK_LOGINFO_STATUSLOG* psSendPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (S_TASK_LOGINFO_STATUSLOG*)malloc( sizeof( S_TASK_LOGINFO_STATUSLOG ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_LOGINFO_STATUSLOG ) );
+	
+	/* データ設定 */
+	psSendPara->iTaskId = E_TASK_TASKID_LT;
+	psSendPara->iLogNum = spSend->iLogNum;
+	memcpy( &(psSendPara->stLog[0]), &(spSend->stLog[0]), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_LD_SETLOG_STATUSLOG_REQ;
+	psSendData->iSize = sizeof( S_TASK_LOGINFO_STATUSLOG );
+	psSendData->vpPara = (void*)psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_setLog_CalibrateLog_req( S_LT_LOGINFO_CALIBRATELOG* spSend )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	S_TASK_LOGINFO_CALIBRATELOG* psSendPara = (S_TASK_LOGINFO_CALIBRATELOG*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (S_TASK_LOGINFO_CALIBRATELOG*)malloc( sizeof( S_TASK_LOGINFO_CALIBRATELOG ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_LOGINFO_CALIBRATELOG ) );
+	
+	/* データ設定 */
+	psSendPara->iLogNum = spSend->iLogNum;
+	memcpy( &(psSendPara->stLog[0]), &(spSend->stLog[0]), sizeof( S_TASK_LOGDATA_CALIBRATELOG ) * D_TASK_BUFFNUM_CALIBRATELOG );
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_LD_SETLOG_CALIBRATELOG_REQ;
+	psSendData->iSize = sizeof( S_TASK_LOGINFO_CALIBRATELOG );
+	psSendData->vpPara = (void*)psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void lt_send_setLog_SystemLog_req( S_LT_LOGINFO_SYSTEMLOG* spSend )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
+	S_TASK_LOGINFO_SYSTEMLOG* psSendPara = (S_TASK_LOGINFO_SYSTEMLOG*)NULL;
+	
+	/* 領域確保 */
+	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == psSendData)
+	{
+		goto END;
+	}
+	
+	psSendPara = (S_TASK_LOGINFO_SYSTEMLOG*)malloc( sizeof( S_TASK_LOGINFO_SYSTEMLOG ) );
+	if ((void*)NULL == psSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_LOGINFO_SYSTEMLOG ) );
+	
+	/* データ設定 */
+	psSendPara->iLogNum = spSend->iLogNum;
+	memcpy( &(psSendPara->stLog[0]), &(spSend->stLog[0]), sizeof( S_TASK_LOGDATA_SYSTEMLOG ) * D_TASK_BUFFNUM_SYSTEMLOG );
+	
+	/* 送信データ設定 */
+	psSendData->iMsgid = E_MSGID_LD_SETLOG_SYSTEMLOG_REQ;
+	psSendData->iSize = sizeof( S_TASK_LOGINFO_SYSTEMLOG );
+	psSendData->vpPara = (void*)psSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, psSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != psSendPara)
+	{
+		free( psSendPara );
+		psSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != psSendData)
+	{
+		free( psSendData );
+		psSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}

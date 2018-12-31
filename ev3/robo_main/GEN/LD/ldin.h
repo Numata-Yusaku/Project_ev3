@@ -19,11 +19,48 @@
 
 #define	D_LD_RECVDATA_SIZE	(128)
 
+
 /* ログファイル */
-#define	D_LD_FILENAME_STATUSLOG					"OutData/StatusLog_Ld.csv"
+//#define	D_LD_FILENAME_STATUSLOG					"OutData/StatusLog_Ld.csv"
+//#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_OFF)
+
+#define	D_LD_FILENAME_STATUSLOG_LT				"OutData/StatusLog_Lt.csv"
+#define	D_LD_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
+#define	D_LD_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
+
+#define	D_LD_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
+#define	D_LD_BUFFNUM_CALIBRATELOG				D_TASK_BUFFNUM_CALIBRATELOG
+#define	D_LD_BUFFNUM_SYSTEMLOG					D_TASK_BUFFNUM_SYSTEMLOG
 
 /*** ログ出力 ***/
-#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_OFF)
+#if	(__TARGET_EV3__)
+/* ログファイル */
+#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_STATUS_TIME				(D_LD_FLAG_ON)
+
+#define	D_LD_LOGMODE_CALIBRATE					(D_LD_FLAG_ON)
+
+#define	D_LD_LOGMODE_SYSTEM						(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_SYSTEM_BALANCEINFO			(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_SYSTEM_BALANCECONTROL		(D_LD_FLAG_ON)
+
+/* シリアルログ */
+#define	D_LD_LOGMODE_GYRO						(D_LD_FLAG_OFF)
+#else	/* __TARGET_EV3__ */
+/* ログファイル */
+#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_STATUS_TIME				(D_LD_FLAG_ON)
+
+#define	D_LD_LOGMODE_CALIBRATE					(D_LD_FLAG_ON)
+
+#define	D_LD_LOGMODE_SYSTEM						(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_SYSTEM_BALANCEINFO			(D_LD_FLAG_ON)
+#define	D_LD_LOGMODE_SYSTEM_BALANCECONTROL		(D_LD_FLAG_ON)
+
+/* シリアルログ */
+#define	D_LD_LOGMODE_GYRO						(D_LD_FLAG_OFF)
+#endif	/* __TARGET_EV3__ */
+
 
 
 enum EN_LD_STATUS
@@ -46,10 +83,18 @@ typedef void( *F_LD_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 /* 常駐領域 */
 typedef struct
 {
+	FILE* fpStatusLog_Lt;
+	FILE* fpCalibrateLog;
+	FILE* fpSystemLog;
+}S_LD_FILEINFO;
+
+/* 常駐領域 */
+typedef struct
+{
 	int iStatus;		/* クラスステータス */
 	int iWupChk;
 	FILE* fpLdFile;		/* Bluetoo通信ポート */
-	FILE* fpStatusLog;
+	S_LD_FILEINFO stFileInfo;
 }S_LD;
 
 typedef struct
@@ -78,8 +123,10 @@ S_LD* ld_get_Global( void );
 /* proc */
 void ld_proc( void );
 void ld_proc_Ready( void );
-void ld_proc_Calibrate( void );
-void ld_proc_Waiting( void );
+
+void ld_log_Statuslog_open( void );
+void ld_log_Calibratelog_open( void );
+void ld_log_Systemlog_open( void );
 
 /*** ldin_recv.c **/
 /* FrameWork */
@@ -87,35 +134,17 @@ void ld_recv( S_MSG_DATA* spRecv );
 F_LD_RECVFUNCPTR ld_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
-void ld_rcv_test_req( S_MSG_DATA* spRecv );							/* テスト */
-void ld_rcv_Wupchk_req( S_MSG_DATA* spRecv );						/* 起動 */
-void ld_rcv_Stop_req( S_MSG_DATA* spRecv );							/* 停止 */
-void ld_rcv_staCalibration_req( S_MSG_DATA* spRecv );				/* キャリブレーション開始 */
-void ld_rcv_endCalibration_req( S_MSG_DATA* spRecv );				/* キャリブレーション終了 */
-void ld_rcv_staRunning_req( S_MSG_DATA* spRecv );					/* 走行開始 */
-void ld_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* クライアント送信：ジャイロ */
-void ld_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* クライアント送信：カラー */
+void ld_rcv_test_req( S_MSG_DATA* spRecv );						/* テスト */
+void ld_rcv_Wupchk_req( S_MSG_DATA* spRecv );					/* 起動 */
+void ld_rcv_Stop_req( S_MSG_DATA* spRecv );						/* 停止 */
+void ld_rcv_staRunning_req( S_MSG_DATA* spRecv );				/* 走行開始 */
+void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv );			/* ログ設定：ステータスログ */
+void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv );		/* ログ設定：キャリブレーションログ */
+void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv );			/* ログ設定：システムログ */
 
 /*** ldin_send.c **/
 void ld_send_test_res( S_MSG_DATA* spSend );							/* テスト */
 void ld_send_Wupchk_res( void );										/* 起動 */
 void ld_send_Stop_res( void );											/* 停止 */
-void ld_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* キャリブレーション更新 */
-void ld_send_RemoteStart_res( void );									/* リモートスタート */
-
-/*** ldin_message.c **/
-void ld_set_SerialMessage( char* cpSendData, int iSize );
-int ld_get_SerialMessage( char* cpRecvData, int iSize );
-void ld_check_SerialMessageRecv( void );
-int ld_get_MessageSize( char cCmd );
-F_LD_RECVCMDFUNCPTR ld_get_MessageRecvFunc( char cCmd );
-int ld_check_SerialMessageCommand( char cVal );
-int ld_check_SerialMessageNumber( char cVal );
-/* RecvCmdFunc */
-void ld_recvCmd_s( char* cpRecvData, int iSize );
-
-/*** ldin_log.c **/
-void ld_log_Statuslog_open( void );
-void ld_log_set_Statuslog( void );
 
 #endif	/* __LDIN_H__ */

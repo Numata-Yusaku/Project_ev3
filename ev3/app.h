@@ -9,7 +9,7 @@
 
 #define D_APP_PRIORITY_HIGH			(1)
 #define D_APP_PRIORITY_MID			(5)
-//#define D_APP_PRIORITY_LOW		(11)
+#define D_APP_PRIORITY_LOW		(11)
 
 /* ターゲットに依存する可能性のある定数の定義 */
 #define	D_APP_STACK_SIZE			(4096)	/* タスクのスタックサイズ */

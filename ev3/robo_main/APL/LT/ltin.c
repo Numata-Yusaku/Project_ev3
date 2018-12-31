@@ -135,11 +135,6 @@ void lt_init( void )
 	lt_set_Port();
 	RSI_hw_speaker_set_volume( D_LT_TONE_VOLUME );
 	
-	/* ログ */
-	lt_log_Statuslog_open();
-	lt_log_Calibratelog_open();
-	lt_log_Systemlog_open();
-	
 	return;
 }
 

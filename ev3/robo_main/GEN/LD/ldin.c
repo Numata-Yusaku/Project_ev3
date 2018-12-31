@@ -66,6 +66,11 @@ void ld_init( void )
 {
 	ld_set_Global();
 	
+	/* ログ */
+	ld_log_Statuslog_open();
+	ld_log_Calibratelog_open();
+	ld_log_Systemlog_open();
+	
 	return;
 }
 
@@ -123,10 +128,6 @@ void ld_proc( void )
 		return;
 	}
 	
-	///* ログ出力 */
-	//ld_log_set_Statuslog();
-	//printf("%d",iStatus);
-	
 	/* 状態に応じて処理実行 */
 	switch (iStatus)
 	{
@@ -163,5 +164,133 @@ void ld_proc_Ready( void )
 	/* 状態遷移 */
 	spLd->iStatus = E_LD_STATUS_IDLE;
 	
+	return;
+}
+
+void ld_log_Statuslog_open( void )
+{
+#if	(D_LD_LOGMODE_STATUS)
+	S_LD* spLd = (S_LD*)NULL;
+	FILE* fpStatusLog = (FILE*)NULL;
+	
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	fpStatusLog = fopen( D_LD_FILENAME_STATUSLOG_LT, "w");
+	if( (FILE*)NULL == fpStatusLog )
+	{
+		return;
+	}
+	
+	/* グローバルに設定 */
+	spLd->stFileInfo.fpStatusLog_Lt = fpStatusLog;
+	
+	/* ヘッダ出力 */
+#if	(__TARGET_EV3__)
+	fprintf( spLd->stFileInfo.fpStatusLog_Lt, "SysClock(msec),");
+#else	/* __TARGET_EV3__ */
+	fprintf( spLd->stFileInfo.fpStatusLog_Lt, "SysCount,");
+#endif	/* __TARGET_EV3__ */
+	fprintf( spLd->stFileInfo.fpStatusLog_Lt, "Status,");
+	
+	fprintf( spLd->stFileInfo.fpStatusLog_Lt, "\n");
+	fflush( spLd->stFileInfo.fpStatusLog_Lt );	
+#endif	/* D_LD_LOGMODE_STATUS */
+	return;
+}
+
+void ld_log_Calibratelog_open( void )
+{
+#if	(D_LD_LOGMODE_CALIBRATE)
+	S_LD* spLd = (S_LD*)NULL;
+	FILE* fpCalirateLog = (FILE*)NULL;
+	
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	fpCalirateLog = fopen( D_LD_FILENAME_CALIBRATELOG, "w");
+	if( (FILE*)NULL == fpCalirateLog )
+	{
+		return;
+	}
+	
+	/* グローバルに設定 */
+	spLd->stFileInfo.fpCalibrateLog = fpCalirateLog;
+	
+	/* ヘッダ出力 */
+	/* ジャイロ */
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "iGyro,");
+	/* 黒 */
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "stBlack.iColor,");
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "stBlack.iReflect,");
+	/* 白 */
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "stWhite.iColor,");
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "stWhite.iReflect,");
+	
+	fprintf( spLd->stFileInfo.fpCalibrateLog, "\n");
+	fflush( spLd->stFileInfo.fpCalibrateLog );
+#endif	/* D_LD_LOGMODE_CALIBRATE */
+	return;
+}
+
+void ld_log_Systemlog_open( void )
+{
+#if	(D_LD_LOGMODE_SYSTEM)
+	S_LD* spLd = (S_LD*)NULL;
+	FILE* fpSystemLog = (FILE*)NULL;
+	
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	fpSystemLog = fopen( D_LD_FILENAME_SYSTEMLOG, "w");
+	if( (FILE*)NULL == fpSystemLog )
+	{
+		return;
+	}
+	
+	/* グローバルに設定 */
+	spLd->stFileInfo.fpSystemLog = fpSystemLog;
+	
+	/* ヘッダ出力 */
+#if	(__TARGET_EV3__)
+	fprintf( spLd->stFileInfo.fpSystemLog, "SysClock(msec),");
+#else	/* __TARGET_EV3__ */
+	fprintf( spLd->stFileInfo.fpSystemLog, "SysCount,");
+#endif	/* __TARGET_EV3__ */
+	
+#if	(D_LD_LOGMODE_SYSTEM_BALANCEINFO)
+	/* バランス制御情報 */
+	fprintf( spLd->stFileInfo.fpSystemLog, "fErr_theta,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fPsi,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fThetaLpf,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fThetaRef,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fThetadotCmdLpf,");
+#endif	/* D_LD_LOGMODE_SYSTEM_BALANCEINFO */
+	
+#if	(D_LD_LOGMODE_SYSTEM_BALANCECONTROL)
+	/* バランスコントロール */
+	fprintf( spLd->stFileInfo.fpSystemLog, "fCmdForward,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fCmdTurn,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fGyro,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fGyroOffset,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fThetaMLeft,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fThetaMRight,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "fBattery,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "scPwmLeft,");
+	fprintf( spLd->stFileInfo.fpSystemLog, "scPwmRight,");
+#endif	/* D_LD_LOGMODE_SYSTEM_BALANCECONTROL */
+	
+	fprintf( spLd->stFileInfo.fpSystemLog, "\n");
+	fflush( spLd->stFileInfo.fpSystemLog );
+#endif	/* D_LD_LOGMODE_SYSTEM */
 	return;
 }

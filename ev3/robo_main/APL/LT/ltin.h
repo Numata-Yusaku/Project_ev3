@@ -38,9 +38,13 @@
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
 /* ログファイル */
-#define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
+//#define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
 #define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
 #define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
+
+#define	D_LT_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
+#define	D_LT_BUFFNUM_CALIBRATELOG				D_TASK_BUFFNUM_CALIBRATELOG
+#define	D_LT_BUFFNUM_SYSTEMLOG					D_TASK_BUFFNUM_SYSTEMLOG
 
 /*** ログ出力 ***/
 #if	(__TARGET_EV3__)
@@ -322,6 +326,45 @@ typedef struct
 	signed char		scPwmRight;			/* 右モータ PWM 出力値 */
 }S_LT_BALANCE_CONTROL;
 
+/* ステータスログ */
+typedef struct
+{
+	unsigned long ulTime;		/* 経過時刻(msec) */
+	int iStatus;				/* 状態 */
+}S_LT_LOGDATA_STATUSLOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_LT_LOGDATA_STATUSLOG		stLog[D_LT_BUFFNUM_STATUSLOG];
+}S_LT_LOGINFO_STATUSLOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_LT_CALIBRATEINFO			stLog[D_TASK_BUFFNUM_STATUSLOG];
+}S_LT_LOGINFO_CALIBRATELOG;
+
+typedef struct
+{
+	S_LT_BALANCEINFO			stBalanceInfo;
+	S_LT_BALANCE_CONTROL		stBacanceControl;
+}S_LT_LOGDATA_SYSTEMLOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_TASK_LOGDATA_SYSTEMLOG	stLog[D_TASK_BUFFNUM_STATUSLOG];
+}S_LT_LOGINFO_SYSTEMLOG;
+
+/* ログ情報 */
+typedef struct
+{
+	S_LT_LOGINFO_STATUSLOG		stStatusLog;
+	S_LT_LOGINFO_CALIBRATELOG	stCalibrateLog;
+	S_LT_LOGINFO_SYSTEMLOG		stSystemLog;
+}S_LT_LOGINFO;
+
 /* 常駐領域 */
 typedef struct
 {
@@ -331,15 +374,13 @@ typedef struct
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
 	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
-	FILE*						fpStatusLog;
-	FILE*						fpCalirateLog;
-	FILE*						fpSystemLog;
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
 	S_LT_LINETRACEINFO			stLineTraceInfo;
 	S_LT_BALANCEINFO			stBalanceInfo;					/* バランス制御情報 */
 	S_LT_BALANCE_CONTROL		stBacanceControl;
+	S_LT_LOGINFO				stLogInfo;
 }S_LT;
 
 typedef struct
@@ -448,6 +489,10 @@ void lt_send_staRunning_req( void );										/* 走行開始 */
 void lt_send_endRunning_req( void );										/* 走行停止 */
 void lt_send_setClientSendGyro_req( S_TASK_SETCLIENTSEND_GYRO* spSend );	/* クライアント送信：ジャイロ */
 void lt_send_setClientSendColor_req( void );								/* クライアント送信：カラー */
+void lt_send_setLog_StatusLog_req( S_LT_LOGINFO_STATUSLOG* spSend );		/* ログ設定：ステータスログ */
+void lt_send_setLog_CalibrateLog_req( S_LT_LOGINFO_CALIBRATELOG* spSend );	/* ログ設定：キャリブレーションログ */
+void lt_send_setLog_SystemLog_req( S_LT_LOGINFO_SYSTEMLOG* spSend );		/* ログ設定：システムログ */
+
 
 /*** ltin_timer.c ***/
 int lt_cre_Timer( int iTimerId );
@@ -462,11 +507,8 @@ void lt_balance_set_BacklashCancel( void );
 int lt_balance_set_MotorPower( void );
 
 /*** ltin_log.c **/
-void lt_log_Statuslog_open( void );
 void lt_log_set_Calibratelog( void );
 void lt_log_set_Systemlog( void );
 void lt_log_set_Statuslog( void );
-void lt_log_Calibratelog_open( void );
-void lt_log_Systemlog_open( void );
 
 #endif	/* __LTIN_H__ */
