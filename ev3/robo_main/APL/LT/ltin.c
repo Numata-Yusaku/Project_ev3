@@ -195,6 +195,9 @@ void lt_proc( void )
 	
 	/* ログ出力 */
 	lt_log_set_Statuslog();
+
+	/* デバッグ出力 */
+	RSI_lcd_draw_stringAndDec("angle", (long)((float)1e7 * debug_pre_angle), 0, 50);
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
