@@ -492,7 +492,8 @@ void lt_send_setClientSendColor_req( void );								/* クライアント送信�
 void lt_send_setLog_StatusLog_req( S_LT_LOGINFO_STATUSLOG* spSend );		/* ログ設定：ステータスログ */
 void lt_send_setLog_CalibrateLog_req( S_LT_LOGINFO_CALIBRATELOG* spSend );	/* ログ設定：キャリブレーションログ */
 void lt_send_setLog_SystemLog_req( S_LT_LOGINFO_SYSTEMLOG* spSend );		/* ログ設定：システムログ */
-
+void lt_send_staLogDump_req( void );										/* ログダンプ開始 */
+void lt_send_endLogDump_req( void );										/* ログダンプ終了 */
 
 /*** ltin_timer.c ***/
 int lt_cre_Timer( int iTimerId );

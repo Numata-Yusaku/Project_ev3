@@ -519,6 +519,10 @@ void lt_proc_Pause( void )
 
 void lt_proc_StopWait( void )
 {
+	/* ログダンプスタート */
+	
+	/* 緊急停止 */
+	lt_send_Stop_req();
 	return;
 }
 
@@ -906,8 +910,8 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	iRet = lt_balance_set_MotorPower();
 	if( D_LT_OK != iRet )
 	{
-		/* 緊急停止 */
-		lt_send_Stop_req();
+		/* 走行完全停止待ち */
+		spLt->iStatus = E_LT_STATUS_STOP_WAIT;
 	}
 	
 	/* システムログ出力 */
