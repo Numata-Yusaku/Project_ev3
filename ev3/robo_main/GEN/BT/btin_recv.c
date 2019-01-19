@@ -76,8 +76,7 @@ void bt_rcv_Wupchk_req( S_MSG_DATA* spRecv )
 	}
 	
 	/* BTタスク起動完了済 */
-	if( ( E_BT_STATUS_READY != spBt->iStatus) &&
-		( D_BT_FLAG_ON != spBt->iWupChk ) )
+	if( D_BT_FLAG_ON != spBt->iWupChk )
 	{
 		bt_send_Wupchk_res();
 		spBt->iWupChk = D_BT_FLAG_ON;

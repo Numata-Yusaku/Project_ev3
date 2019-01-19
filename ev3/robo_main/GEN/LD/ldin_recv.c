@@ -73,8 +73,7 @@ void ld_rcv_Wupchk_req( S_MSG_DATA* spRecv )
 	}
 	
 	/* LDタスク起動完了済 */
-	if( ( E_LD_STATUS_READY != spLd->iStatus) &&
-		( D_LD_FLAG_ON != spLd->iWupChk ) )
+	if( D_LD_FLAG_ON != spLd->iWupChk )
 	{
 		ld_send_Wupchk_res();
 		spLd->iWupChk = D_LD_FLAG_ON;
@@ -107,7 +106,7 @@ void ld_rcv_Stop_req( S_MSG_DATA* spRecv )
 	}
 	
 	spLd->iWupChk = D_LD_FLAG_OFF;
-		
+	
 	ld_send_Stop_res();
 	
 	spLd->iStatus = E_LD_STATUS_STOP;
