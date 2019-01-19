@@ -174,6 +174,9 @@
 :#define D_LT_PWM_ABS_MAX			(60)				/* 完全停止用モーター制御PWM絶対最大値 */
 #endif	/* ゲイン調整 */
 
+/* デバッグ用 */
+extern float debug_pre_angle;
+
 enum EN_LT_STATUS
 {
 	E_LT_STATUS_READY = 0,			/* 起動準備中 */
@@ -182,7 +185,10 @@ enum EN_LT_STATUS
 	E_LT_STATUS_CALIBLATE_TAIL,		/* キャリブレーション中(尻尾) */
 	E_LT_STATUS_CALIBLATE_BLACK,	/* キャリブレーション中(黒) */
 	E_LT_STATUS_CALIBLATE_WHITE,	/* キャリブレーション中(白) */
-	E_LT_STATUS_WAITING,			/* 待機中 */
+	E_LT_STATUS_CORRECT_ANGLE_CALIB,/* 姿勢角を調整開始初期化処理待ち */
+	E_LT_STATUS_CORRECT_ANGLE_WAIT,	/* 姿勢角を調整開始指示待ち中*/
+	E_LT_STATUS_CORRECTING_ANGLE,	/* 姿勢角を調整中*/
+//	E_LT_STATUS_WAITING,			/* 待機中 */
 	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
 	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
 	E_LT_STATUS_RUN_PAUSE,			/* 走行中(停止) */
@@ -419,7 +425,10 @@ void lt_proc_CalibrateGyro( void );
 void lt_proc_CalibrateTail( void );
 void lt_proc_CalibrateBlack( void );
 void lt_proc_CalibrateWhite( void );
-void lt_proc_Waiting( void );
+void lt_proc_Correct_Calib(void);
+void lt_proc_Correct_Wait( void );
+void lt_proc_Correcting( void );
+//void lt_proc_Waiting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_Pause( void );
@@ -451,6 +460,9 @@ int lt_get_ControlLedValiable( int iDeviation );
 /* other I/F */
 int lt_get_SonarAlert( void );
 int lt_get_StopState( void );
+
+/* per_angle_calculation */
+float calc_pre_angle( int mode );
 
 /*** ltin_recv.c **/
 /* FrameWork */

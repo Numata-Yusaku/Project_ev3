@@ -3,6 +3,9 @@
 
 S_LT* gspLt = (S_LT*)NULL;
 
+/* デバッグ用 */
+float debug_pre_angle = 0.0F;
+
 void test( signed char* aaa )
 {
 //	signed char ldp = (signed char)(&(*aaa));
@@ -219,9 +222,17 @@ void lt_proc( void )
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_proc_CalibrateWhite();
 			break;
+
+		case E_LT_STATUS_CORRECT_ANGLE_CALIB:
+			lt_proc_Correct_Calib();
+			break;
+
+		case E_LT_STATUS_CORRECT_ANGLE_WAIT:
+			lt_proc_Correct_Wait();
+			break;
 			
-		case E_LT_STATUS_WAITING:
-			lt_proc_Waiting();
+		case E_LT_STATUS_CORRECTING_ANGLE:
+			lt_proc_Correcting();
 			break;
 		
 		case E_LT_STATUS_RUN_STANDUP:
@@ -445,28 +456,111 @@ void lt_proc_CalibrateWhite( void )
 	return;
 }
 
-void lt_proc_Waiting( void )
+void lt_proc_Correct_Calib( void )
 {
-	
+
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
-	
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
+
+	/* 角度修正開始する前に車体をうつ伏せにする。うつ伏せ完了したらボタンを押す。 */
+	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_CALIB);
+
+	isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	if (D_LT_TRUE == isPressed)
+	{
+		lt_send_staRunning_req();
+		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
+	}
+
+	return;
+
+
+}
+
+void lt_proc_Correct_Wait( void )
+{
+
+	int isPressed = D_LT_FALSE;
+	S_LT* spLt = (S_LT*)NULL;
+		
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
-	
+
+	/* 角度修正開始指示を待つ。この間は角度を計算し続ける。 */
+	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
+		
 	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_send_staRunning_req();
+		spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
+	}
+		
+	return;
+
+}
+
+void lt_proc_Correcting( void ) 
+{
+
+	int isPressed = D_LT_FALSE;
+	S_LT* spLt = (S_LT*)NULL;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
+
+	/* 角度修正中 */
+	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
+
+	isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	if (D_LT_TRUE == isPressed)
+	{
+		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 	}
-	
+
 	return;
+
 }
+
+
+//void lt_proc_Waiting( void )
+//{
+//	
+//	int isPressed = D_LT_FALSE;
+//	S_LT* spLt = (S_LT*)NULL;
+//	
+//	/* グローバル領域取得 */
+//	spLt = lt_get_Global();
+//	if( (S_LT*)NULL == spLt )
+//	{
+//		return;
+//	}
+//	
+//	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
+//	if ( D_LT_TRUE == isPressed )
+//	{
+//		lt_send_staRunning_req();
+//		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+//	}
+//	
+//	return;
+//}
 
 void lt_proc_StandUp( void )
 {
@@ -842,7 +936,7 @@ void lt_set_CalibrateWhite( void )
 		TASK_sleep( D_LT_CALIBRATEEND_WAIT );
 		
 		/* 状態遷移 */
-		spLt->iStatus = E_LT_STATUS_WAITING;
+		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_CALIB;
 		
 	}
 	
@@ -1053,4 +1147,75 @@ int lt_get_StopState( void )
 	}
 	
 	return D_LT_OK;
+}
+
+float calc_pre_angle( int mode )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	S_LT_BALANCE_CONTROL* spBalanceControl = NULL;
+
+	static float pre_angle = 0.0F;
+	const float LT_Task_TimeStep = 0.004F;
+	const float angle_MAX = 3.141593F;
+	const float angle_MIN = -3.141593F;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return pre_angle;
+	}
+
+	/* バランスコントロールパラメータ取得 */
+	spBalanceControl = &(spLt->stBacanceControl);
+	if ((S_LT_BALANCE_CONTROL*)NULL == spBalanceControl)
+	{
+		return pre_angle;
+	}
+
+
+	if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_CALIB)
+	{
+		/* 角度を初期化する */
+		pre_angle = 0.0F;
+	}
+	else if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_WAIT)
+	{
+		/* 角速度を積分して角度を求める */
+		pre_angle += spBalanceControl->fGyro * LT_Task_TimeStep;
+
+		/* 安全のために角度のリミット処理 */
+		if (pre_angle > angle_MAX)
+		{
+			pre_angle = angle_MAX;
+		}
+		else if (pre_angle < angle_MIN)
+		{
+			pre_angle = angle_MIN;
+		}
+	}
+	else if (mode == (int)E_LT_STATUS_CORRECTING_ANGLE)
+	{
+		///* 角速度を積分して角度を求める */
+		//pre_angle += spBalanceControl->fGyro * LT_Task_TimeStep;
+
+		///* 安全のために角度のリミット処理 */
+		//if (pre_angle > angle_MAX)
+		//{
+		//	pre_angle = angle_MAX;
+		//}
+		//else if (pre_angle < angle_MIN)
+		//{
+		//	pre_angle = angle_MIN;
+		//}
+	}
+	else
+	{
+		/* Do Nothing */
+	}
+
+
+
+	return pre_angle;
+
 }

@@ -114,7 +114,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			lt_Caliblate();
 			break;
 			
-		case E_LT_STATUS_WAITING:
+		case E_LT_STATUS_CORRECTING_ANGLE:
 			lt_send_staRunning_req();
 			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 			printf("[Button]Gooooooooooooo!!!\n");
@@ -281,7 +281,7 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	if( E_LT_STATUS_WAITING == spLt->iStatus )
+	if(E_LT_STATUS_CORRECTING_ANGLE == spLt->iStatus )
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
