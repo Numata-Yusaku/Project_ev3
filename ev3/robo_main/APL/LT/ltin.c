@@ -455,7 +455,10 @@ void lt_proc_CalibrateWhite( void )
 	{
 		lt_Caliblate();
 
+		/* 待ちフラグを処理 */
 		button_valid = 0;
+
+		/* 待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
@@ -496,8 +499,10 @@ void lt_proc_Correct_Calib( void )
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
 
-
+		/* 待ちフラグを処理 */
 		button_valid = 0;
+
+		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 
@@ -539,8 +544,10 @@ void lt_proc_Correct_Wait( void )
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
 
-
+		/* 待ちフラグを処理 */
 		button_valid = 0;
+
+		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
@@ -567,6 +574,7 @@ void lt_proc_Correcting( void )
 
 	if (button_valid == 1)
 	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
 	}
 
@@ -579,11 +587,8 @@ void lt_proc_Correcting( void )
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
 
-		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		/* 待ちフラグを処理 */
 		button_valid = 0;
-
-		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
-		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 
 	}
 
