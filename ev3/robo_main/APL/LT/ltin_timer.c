@@ -1,6 +1,8 @@
 #include "ltin.h"
 #include "ltin_timertable.h"
 
+int button_valid = 0;
+
 /* ‹N“®’²’â */
 int lt_cre_Timer( int iTimerId )
 {
@@ -77,3 +79,22 @@ void lt_WupChkTimer_CallBack( void )
 	
 	return;
 }
+
+
+void lt_ButtonTimer_CallBack(void)
+{
+	S_LT_TIMERINFO stTimerInfo;
+
+	memset(&stTimerInfo, 0x00, sizeof(S_LT_TIMERINFO));
+
+	stTimerInfo.iTimerId = E_TIMERID_BUTTON_WAIT_TIMER;
+
+	lt_send_Timer_res(&stTimerInfo);
+
+	button_valid = 1;
+
+	return;
+
+
+}
+

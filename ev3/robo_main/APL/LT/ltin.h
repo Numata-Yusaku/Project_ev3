@@ -176,6 +176,7 @@
 
 /* デバッグ用 */
 extern float debug_pre_angle;
+extern int button_valid;
 
 enum EN_LT_STATUS
 {
@@ -511,6 +512,7 @@ int lt_cre_Timer( int iTimerId );
 int lt_del_Timer( int iTimerId );
 int lt_sta_Timer( int iTimerId );
 void lt_WupChkTimer_CallBack( void );
+void lt_ButtonTimer_CallBack( void );
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );

@@ -451,6 +451,10 @@ void lt_proc_CalibrateWhite( void )
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_Caliblate();
+
+		button_valid = 0;
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
 	
 	return;
@@ -458,6 +462,9 @@ void lt_proc_CalibrateWhite( void )
 
 void lt_proc_Correct_Calib( void )
 {
+
+	static int wait_count = 0;
+
 
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
@@ -472,11 +479,26 @@ void lt_proc_Correct_Calib( void )
 	/* 角度修正開始する前に車体をうつ伏せにする。うつ伏せ完了したらボタンを押す。 */
 	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_CALIB);
 
-	isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	if (button_valid == 1)
+	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
 	if (D_LT_TRUE == isPressed)
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+
+
+		button_valid = 0;
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+
+		
 	}
 
 	return;
@@ -499,12 +521,25 @@ void lt_proc_Correct_Wait( void )
 
 	/* 角度修正開始指示を待つ。この間は角度を計算し続ける。 */
 	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
-		
-	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
+
+	if (button_valid == 1)
+	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+
+
+		button_valid = 0;
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
 		
 	return;
@@ -527,11 +562,26 @@ void lt_proc_Correcting( void )
 	/* 角度修正中 */
 	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
 
-	isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	if (button_valid == 1)
+	{
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
 	if (D_LT_TRUE == isPressed)
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		button_valid = 0;
+
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+
 	}
 
 	return;
