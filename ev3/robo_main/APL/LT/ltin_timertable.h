@@ -9,6 +9,7 @@ S_TM_TIMERINFO T_LT_TIMER_TABLE[] =
 {
 	/* TIMERID						,	Cycle	,	CallbackFunc										*/
 	{ E_TIMERID_LT_WUPCHK			,	1000	,	lt_WupChkTimer_CallBack		},
+	{ E_TIMERID_BUTTON_WAIT_TIMER	,	1000	,	lt_ButtonTimer_CallBack		},
 };
 
 #endif	/* __LTIN_TIMERTABLE_H__ */
