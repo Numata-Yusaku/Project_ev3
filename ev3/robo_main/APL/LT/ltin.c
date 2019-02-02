@@ -197,7 +197,7 @@ void lt_proc( void )
 	lt_log_set_Statuslog();
 
 	/* デバッグ出力 */
-	RSI_lcd_draw_stringAndDec("angle", (long)((float)1e7 * debug_pre_angle), 0, 50);
+	RSI_lcd_draw_stringAndDec("angle", (long)(debug_pre_angle), 0, 50);
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
@@ -1210,23 +1210,23 @@ int lt_get_StopState( void )
 float calc_pre_angle( int mode )
 {
 	S_LT* spLt = (S_LT*)NULL;
-	S_LT_BALANCE_CONTROL* spBalanceControl = NULL;
 
 	static float pre_angle = 0.0F;
+	static int count = 0;
+
+	long tail_angle_dif = 0;
+
 	const float LT_Task_TimeStep = 0.004F;
-	const float angle_MAX = 3.141593F;
-	const float angle_MIN = -3.141593F;
+	const float angle_MAX = 180.0F;
+	const float angle_MIN = -180.0F;
+	const float tail_control_I_gain = 0.01F;
+	const float body_angle_ref = -92.0F;
+
+	static int finish_flag = 0;
 
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
-	{
-		return pre_angle;
-	}
-
-	/* バランスコントロールパラメータ取得 */
-	spBalanceControl = &(spLt->stBacanceControl);
-	if ((S_LT_BALANCE_CONTROL*)NULL == spBalanceControl)
 	{
 		return pre_angle;
 	}
@@ -1240,7 +1240,7 @@ float calc_pre_angle( int mode )
 	else if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_WAIT)
 	{
 		/* 角速度を積分して角度を求める */
-		pre_angle += spBalanceControl->fGyro * LT_Task_TimeStep;
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * LT_Task_TimeStep;
 
 		/* 安全のために角度のリミット処理 */
 		if (pre_angle > angle_MAX)
@@ -1254,18 +1254,59 @@ float calc_pre_angle( int mode )
 	}
 	else if (mode == (int)E_LT_STATUS_CORRECTING_ANGLE)
 	{
-		///* 角速度を積分して角度を求める */
-		//pre_angle += spBalanceControl->fGyro * LT_Task_TimeStep;
+		/* 角速度を積分して角度を求める */
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * LT_Task_TimeStep;
 
-		///* 安全のために角度のリミット処理 */
-		//if (pre_angle > angle_MAX)
-		//{
-		//	pre_angle = angle_MAX;
-		//}
-		//else if (pre_angle < angle_MIN)
-		//{
-		//	pre_angle = angle_MIN;
-		//}
+		/* 安全のために角度のリミット処理 */
+		if (pre_angle > angle_MAX)
+		{
+			pre_angle = angle_MAX;
+		}
+		else if (pre_angle < angle_MIN)
+		{
+			pre_angle = angle_MIN;
+		}
+
+		/* 尻尾の角度を調整する */
+		/* 制御量を計算する */
+		//tail_angle_dif = tail_control_I_gain * LT_Task_TimeStep * (body_angle_ref - pre_angle);
+
+		if ( (body_angle_ref - (long)pre_angle > 0) && 
+			 (finish_flag == 0)
+			)
+		{
+			/* 傾きに応じて尻尾を動かす */
+			if (pre_angle < -120)
+			{
+				tail_angle_dif = 10;
+			}
+			else if (pre_angle < -110)
+			{
+				tail_angle_dif = 6;
+			}
+			else if (pre_angle < -100)
+			{
+				tail_angle_dif = 2;
+			}
+			else
+			{
+				tail_angle_dif = 1;
+			}
+			
+		}
+		else
+		{
+			finish_flag = 1;
+		}
+
+
+		count++;
+		if (count >= 100)
+		{
+			RSI_motor_rotate(spLt->stPort.iMotor.iTail, tail_angle_dif, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE);
+			count = 0;
+		}
+
 	}
 	else
 	{

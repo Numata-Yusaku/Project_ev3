@@ -81,7 +81,7 @@
 #define	D_LT_TONE_DURATION				(100)	/* 音響継続時間 */
 
 /* 尻尾 */
-#define	D_LT_TAIL_CALIBRATE_DEGREES		(88)	/* 尻尾回転角度 */
+#define	D_LT_TAIL_CALIBRATE_DEGREES		(60)	/* 尻尾回転角度 */
 #define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* 尻尾回転速度 */
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
