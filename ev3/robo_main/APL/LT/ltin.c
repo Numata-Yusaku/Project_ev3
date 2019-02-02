@@ -3,9 +3,6 @@
 
 S_LT* gspLt = (S_LT*)NULL;
 
-/* デバッグ用 */
-float debug_pre_angle = 0.0F;
-
 void test( signed char* aaa )
 {
 //	signed char ldp = (signed char)(&(*aaa));
@@ -196,8 +193,6 @@ void lt_proc( void )
 	/* ログ出力 */
 	lt_log_set_Statuslog();
 
-	/* デバッグ出力 */
-	RSI_lcd_draw_stringAndDec("angle", (long)(debug_pre_angle), 0, 50);
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
@@ -456,7 +451,7 @@ void lt_proc_CalibrateWhite( void )
 		lt_Caliblate();
 
 		/* 待ちフラグを処理 */
-		button_valid = 0;
+		spLt->button_valid = D_LT_FALSE;
 
 		/* 待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
@@ -485,7 +480,7 @@ void lt_proc_Correct_Calib( void )
 	/* 角度修正開始する前に車体をうつ伏せにする。うつ伏せ完了したらボタンを押す。 */
 	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_CALIB);
 
-	if (button_valid == 1)
+	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
@@ -497,10 +492,10 @@ void lt_proc_Correct_Calib( void )
 		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
 
 		/* 設定完了通知 */
-		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_F4, D_LT_TONE_DURATION);
 
 		/* 待ちフラグを処理 */
-		button_valid = 0;
+		spLt->button_valid = D_LT_FALSE;
 
 		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
@@ -528,9 +523,9 @@ void lt_proc_Correct_Wait( void )
 	}
 
 	/* 角度修正開始指示を待つ。この間は角度を計算し続ける。 */
-	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
+	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
 
-	if (button_valid == 1)
+	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
@@ -542,10 +537,10 @@ void lt_proc_Correct_Wait( void )
 		spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
 
 		/* 設定完了通知 */
-		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_G4, D_LT_TONE_DURATION);
 
 		/* 待ちフラグを処理 */
-		button_valid = 0;
+		spLt->button_valid = D_LT_FALSE;
 
 		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
@@ -570,9 +565,9 @@ void lt_proc_Correcting( void )
 	}
 
 	/* 角度修正中 */
-	debug_pre_angle = calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
+	calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
 
-	if (button_valid == 1)
+	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
@@ -585,10 +580,10 @@ void lt_proc_Correcting( void )
 
 
 		/* 設定完了通知 */
-		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION);
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_A4, D_LT_TONE_DURATION);
 
 		/* 待ちフラグを処理 */
-		button_valid = 0;
+		spLt->button_valid = D_LT_FALSE;
 
 	}
 
@@ -596,29 +591,6 @@ void lt_proc_Correcting( void )
 
 }
 
-
-//void lt_proc_Waiting( void )
-//{
-//	
-//	int isPressed = D_LT_FALSE;
-//	S_LT* spLt = (S_LT*)NULL;
-//	
-//	/* グローバル領域取得 */
-//	spLt = lt_get_Global();
-//	if( (S_LT*)NULL == spLt )
-//	{
-//		return;
-//	}
-//	
-//	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
-//	if ( D_LT_TRUE == isPressed )
-//	{
-//		lt_send_staRunning_req();
-//		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
-//	}
-//	
-//	return;
-//}
 
 void lt_proc_StandUp( void )
 {
@@ -1212,17 +1184,15 @@ float calc_pre_angle( int mode )
 	S_LT* spLt = (S_LT*)NULL;
 
 	static float pre_angle = 0.0F;
-	static int count = 0;
+	static int rough_count = 0;
+	static unsigned char finish_standing = D_LT_FALSE;
+
+	const long angle_range[D_LT_ANGLE_RANGE_NUM] = D_LT_ANGLE_RANGE;
+	const long angle_dif_map[D_LT_ANGLE_DIF_MAP_NUM] = D_LT_ANGLE_DIF_MAP;
 
 	long tail_angle_dif = 0;
 
-	const float LT_Task_TimeStep = 0.004F;
-	const float angle_MAX = 180.0F;
-	const float angle_MIN = -180.0F;
-	const float tail_control_I_gain = 0.01F;
-	const float body_angle_ref = -92.0F;
 
-	static int finish_flag = 0;
 
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -1240,71 +1210,69 @@ float calc_pre_angle( int mode )
 	else if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_WAIT)
 	{
 		/* 角速度を積分して角度を求める */
-		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * LT_Task_TimeStep;
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * D_LT_TASK_TIME_STEP;
 
 		/* 安全のために角度のリミット処理 */
-		if (pre_angle > angle_MAX)
+		if (pre_angle > D_LT_PRE_ANGLE_MAX)
 		{
-			pre_angle = angle_MAX;
+			pre_angle = D_LT_PRE_ANGLE_MAX;
 		}
-		else if (pre_angle < angle_MIN)
+		else if (pre_angle < D_LT_PRE_ANGLE_MIN)
 		{
-			pre_angle = angle_MIN;
+			pre_angle = D_LT_PRE_ANGLE_MIN;
 		}
 	}
 	else if (mode == (int)E_LT_STATUS_CORRECTING_ANGLE)
 	{
 		/* 角速度を積分して角度を求める */
-		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * LT_Task_TimeStep;
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * D_LT_TASK_TIME_STEP;
 
 		/* 安全のために角度のリミット処理 */
-		if (pre_angle > angle_MAX)
+		if (pre_angle > D_LT_PRE_ANGLE_MAX)
 		{
-			pre_angle = angle_MAX;
+			pre_angle = D_LT_PRE_ANGLE_MAX;
 		}
-		else if (pre_angle < angle_MIN)
+		else if (pre_angle < D_LT_PRE_ANGLE_MIN)
 		{
-			pre_angle = angle_MIN;
+			pre_angle = D_LT_PRE_ANGLE_MIN;
 		}
 
 		/* 尻尾の角度を調整する */
 		/* 制御量を計算する */
-		//tail_angle_dif = tail_control_I_gain * LT_Task_TimeStep * (body_angle_ref - pre_angle);
-
-		if ( (body_angle_ref - (long)pre_angle > 0) && 
-			 (finish_flag == 0)
+		if ( (D_LT_STANDING_ANGLE_REF - (long)pre_angle > 0) && 
+			 (finish_standing == D_LT_FALSE)
 			)
 		{
-			/* 傾きに応じて尻尾を動かす */
-			if (pre_angle < -120)
+			/* 目標値に対して正の差分があるとき、傾きに応じて尻尾を動かす */
+			if		(pre_angle < angle_range[0])
 			{
-				tail_angle_dif = 10;
+				tail_angle_dif = angle_dif_map[0];
 			}
-			else if (pre_angle < -110)
+			else if (pre_angle < angle_range[1])
 			{
-				tail_angle_dif = 6;
+				tail_angle_dif = angle_dif_map[1];
 			}
-			else if (pre_angle < -100)
+			else if (pre_angle < angle_range[2])
 			{
-				tail_angle_dif = 2;
+				tail_angle_dif = angle_dif_map[2];
 			}
 			else
 			{
-				tail_angle_dif = 1;
+				tail_angle_dif = angle_dif_map[3];
 			}
 			
 		}
 		else
 		{
-			finish_flag = 1;
+			finish_standing = D_LT_TRUE;
 		}
 
-
-		count++;
-		if (count >= 100)
+		/* 制御指示を送る。4ms周期で送るとトルクが抜けてしまうので、少しずつ送る */
+		rough_count++;
+		if (rough_count >= D_LT_ROUGH_COUNT_MAX)
 		{
 			RSI_motor_rotate(spLt->stPort.iMotor.iTail, tail_angle_dif, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE);
-			count = 0;
+			rough_count = 0;
 		}
 
 	}

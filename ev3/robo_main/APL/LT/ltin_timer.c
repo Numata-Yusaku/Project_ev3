@@ -1,7 +1,6 @@
 #include "ltin.h"
 #include "ltin_timertable.h"
 
-int button_valid = 0;
 
 /* 起動調停 */
 int lt_cre_Timer( int iTimerId )
@@ -84,6 +83,14 @@ void lt_WupChkTimer_CallBack( void )
 void lt_ButtonTimer_CallBack(void)
 {
 	S_LT_TIMERINFO stTimerInfo;
+	S_LT* spLt = (S_LT*)NULL;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
 
 	memset(&stTimerInfo, 0x00, sizeof(S_LT_TIMERINFO));
 
@@ -91,7 +98,7 @@ void lt_ButtonTimer_CallBack(void)
 
 	lt_send_Timer_res(&stTimerInfo);
 
-	button_valid = 1;
+	spLt->button_valid = D_LT_TRUE;
 
 	return;
 

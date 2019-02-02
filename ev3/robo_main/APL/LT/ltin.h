@@ -90,6 +90,17 @@
 
 #define	D_LT_RECVDATA_SIZE				(4)		/* 受信データサイズ */
 
+/* 尻尾自動制御 */
+#define D_LT_TASK_TIME_STEP					(0.004F)	/* LTタスクのタイムステップ */
+#define D_LT_PRE_ANGLE_MAX					(180.0F)	/* pre_angleの最大値 */
+#define D_LT_PRE_ANGLE_MIN					(-180.0F)	/* pre_angleの最小値 */
+#define D_LT_STANDING_ANGLE_REF				(-92)		/* 直立したとみなす角度 */
+#define D_LT_ROUGH_COUNT_MAX				(100)		/* 指令値を送る頻度を決めるカウンターの最大値 */
+#define D_LT_ANGLE_RANGE					{-120, -110, -100}
+#define D_LT_ANGLE_RANGE_NUM				(3)
+#define D_LT_ANGLE_DIF_MAP					{10, 6, 2, 1}
+#define D_LT_ANGLE_DIF_MAP_NUM				(4)
+
 /* 色 */
 #define	D_LT_COLORSENSOR_REFLECT_BLACK		(0)		/* 黒 */
 #define	D_LT_COLORSENSOR_REFLECT_WHITE		(55)	/* 白 */
@@ -174,9 +185,6 @@
 :#define D_LT_PWM_ABS_MAX			(60)				/* 完全停止用モーター制御PWM絶対最大値 */
 #endif	/* ゲイン調整 */
 
-/* デバッグ用 */
-extern float debug_pre_angle;
-extern int button_valid;
 
 enum EN_LT_STATUS
 {
@@ -381,6 +389,7 @@ typedef struct
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
 	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
+	unsigned char				button_valid;					/* ボタンを押したとき、連続して次の状態に行かないようにフラグを管理する */
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
@@ -429,7 +438,6 @@ void lt_proc_CalibrateWhite( void );
 void lt_proc_Correct_Calib(void);
 void lt_proc_Correct_Wait( void );
 void lt_proc_Correcting( void );
-//void lt_proc_Waiting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_Pause( void );
