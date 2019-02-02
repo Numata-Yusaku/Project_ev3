@@ -125,6 +125,7 @@
 #define	D_LT_TURN_RUN						(1)		/* 旋回する */
 #define	D_LT_TURN_RIGHT						(-20)	/* 旋回する：右旋回 */
 #define	D_LT_TURN_LEFT						(20)	/* 旋回する：右旋回 */
+#define D_LT_TURN_START_WAIT				(250)	/* 旋回制御を開始するまでの待ちカウント */
 
 #define rt_SATURATE(sig,ll,ul)	(((sig) >= (ul)) ? (ul) : (((sig) <= (ll)) ? (ll) : (sig)) )
 

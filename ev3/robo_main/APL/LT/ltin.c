@@ -621,7 +621,7 @@ void lt_proc_StandUp( void )
 	
 	/* 状態遷移 */
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
-	
+
 	return;
 }
 
@@ -979,6 +979,8 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	int iRet = D_LT_NG;
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	S_LT* spLt = (S_LT*)NULL;
+
+	static int control_wait_count = 0;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -1004,12 +1006,21 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	{
 		/* 前進指令値取得 */
 		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
-		
+
 		/* 旋回指令値取得 */
-		if( D_LT_TURN_STOP != iTurnMode )
+		if (control_wait_count >= D_LT_TURN_START_WAIT)
 		{
-			spLt->stBacanceControl.fCmdTurn = (float)lt_get_RunningTurnDir();
+			if (D_LT_TURN_STOP != iTurnMode)
+			{
+				spLt->stBacanceControl.fCmdTurn = (float)lt_get_RunningTurnDir();
+			}
 		}
+		else
+		{
+			control_wait_count++;
+		}
+
+
 	}
 	
 	spLt->stBacanceControl.fThetaMLeft = (float)RSI_motor_get_counts( spLt->stPort.iMotor.iLeftWheel );
