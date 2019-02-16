@@ -192,6 +192,7 @@ void lt_proc( void )
 	
 	/* ログ出力 */
 	lt_log_set_Statuslog();
+
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
@@ -219,9 +220,17 @@ void lt_proc( void )
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_proc_CalibrateWhite();
 			break;
+
+		case E_LT_STATUS_CORRECT_ANGLE_CALIB:
+			lt_proc_Correct_Calib();
+			break;
+
+		case E_LT_STATUS_CORRECT_ANGLE_WAIT:
+			lt_proc_Correct_Wait();
+			break;
 			
-		case E_LT_STATUS_WAITING:
-			lt_proc_Waiting();
+		case E_LT_STATUS_CORRECTING_ANGLE:
+			lt_proc_Correcting();
 			break;
 		
 		case E_LT_STATUS_RUN_STANDUP:
@@ -440,33 +449,148 @@ void lt_proc_CalibrateWhite( void )
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_Caliblate();
+
+		/* 待ちフラグを処理 */
+		spLt->button_valid = D_LT_FALSE;
+
+		/* 待ちタイマーを起動 */
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
 	
 	return;
 }
 
-void lt_proc_Waiting( void )
+void lt_proc_Correct_Calib( void )
 {
-	
+
+	static int wait_count = 0;
+
+
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
-	
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
+
+	/* 角度修正開始する前に車体をうつ伏せにする。うつ伏せ完了したらボタンを押す。 */
+	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_CALIB);
+
+	if (spLt->button_valid == D_LT_TRUE)
+	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
+	if (D_LT_TRUE == isPressed)
+	{
+		lt_send_staRunning_req();
+		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_F4, D_LT_TONE_DURATION);
+
+		/* 待ちフラグを処理 */
+		spLt->button_valid = D_LT_FALSE;
+
+		/* 次の待ちタイマーを起動 */
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+
+		
+	}
+
+	return;
+
+
+}
+
+void lt_proc_Correct_Wait( void )
+{
+
+	int isPressed = D_LT_FALSE;
+	S_LT* spLt = (S_LT*)NULL;
+		
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
 	{
 		return;
 	}
-	
-	isPressed = RSI_touch_sensor_is_pressed( spLt->stPort.iSensor.iTouch );
+
+	/* 角度修正開始指示を待つ。この間は角度を計算し続ける。 */
+	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
+
+	if (spLt->button_valid == D_LT_TRUE)
+	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_send_staRunning_req();
-		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+		spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_G4, D_LT_TONE_DURATION);
+
+		/* 待ちフラグを処理 */
+		spLt->button_valid = D_LT_FALSE;
+
+		/* 次の待ちタイマーを起動 */
+		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
-	
+		
 	return;
+
 }
+
+void lt_proc_Correcting( void ) 
+{
+
+	int isPressed = D_LT_FALSE;
+	S_LT* spLt = (S_LT*)NULL;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
+
+	/* 角度修正中 */
+	calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
+
+	if (spLt->button_valid == D_LT_TRUE)
+	{
+		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
+		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
+	}
+
+	if (D_LT_TRUE == isPressed)
+	{
+		lt_send_staRunning_req();
+		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
+
+
+		/* 設定完了通知 */
+		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_A4, D_LT_TONE_DURATION);
+
+		/* 待ちフラグを処理 */
+		spLt->button_valid = D_LT_FALSE;
+
+	}
+
+	return;
+
+}
+
 
 void lt_proc_StandUp( void )
 {
@@ -497,7 +621,7 @@ void lt_proc_StandUp( void )
 	
 	/* 状態遷移 */
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
-	
+
 	return;
 }
 
@@ -846,7 +970,7 @@ void lt_set_CalibrateWhite( void )
 		TASK_sleep( D_LT_CALIBRATEEND_WAIT );
 		
 		/* 状態遷移 */
-		spLt->iStatus = E_LT_STATUS_WAITING;
+		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_CALIB;
 		
 	}
 	
@@ -859,6 +983,8 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	int iRet = D_LT_NG;
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	S_LT* spLt = (S_LT*)NULL;
+
+	static int control_wait_count = 0;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -884,12 +1010,21 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	{
 		/* 前進指令値取得 */
 		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
-		
+
 		/* 旋回指令値取得 */
-		if( D_LT_TURN_STOP != iTurnMode )
+		if (control_wait_count >= D_LT_TURN_START_WAIT)
 		{
-			spLt->stBacanceControl.fCmdTurn = (float)lt_get_RunningTurnDir();
+			if (D_LT_TURN_STOP != iTurnMode)
+			{
+				spLt->stBacanceControl.fCmdTurn = (float)lt_get_RunningTurnDir();
+			}
 		}
+		else
+		{
+			control_wait_count++;
+		}
+
+
 	}
 	
 	spLt->stBacanceControl.fThetaMLeft = (float)RSI_motor_get_counts( spLt->stPort.iMotor.iLeftWheel );
@@ -1057,4 +1192,112 @@ int lt_get_StopState( void )
 	}
 	
 	return D_LT_OK;
+}
+
+float calc_pre_angle( int mode )
+{
+	S_LT* spLt = (S_LT*)NULL;
+
+	static float pre_angle = 0.0F;
+	static int rough_count = 0;
+	static unsigned char finish_standing = D_LT_FALSE;
+
+	const long angle_range[D_LT_ANGLE_RANGE_NUM] = D_LT_ANGLE_RANGE;
+	const long angle_dif_map[D_LT_ANGLE_DIF_MAP_NUM] = D_LT_ANGLE_DIF_MAP;
+
+	long tail_angle_dif = 0;
+
+
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return pre_angle;
+	}
+
+
+	if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_CALIB)
+	{
+		/* 角度を初期化する */
+		pre_angle = 0.0F;
+	}
+	else if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_WAIT)
+	{
+		/* 角速度を積分して角度を求める */
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * D_LT_TASK_TIME_STEP;
+
+		/* 安全のために角度のリミット処理 */
+		if (pre_angle > D_LT_PRE_ANGLE_MAX)
+		{
+			pre_angle = D_LT_PRE_ANGLE_MAX;
+		}
+		else if (pre_angle < D_LT_PRE_ANGLE_MIN)
+		{
+			pre_angle = D_LT_PRE_ANGLE_MIN;
+		}
+	}
+	else if (mode == (int)E_LT_STATUS_CORRECTING_ANGLE)
+	{
+		/* 角速度を積分して角度を求める */
+		pre_angle += (float)RSI_gyro_sensor_get_rate(spLt->stPort.iSensor.iGyro) * D_LT_TASK_TIME_STEP;
+
+		/* 安全のために角度のリミット処理 */
+		if (pre_angle > D_LT_PRE_ANGLE_MAX)
+		{
+			pre_angle = D_LT_PRE_ANGLE_MAX;
+		}
+		else if (pre_angle < D_LT_PRE_ANGLE_MIN)
+		{
+			pre_angle = D_LT_PRE_ANGLE_MIN;
+		}
+
+		/* 尻尾の角度を調整する */
+		/* 制御量を計算する */
+		if ( (D_LT_STANDING_ANGLE_REF - (long)pre_angle > 0) && 
+			 (finish_standing == D_LT_FALSE)
+			)
+		{
+			/* 目標値に対して正の差分があるとき、傾きに応じて尻尾を動かす */
+			if		(pre_angle < angle_range[0])
+			{
+				tail_angle_dif = angle_dif_map[0];
+			}
+			else if (pre_angle < angle_range[1])
+			{
+				tail_angle_dif = angle_dif_map[1];
+			}
+			else if (pre_angle < angle_range[2])
+			{
+				tail_angle_dif = angle_dif_map[2];
+			}
+			else
+			{
+				tail_angle_dif = angle_dif_map[3];
+			}
+			
+		}
+		else
+		{
+			finish_standing = D_LT_TRUE;
+		}
+
+		/* 制御指示を送る。4ms周期で送るとトルクが抜けてしまうので、少しずつ送る */
+		rough_count++;
+		if (rough_count >= D_LT_ROUGH_COUNT_MAX)
+		{
+			RSI_motor_rotate(spLt->stPort.iMotor.iTail, tail_angle_dif, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE);
+			rough_count = 0;
+		}
+
+	}
+	else
+	{
+		/* Do Nothing */
+	}
+
+
+
+	return pre_angle;
+
 }

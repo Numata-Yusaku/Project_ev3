@@ -81,7 +81,7 @@
 #define	D_LT_TONE_DURATION				(100)	/* 音響継続時間 */
 
 /* 尻尾 */
-#define	D_LT_TAIL_CALIBRATE_DEGREES		(88)	/* 尻尾回転角度 */
+#define	D_LT_TAIL_CALIBRATE_DEGREES		(60)	/* 尻尾回転角度 */
 #define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* 尻尾回転速度 */
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
@@ -89,6 +89,17 @@
 #define	D_LT_TAIL_STANDUP_SPEED			(50)
 
 #define	D_LT_RECVDATA_SIZE				(4)		/* 受信データサイズ */
+
+/* 尻尾自動制御 */
+#define D_LT_TASK_TIME_STEP					(0.004F)	/* LTタスクのタイムステップ */
+#define D_LT_PRE_ANGLE_MAX					(180.0F)	/* pre_angleの最大値 */
+#define D_LT_PRE_ANGLE_MIN					(-180.0F)	/* pre_angleの最小値 */
+#define D_LT_STANDING_ANGLE_REF				(-92)		/* 直立したとみなす角度 */
+#define D_LT_ROUGH_COUNT_MAX				(100)		/* 指令値を送る頻度を決めるカウンターの最大値 */
+#define D_LT_ANGLE_RANGE					{-120, -110, -100}
+#define D_LT_ANGLE_RANGE_NUM				(3)
+#define D_LT_ANGLE_DIF_MAP					{10, 6, 2, 1}
+#define D_LT_ANGLE_DIF_MAP_NUM				(4)
 
 /* 色 */
 #define	D_LT_COLORSENSOR_REFLECT_BLACK		(0)		/* 黒 */
@@ -114,6 +125,7 @@
 #define	D_LT_TURN_RUN						(1)		/* 旋回する */
 #define	D_LT_TURN_RIGHT						(-20)	/* 旋回する：右旋回 */
 #define	D_LT_TURN_LEFT						(20)	/* 旋回する：右旋回 */
+#define D_LT_TURN_START_WAIT				(250)	/* 旋回制御を開始するまでの待ちカウント */
 
 #define rt_SATURATE(sig,ll,ul)	(((sig) >= (ul)) ? (ul) : (((sig) <= (ll)) ? (ll) : (sig)) )
 
@@ -128,7 +140,7 @@
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
 
-#define D_LT_KPID_EDGE_FACTOR	(-1)	/* ライントレース方向 1 or -1 */
+#define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
 #define D_LT_KPID_TURN_LIMIT	(100)	/* 旋回指示値 限界値 */
 
 /*** バランス制御値 ***/
@@ -174,6 +186,7 @@
 :#define D_LT_PWM_ABS_MAX			(60)				/* 完全停止用モーター制御PWM絶対最大値 */
 #endif	/* ゲイン調整 */
 
+
 enum EN_LT_STATUS
 {
 	E_LT_STATUS_READY = 0,			/* 起動準備中 */
@@ -182,7 +195,10 @@ enum EN_LT_STATUS
 	E_LT_STATUS_CALIBLATE_TAIL,		/* キャリブレーション中(尻尾) */
 	E_LT_STATUS_CALIBLATE_BLACK,	/* キャリブレーション中(黒) */
 	E_LT_STATUS_CALIBLATE_WHITE,	/* キャリブレーション中(白) */
-	E_LT_STATUS_WAITING,			/* 待機中 */
+	E_LT_STATUS_CORRECT_ANGLE_CALIB,/* 姿勢角を調整開始初期化処理待ち */
+	E_LT_STATUS_CORRECT_ANGLE_WAIT,	/* 姿勢角を調整開始指示待ち中*/
+	E_LT_STATUS_CORRECTING_ANGLE,	/* 姿勢角を調整中*/
+//	E_LT_STATUS_WAITING,			/* 待機中 */
 	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
 	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
 	E_LT_STATUS_RUN_PAUSE,			/* 走行中(停止) */
@@ -374,6 +390,7 @@ typedef struct
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
 	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
+	unsigned char				button_valid;					/* ボタンを押したとき、連続して次の状態に行かないようにフラグを管理する */
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
@@ -419,7 +436,9 @@ void lt_proc_CalibrateGyro( void );
 void lt_proc_CalibrateTail( void );
 void lt_proc_CalibrateBlack( void );
 void lt_proc_CalibrateWhite( void );
-void lt_proc_Waiting( void );
+void lt_proc_Correct_Calib(void);
+void lt_proc_Correct_Wait( void );
+void lt_proc_Correcting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_Pause( void );
@@ -451,6 +470,9 @@ int lt_get_ControlLedValiable( int iDeviation );
 /* other I/F */
 int lt_get_SonarAlert( void );
 int lt_get_StopState( void );
+
+/* per_angle_calculation */
+float calc_pre_angle( int mode );
 
 /*** ltin_recv.c **/
 /* FrameWork */
@@ -500,6 +522,7 @@ int lt_cre_Timer( int iTimerId );
 int lt_del_Timer( int iTimerId );
 int lt_sta_Timer( int iTimerId );
 void lt_WupChkTimer_CallBack( void );
+void lt_ButtonTimer_CallBack( void );
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );
