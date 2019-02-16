@@ -67,9 +67,9 @@ void ld_init( void )
 	ld_set_Global();
 	
 	/* ログ */
-	ld_log_Statuslog_open();
-	ld_log_Calibratelog_open();
-	ld_log_Systemlog_open();
+	//ld_log_Statuslog_open();
+	//ld_log_Calibratelog_open();
+	//ld_log_Systemlog_open();
 	
 	return;
 }
@@ -143,6 +143,10 @@ void ld_proc( void )
 			/* 処理しない */
 			break;
 		
+		case E_LD_STATUS_LOGDUMP:
+			ld_proc_LogDump();
+			break;
+		
 		default:
 			break;
 	}
@@ -163,6 +167,23 @@ void ld_proc_Ready( void )
 	
 	/* 状態遷移 */
 	spLd->iStatus = E_LD_STATUS_IDLE;
+	
+	return;
+}
+
+void ld_proc_LogDump( void )
+{
+	S_LD* spLd = (S_LD*)NULL;
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	/* ログダンプ状態更新通知 */
+	ld_send_chgLogDump_res();
 	
 	return;
 }

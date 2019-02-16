@@ -467,6 +467,9 @@ void lt_Running( int iForwardLevel, int iTurnMode );
 int lt_get_RunningTurnDir( void );
 int lt_get_ControlLedValiable( int iDeviation );
 
+/* stop */
+void lt_RunStop( void );
+
 /* other I/F */
 int lt_get_SonarAlert( void );
 int lt_get_StopState( void );
@@ -493,6 +496,9 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* 起動 */
 void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* 停止 */
 void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* キャリブレーション更新 */
 void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート */
+void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv );
+void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv );
+void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv );
 
 /*** ltin_send.c **/
 void lt_send_test_res( S_MSG_DATA* spSend );								/* テスト */
@@ -523,6 +529,7 @@ int lt_del_Timer( int iTimerId );
 int lt_sta_Timer( int iTimerId );
 void lt_WupChkTimer_CallBack( void );
 void lt_ButtonTimer_CallBack( void );
+void lt_LogDumpTimer_CallBack( void );
 
 /*** ltin_barance.c **/
 void lt_balance_init( void );

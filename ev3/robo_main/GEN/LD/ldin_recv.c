@@ -161,6 +161,11 @@ void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
 	iLogNum = psRecvPara->iLogNum;
 	memcpy( &stLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
 	
+	//printf("%d\n",stLogData[0].iStatus );
+	//printf("%d\n",stLogData[100].iStatus );
+	//printf("%d\n",stLogData[500].iStatus );
+	//printf("%d\n",stLogData[1000].iStatus );
+
 //	/* ログ出力先指定 */
 //	switch( iSendTaskId )
 //	{
@@ -200,5 +205,66 @@ void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv )
 void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
 {
 	printf("recv:SystemLog\n");
+	return;
+}
+
+void ld_rcv_staLogDump_req( S_MSG_DATA* spRecv )
+{
+	S_LD* spLd = (S_LD*)NULL;
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	/* ログダンプ状態に遷移 */
+	spLd->iStatus = E_LD_STATUS_LOGDUMP;
+	
+	/* ファイルオープン */
+	ld_log_Statuslog_open();
+	ld_log_Calibratelog_open();
+	ld_log_Systemlog_open();
+	
+	/* ログダンプ開始応答 */
+	ld_send_staLogDump_res();
+	
+	return;
+}
+
+void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv )
+{
+	S_LD* spLd = (S_LD*)NULL;
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return;
+	}
+	
+	/* ファイルクローズ */
+	if( (FILE*)NULL != spLd->stFileInfo.fpStatusLog_Lt )
+	{
+		fclose( spLd->stFileInfo.fpStatusLog_Lt );
+		spLd->stFileInfo.fpStatusLog_Lt = (FILE*)NULL;
+	}
+	
+	if( (FILE*)NULL != spLd->stFileInfo.fpCalibrateLog )
+	{
+		fclose( spLd->stFileInfo.fpCalibrateLog );
+		spLd->stFileInfo.fpCalibrateLog = (FILE*)NULL;
+	}
+	
+	if( (FILE*)NULL != spLd->stFileInfo.fpSystemLog )
+	{
+		fclose( spLd->stFileInfo.fpSystemLog );
+		spLd->stFileInfo.fpSystemLog = (FILE*)NULL;
+	}
+	
+	/* ログダンプ終了応答 */
+	ld_send_endLogDump_res();
+	
 	return;
 }

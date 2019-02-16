@@ -187,11 +187,6 @@ int lt_balance_set_MotorPower( void )
 		if( D_LT_FALLDOWNTIME == spLt->iFallDownCount )
 		{
 			/* タイムアウトで走行停止*/
-			RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
-			RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
-			
-			spLt->iStatus = E_LT_STATUS_STOP_WAIT;
-			
 			return D_LT_NG;
 		}
 	}

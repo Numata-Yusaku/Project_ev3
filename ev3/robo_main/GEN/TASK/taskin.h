@@ -11,7 +11,7 @@
 #define	D_TASK_MSGID_INVALID		(0x00000000)
 
 /* ログ出力 */
-#define	D_TASK_FILENAME_MSGLOG		"OutData/msglog.csv"
+#define	D_TASK_FILENAME_MSGLOG		"OutData/[TASK]msglog.csv"
 
 #if	(__TARGET_EV3__)
 #define	D_TASK_LOGMODE				(D_TASK_MODE_OFF)

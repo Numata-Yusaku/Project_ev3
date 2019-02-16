@@ -14,6 +14,8 @@ S_LD_RECV_TABLE T_LD_RECV_TABLE[] =
 	{ E_MSGID_LD_SETLOG_STATUSLOG_REQ		,	ld_rcv_setLog_StatusLog_req			},
 	{ E_MSGID_LD_SETLOG_CALIBRATELOG_REQ	,	ld_rcv_setLog_CalibrateLog_req		},
 	{ E_MSGID_LD_SETLOG_SYSTEMLOG_REQ		,	ld_rcv_setLog_SystemLog_req			},
+	{ E_MSGID_LD_STALOGDUMP_REQ				,	ld_rcv_staLogDump_req				},
+	{ E_MSGID_LD_ENDLOGDUMP_REQ				,	ld_rcv_endLogDump_req				},
 
 	/* ここより上に定義すること */
 	{ E_MSGID_LD_TEST_REQ					,	ld_rcv_test_req						},

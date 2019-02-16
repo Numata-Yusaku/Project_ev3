@@ -65,6 +65,14 @@ void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
 	int iRetry = 0;
 	int iTimerId = 0;
 	S_LT_TIMERINFO* spTimerInfo = (S_LT_TIMERINFO*)NULL;
+	S_LT* spLt = (S_LT*)NULL;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return;
+	}
 	
 	spTimerInfo = (S_LT_TIMERINFO*)spRecv->vpPara;
 	iTimerId = spTimerInfo->iTimerId;
@@ -85,6 +93,16 @@ void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
 				lt_send_Wupchk_req_Retry();
 			}
 			
+			break;
+		
+		case E_TIMERID_LT_LOGDUMP:
+				/* タイマ削除 */
+				lt_del_Timer( E_TIMERID_LT_LOGDUMP );
+				
+				/* 停止 */
+				lt_send_Stop_req();
+				spLt->iStatus = E_LT_STATUS_STOP;
+				
 			break;
 		
 		default:
@@ -114,10 +132,26 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			lt_Caliblate();
 			break;
 			
+		case E_LT_STATUS_CORRECT_ANGLE_CALIB:
+#if (__VC_DEBUG__)
+			printf("ANGLE_WAIT...\n");
+#endif /* __VC_DEBUG__ */
+			spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
+			break;
+			
+		case E_LT_STATUS_CORRECT_ANGLE_WAIT:
+			spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
+#if (__VC_DEBUG__)
+			printf("Goto The Start Ready ...\n");
+#endif /* __VC_DEBUG__ */
+			break;
+			
 		case E_LT_STATUS_CORRECTING_ANGLE:
 			lt_send_staRunning_req();
 			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
-			printf("[Button]Gooooooooooooo!!!\n");
+#if (__VC_DEBUG__)
+			printf("Gooooooooooooo!!!\n");
+#endif /* __VC_DEBUG__ */
 			break;
 		default:
 			/* フェール処理 */
@@ -289,5 +323,62 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 		printf("[Remote]Gooooooooooooo!!!\n");
 #endif /* __VC_DEBUG__ */
 	}
+	return;
+}
+
+void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv )
+{
+#if (__VC_DEBUG__)
+	printf("LogDump ===START===\n");
+#endif /* __VC_DEBUG__ */
+	
+	return;
+}
+
+void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	if( E_LT_STATUS_STOP_WAIT != spLt->iStatus )
+	{
+		/* 走行体完全停止中でなければ通知は破棄する */
+		return;
+	}
+
+#if (__VC_DEBUG__)
+	printf(".");
+#endif /* __VC_DEBUG__ */
+	
+	/* 完了になったら */
+	lt_send_endLogDump_req();
+	
+	return;
+}
+
+void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+#if (__VC_DEBUG__)
+	printf("\nLogDump ===END===\n");
+#endif /* __VC_DEBUG__ */
+	
+	/* 走行体完全停止 */
+	spLt->iStatus = E_LT_STATUS_STOP;
+
 	return;
 }

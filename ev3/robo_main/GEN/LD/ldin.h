@@ -24,9 +24,9 @@
 //#define	D_LD_FILENAME_STATUSLOG					"OutData/StatusLog_Ld.csv"
 //#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_OFF)
 
-#define	D_LD_FILENAME_STATUSLOG_LT				"OutData/StatusLog_Lt.csv"
-#define	D_LD_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
-#define	D_LD_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
+#define	D_LD_FILENAME_STATUSLOG_LT				"OutData/[LD]StatusLog_Lt.csv"
+#define	D_LD_FILENAME_CALIBRATELOG				"OutData/[LD]CalibrateLog.csv"
+#define	D_LD_FILENAME_SYSTEMLOG					"OutData/[LD]SystemLog.csv"
 
 #define	D_LD_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
 #define	D_LD_BUFFNUM_CALIBRATELOG				D_TASK_BUFFNUM_CALIBRATELOG
@@ -70,6 +70,7 @@ enum EN_LD_STATUS
 	E_LD_STATUS_CALIBLATE,		/* キャリブレーション中 */
 	E_LD_STATUS_WAITING,		/* 待機中 */	
 	E_LD_STATUS_RUN,			/* 走行中 */
+	E_LD_STATUS_LOGDUMP,		/* ログダンプ */
 	E_LD_STATUS_STOP,			/* 停止中 */
 	
 	/* ここより上に定義すること */
@@ -123,6 +124,7 @@ S_LD* ld_get_Global( void );
 /* proc */
 void ld_proc( void );
 void ld_proc_Ready( void );
+void ld_proc_LogDump( void );
 
 void ld_log_Statuslog_open( void );
 void ld_log_Calibratelog_open( void );
@@ -141,10 +143,16 @@ void ld_rcv_staRunning_req( S_MSG_DATA* spRecv );				/* 走行開始 */
 void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv );			/* ログ設定：ステータスログ */
 void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv );		/* ログ設定：キャリブレーションログ */
 void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv );			/* ログ設定：システムログ */
+void ld_rcv_staLogDump_req( S_MSG_DATA* spRecv );				/* ログダンプ開始 */
+void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv );				/* ログダンプ終了 */
 
 /*** ldin_send.c **/
-void ld_send_test_res( S_MSG_DATA* spSend );							/* テスト */
-void ld_send_Wupchk_res( void );										/* 起動 */
-void ld_send_Stop_res( void );											/* 停止 */
+void ld_send_test_res( S_MSG_DATA* spSend );					/* テスト */
+void ld_send_Wupchk_res( void );								/* 起動 */
+void ld_send_Stop_res( void );									/* 停止 */
+void ld_send_staLogDump_res( void );							/* ログダンプ開始 */
+void ld_send_chgLogDump_res( void );							/* ログダンプ状態更新 */
+void ld_send_endLogDump_res( void );							/* ログダンプ終了 */
+
 
 #endif	/* __LDIN_H__ */

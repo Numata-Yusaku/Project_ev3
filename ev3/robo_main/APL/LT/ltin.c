@@ -192,7 +192,6 @@ void lt_proc( void )
 	
 	/* ログ出力 */
 	lt_log_set_Statuslog();
-
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
@@ -246,7 +245,7 @@ void lt_proc( void )
 			break;
 		
 		case E_LT_STATUS_STOP_WAIT:
-			lt_proc_StopWait();
+			//lt_proc_StopWait();
 			break;
 		
 		case E_LT_STATUS_STOP:
@@ -643,10 +642,6 @@ void lt_proc_Pause( void )
 
 void lt_proc_StopWait( void )
 {
-	/* ログダンプスタート */
-	
-	/* 緊急停止 */
-	lt_send_Stop_req();
 	return;
 }
 
@@ -853,9 +848,6 @@ void lt_Caliblate( void )
 		
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_set_CalibrateWhite();
-#if (__VC_DEBUG__)
-			printf("Goto The Start Ready ...\n");
-#endif /* __VC_DEBUG__ */
 			break;
 		
 		default:
@@ -1023,8 +1015,6 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 		{
 			control_wait_count++;
 		}
-
-
 	}
 	
 	spLt->stBacanceControl.fThetaMLeft = (float)RSI_motor_get_counts( spLt->stPort.iMotor.iLeftWheel );
@@ -1045,6 +1035,8 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	iRet = lt_balance_set_MotorPower();
 	if( D_LT_OK != iRet )
 	{
+		lt_RunStop();
+		
 		/* 走行完全停止待ち */
 		spLt->iStatus = E_LT_STATUS_STOP_WAIT;
 	}
@@ -1138,6 +1130,33 @@ int lt_get_ControlLedValiable( int iDeviation )
 	}
 	
 	return iTurn;
+}
+
+/* stop */
+void lt_RunStop( void )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	/* 緊急で走行停止*/
+	RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
+	RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
+	
+	/*** ログダンプ ***/
+	/* ログダンプスタート */
+	lt_send_staLogDump_req();
+	
+	/* タイムアウトタイマー開始*/
+	lt_cre_Timer( E_TIMERID_LT_LOGDUMP );
+	lt_sta_Timer( E_TIMERID_LT_LOGDUMP );
+	
+	return;
 }
 
 /* other I/F */

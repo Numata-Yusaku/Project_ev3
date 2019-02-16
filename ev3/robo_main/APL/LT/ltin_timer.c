@@ -79,29 +79,39 @@ void lt_WupChkTimer_CallBack( void )
 	return;
 }
 
-
-void lt_ButtonTimer_CallBack(void)
+void lt_ButtonTimer_CallBack( void )
 {
 	S_LT_TIMERINFO stTimerInfo;
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	/* ƒOƒ[ƒoƒ‹—ÌˆæŽæ“¾ */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
 		return;
 	}
-
+	
 	memset(&stTimerInfo, 0x00, sizeof(S_LT_TIMERINFO));
-
+	
 	stTimerInfo.iTimerId = E_TIMERID_BUTTON_WAIT_TIMER;
-
+	
 	lt_send_Timer_res(&stTimerInfo);
-
+	
 	spLt->button_valid = D_LT_TRUE;
-
+	
 	return;
+}
 
-
+void lt_LogDumpTimer_CallBack( void )
+{
+	S_LT_TIMERINFO stTimerInfo;
+	
+	memset( &stTimerInfo, 0x00, sizeof(S_LT_TIMERINFO) );
+	
+	stTimerInfo.iTimerId = E_TIMERID_LT_LOGDUMP;
+	
+	lt_send_Timer_res( &stTimerInfo );
+	
+	return;
 }
 
