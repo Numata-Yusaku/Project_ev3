@@ -148,6 +148,11 @@
 
 ただし、この速度のときは姿勢制御との干渉が発生しやすく、
 ラインから外れやすい
+
+車速がD_LT_FORWORD_LOWSPEEDのとき、以下のゲインを用いること
+#define	D_LT_LINETRACE_P		(1.2F)
+#define	D_LT_LINETRACE_I		(0.0F)
+#define	D_LT_LINETRACE_D		(0.3F)
 *****************************/
 
 #define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
@@ -165,15 +170,21 @@
 /* 状態フィードバック係数 */
 /* ***2018年度*** */
 #define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
-#define	D_LT_K_F2				(-40.0F)		/* 車体傾斜角度係数 */
-#define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
-#define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
+#define	D_LT_K_F2				(-50.0F)		/* 車体傾斜角度係数 */
+#define	D_LT_K_F3				(-1.8F)			/* 車輪回転角速度係数 */
+#define	D_LT_K_F4				(-5.0F)			/* 車体傾斜角速度係数 */
 /****************************
 車速がD_LT_FORWORD_HIGHSPEEDのとき、以下のゲインを用いること
 #define	D_LT_K_F1				(-5.0F)	
 #define	D_LT_K_F2				(-50.0F)
 #define	D_LT_K_F3				(-1.8F)	
 #define	D_LT_K_F4				(-5.0F)	
+
+車速がD_LT_FORWORD_LOWSPEEDのとき、以下のゲインを用いること
+#define	D_LT_K_F1				(-5.0F)
+#define	D_LT_K_F2				(-40.0F)
+#define	D_LT_K_F3				(-2.0F)
+#define	D_LT_K_F4				(-4.0F)
 *****************************/
 
 #define	D_LT_K_I				(-0.2F)			/* サーボ制御用積分フィードバック係数 */

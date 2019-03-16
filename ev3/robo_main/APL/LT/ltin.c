@@ -617,7 +617,7 @@ void lt_proc_StandUp( void )
 	RSI_motor_rotate( spLt->stPort.iMotor.iTail, -(D_LT_TAIL_CALIBRATE_DEGREES), D_LT_TAIL_STANDUP_SPEED, D_LT_FALSE );
 	
 	/* 走行制御 */
-	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_RUN );
+	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_STOP );
 	
 	/* 状態遷移 */
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
@@ -628,7 +628,7 @@ void lt_proc_StandUp( void )
 void lt_proc_LowSpeed( void )
 {
 	/* 走行制御 */
-	lt_Running( D_LT_FORWORD_LOWSPEED, D_LT_TURN_RUN );
+	lt_Running( D_LT_FORWORD_HIGHSPEED, D_LT_TURN_RUN);
 	
 	return;
 }
@@ -1004,8 +1004,6 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	}
 	else
 	{
-		/* 前進指令値取得 */
-		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
 
 		/* 旋回指令値取得 */
 		if (control_wait_count >= D_LT_TURN_START_WAIT)
@@ -1020,6 +1018,8 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 			control_wait_count++;
 		}
 
+		/* 前進指令値取得 */
+		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
 
 	}
 	
@@ -1093,6 +1093,9 @@ int lt_get_ControlLedValiable( int iDeviation )
 	int iTurn_I = 0;			/* I項演算値 */
 	int iTurn_D = 0;			/* D項演算値 */
 	S_LT* spLt = (S_LT*)NULL;
+
+	static int counter = 0;
+	static int s_iTurn = 0;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -1122,7 +1125,20 @@ int lt_get_ControlLedValiable( int iDeviation )
 	iTurn_D *= D_LT_KPID_EDGE_FACTOR;
 	
 	/* 旋回指示値設定   */
-	iTurn = iTurn_P + iTurn_I + iTurn_D;
+	//iTurn = iTurn_P + iTurn_I + iTurn_D;
+
+	// ON/OFF制御
+	if (iTurn_P > 0)
+	{
+		s_iTurn = 40;
+	}
+	else
+	{
+		s_iTurn = -40;
+	}
+
+	iTurn = s_iTurn;
+
 	
 	if ( iTurn >= D_LT_PWM_MAX )
 	{
