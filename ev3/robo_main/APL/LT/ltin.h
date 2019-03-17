@@ -137,18 +137,14 @@
 #define	D_LT_GYRO_OFFSET		(0)
 
 /*** ライントレース制御値 ***/
+#define D_LT_LOWSPEED_MODE		(0)
+#define D_LT_HIGHSPEED_MODE		(1)
+#define D_LT_RUNNING_MODE		D_LT_LOWSPEED_MODE		/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
+
 #define	D_LT_LINETRACE_P		(1.2F)
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
-/****************************
-車速がD_LT_FORWORD_HIGHSPEEDのとき、以下のゲインを用いること
-#define	D_LT_LINETRACE_P		(2.0F)
-#define	D_LT_LINETRACE_I		(0.0F)
-#define	D_LT_LINETRACE_D		(0.363F)
-
-ただし、この速度のときは姿勢制御との干渉が発生しやすく、
-ラインから外れやすい
-*****************************/
+#define	D_LT_ON_OFF_FACTOR		(40)
 
 #define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
 #define D_LT_KPID_TURN_LIMIT	(100)	/* 旋回指示値 限界値 */
@@ -164,17 +160,17 @@
 #if 1	/* ゲイン調整 */
 /* 状態フィードバック係数 */
 /* ***2018年度*** */
-#define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
-#define	D_LT_K_F2				(-40.0F)		/* 車体傾斜角度係数 */
-#define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
-#define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
-/****************************
-車速がD_LT_FORWORD_HIGHSPEEDのとき、以下のゲインを用いること
-#define	D_LT_K_F1				(-5.0F)	
-#define	D_LT_K_F2				(-50.0F)
-#define	D_LT_K_F3				(-1.8F)	
-#define	D_LT_K_F4				(-5.0F)	
-*****************************/
+#if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
+#	define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
+#	define	D_LT_K_F2				(-40.0F)		/* 車体傾斜角度係数 */
+#	define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
+#	define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
+#else
+#	define	D_LT_K_F1				(-5.0F)	
+#	define	D_LT_K_F2				(-50.0F)
+#	define	D_LT_K_F3				(-1.8F)	
+#	define	D_LT_K_F4				(-5.0F)	
+#endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
 
 #define	D_LT_K_I				(-0.2F)			/* サーボ制御用積分フィードバック係数 */
 #define	D_LT_K_PHIDOT			(25.0F*2.75F)	/* 車体目標旋回角速度係数 */
@@ -218,6 +214,7 @@ enum EN_LT_STATUS
 //	E_LT_STATUS_WAITING,			/* 待機中 */
 	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
 	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
+	E_LT_STATUS_RUN_HIGHSPEED,		/* 走行中(高速) */
 	E_LT_STATUS_RUN_PAUSE,			/* 走行中(停止) */
 	E_LT_STATUS_STOP_WAIT,			/* 走行体完全停止待ち */
 	E_LT_STATUS_STOP,				/* 走行体完全停止 */
@@ -458,6 +455,7 @@ void lt_proc_Correct_Wait( void );
 void lt_proc_Correcting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
+void lt_proc_HighSpeed(void);
 void lt_proc_Pause( void );
 void lt_proc_StopWait( void );
 void lt_proc_Stop( void );
@@ -482,7 +480,8 @@ void lt_set_CalibrateWhite( void );
 /* running */
 void lt_Running( int iForwardLevel, int iTurnMode );
 int lt_get_RunningTurnDir( void );
-int lt_get_ControlLedValiable( int iDeviation );
+int lt_get_ControlLedValiable_PID( int iDeviation );
+int lt_get_ControlLedValiable_OnOff(int iDeviation );
 
 /* other I/F */
 int lt_get_SonarAlert( void );
