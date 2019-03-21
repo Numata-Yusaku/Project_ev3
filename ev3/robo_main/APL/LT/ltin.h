@@ -145,6 +145,7 @@
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
 #define	D_LT_ON_OFF_FACTOR		(40)
+#define D_LT_ON_OFF_COMP_RATE	(20.0F * D_LT_TASK_TIME_STEP)
 
 #define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
 #define D_LT_KPID_TURN_LIMIT	(100)	/* 旋回指示値 限界値 */
