@@ -1162,7 +1162,6 @@ int lt_get_ControlLedValiable_PID( int iDeviation )
 int lt_get_ControlLedValiable_OnOff(int iDeviation)
 {
 	int iTurn = 0;				/* 旋回命令: -100 (左旋回) ～ 100 (右旋回) */
-	int iDiff = 0;								/* しきい値からの差分 */
 	S_LT* spLt = (S_LT*)NULL;
 
 	/* グローバル領域取得 */
@@ -1174,7 +1173,7 @@ int lt_get_ControlLedValiable_OnOff(int iDeviation)
 
 	/* ON/OFF制御 */
 	/* ただし現状は未完成であり、旋回時に大回りしてコースから外れやすい。 */
-	if (iDiff > 0)
+	if (iDeviation > 0)
 	{
 		iTurn = D_LT_ON_OFF_FACTOR;
 	}
