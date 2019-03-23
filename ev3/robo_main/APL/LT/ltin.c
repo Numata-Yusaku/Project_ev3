@@ -1199,7 +1199,7 @@ int lt_get_ControlLedValiable_OnOff(int iDeviation)
 	/* 前回値保持 */
 	iDeviation_1 = iDeviation;
 
-	iTurn += turn_sum;
+	iTurn += (int)turn_sum;
 
 	return iTurn;
 }
