@@ -1094,11 +1094,11 @@ int lt_get_RunningTurnDir( void )
 	/* ライン閾値からの偏差取得 */
 	iDeviation = iThreshold - iReflect;
 	
-#if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
+#ifdef D_LT_LINETRACE_PID
 	iTurnDir = lt_get_ControlLedValiable_PID( iDeviation );
 #else
 	iTurnDir = lt_get_ControlLedValiable_OnOff( iDeviation );
-#endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
+#endif	/* D_LT_LINETRACE_PID */
 
 	
 	return iTurnDir;		/* 旋回方向 */

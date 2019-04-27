@@ -137,13 +137,23 @@
 #define	D_LT_GYRO_OFFSET		(0)
 
 /*** ライントレース制御値 ***/
+#define D_LT_LINETRACE_PID		/* 旋回値演算方法＝PID */
+
 #define D_LT_LOWSPEED_MODE		(0)
 #define D_LT_HIGHSPEED_MODE		(1)
 #define D_LT_RUNNING_MODE		D_LT_HIGHSPEED_MODE		/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
 
+#if D_LT_RUNNING_MODE == D_LT_LOWSPEED_MODE
+/* Low Speed */
 #define	D_LT_LINETRACE_P		(1.2F)
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
+#else /*D_LT_RUNNING_MODE == D_LT_LOWSPEED_MODE*/
+/* High Speed */
+#define	D_LT_LINETRACE_P		(1.8F)
+#define	D_LT_LINETRACE_I		(0.0F)
+#define	D_LT_LINETRACE_D		(0.3F)
+#endif /*D_LT_RUNNING_MODE == D_LT_LOWSPEED_MODE*/
 #define	D_LT_ON_OFF_FACTOR		(30)
 #define D_LT_ON_OFF_COMP_RATE	(20.0F * D_LT_TASK_TIME_STEP)
 
