@@ -126,7 +126,7 @@
 #define	D_LT_TURN_RUN						(1)		/* 旋回する */
 #define	D_LT_TURN_RIGHT						(-20)	/* 旋回する：右旋回 */
 #define	D_LT_TURN_LEFT						(20)	/* 旋回する：右旋回 */
-#define D_LT_TURN_START_WAIT				(250)	/* 旋回制御を開始するまでの待ちカウント */
+#define D_LT_TURN_START_WAIT				(125)	/* 旋回制御を開始するまでの待ちカウント */
 
 #define rt_SATURATE(sig,ll,ul)	(((sig) >= (ul)) ? (ul) : (((sig) <= (ll)) ? (ll) : (sig)) )
 
@@ -139,12 +139,12 @@
 /*** ライントレース制御値 ***/
 #define D_LT_LOWSPEED_MODE		(0)
 #define D_LT_HIGHSPEED_MODE		(1)
-#define D_LT_RUNNING_MODE		D_LT_LOWSPEED_MODE		/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
+#define D_LT_RUNNING_MODE		D_LT_HIGHSPEED_MODE		/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
 
 #define	D_LT_LINETRACE_P		(1.2F)
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
-#define	D_LT_ON_OFF_FACTOR		(40)
+#define	D_LT_ON_OFF_FACTOR		(30)
 #define D_LT_ON_OFF_COMP_RATE	(20.0F * D_LT_TASK_TIME_STEP)
 
 #define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
@@ -153,7 +153,11 @@
 /*** バランス制御値 ***/
 #define	D_LT_CMD_MAX			(100.0F)			/* 前進/旋回命令絶対最大値 */
 #define	D_LT_DEG2RAD			(0.01745329238F)	/* 角度単位変換係数(=pi/180) */
+#if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
 #define	D_LT_EXEC_PERIOD		(0.00500000000F)	/* バランス制御実行周期(秒) */
+#else
+#define	D_LT_EXEC_PERIOD		(0.00400000000F)	/* バランス制御実行周期(秒) */
+#endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
 
 #define	D_LT_A_D				(0.8F)				/* ローパスフィルタ係数(左右車輪の平均回転角度用) */
 #define	D_LT_A_R				(0.996F)			/* ローパスフィルタ係数(左右車輪の目標平均回転角度用) */
@@ -167,10 +171,10 @@
 #	define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
 #	define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
 #else
-#	define	D_LT_K_F1				(-5.0F)	
-#	define	D_LT_K_F2				(-50.0F)
-#	define	D_LT_K_F3				(-1.8F)	
-#	define	D_LT_K_F4				(-5.0F)	
+#	define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
+#	define	D_LT_K_F2				(-60.0F)		/* 車体傾斜角度係数 */
+#	define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
+#	define	D_LT_K_F4				(-7.0F)			/* 車体傾斜角速度係数 */
 #endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
 
 #define	D_LT_K_I				(-0.2F)			/* サーボ制御用積分フィードバック係数 */

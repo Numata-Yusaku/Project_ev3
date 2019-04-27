@@ -1201,6 +1201,8 @@ int lt_get_ControlLedValiable_OnOff(int iDeviation)
 
 	iTurn += (int)turn_sum;
 
+	iTurn = 0;
+
 	return iTurn;
 }
 
