@@ -239,6 +239,10 @@ void lt_proc( void )
 		case E_LT_STATUS_RUN_LOWSPEED:
 			lt_proc_LowSpeed();
 			break;
+
+		case E_LT_STATUS_RUN_HIGHSPEED:
+			lt_proc_HighSpeed();
+			break;
 		
 		case E_LT_STATUS_RUN_PAUSE:
 			lt_proc_Pause();
@@ -619,7 +623,11 @@ void lt_proc_StandUp( void )
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_RUN );
 	
 	/* 状態遷移 */
+#if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
 	spLt->iStatus = E_LT_STATUS_RUN_LOWSPEED;
+#else
+	spLt->iStatus = E_LT_STATUS_RUN_HIGHSPEED;
+#endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
 
 	return;
 }
@@ -629,6 +637,14 @@ void lt_proc_LowSpeed( void )
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_LOWSPEED, D_LT_TURN_RUN );
 	
+	return;
+}
+
+void lt_proc_HighSpeed(void)
+{
+	/* 走行制御 */
+	lt_Running(D_LT_FORWORD_HIGHSPEED, D_LT_TURN_RUN );
+
 	return;
 }
 
@@ -1074,12 +1090,19 @@ int lt_get_RunningTurnDir( void )
 	/* ライン閾値からの偏差取得 */
 	iDeviation = iThreshold - iReflect;
 	
-	iTurnDir = lt_get_ControlLedValiable( iDeviation );
+#if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
+	iTurnDir = lt_get_ControlLedValiable_PID( iDeviation );
+#else
+	iTurnDir = lt_get_ControlLedValiable_OnOff( iDeviation );
+#endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
+
 	
 	return iTurnDir;		/* 旋回方向 */
 }
 
-int lt_get_ControlLedValiable( int iDeviation )
+
+
+int lt_get_ControlLedValiable_PID( int iDeviation )
 {
 	int iTurn = 0;				/* 旋回命令: -100 (左旋回) ～ 100 (右旋回) */	
 	int iBrightness_P = 0;		/* P成分 */
@@ -1157,6 +1180,32 @@ void lt_RunStop( void )
 	lt_sta_Timer( E_TIMERID_LT_LOGDUMP );
 	
 	return;
+}
+
+int lt_get_ControlLedValiable_OnOff(int iDeviation)
+{
+	int iTurn = 0;				/* 旋回命令: -100 (左旋回) ～ 100 (右旋回) */
+	S_LT* spLt = (S_LT*)NULL;
+
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if ((S_LT*)NULL == spLt)
+	{
+		return iTurn;
+	}
+
+	/* ON/OFF制御 */
+	/* ただし現状は未完成であり、旋回時に大回りしてコースから外れやすい。 */
+	if (iDeviation > 0)
+	{
+		iTurn = D_LT_ON_OFF_FACTOR;
+	}
+	else
+	{
+		iTurn = -D_LT_ON_OFF_FACTOR;
+	}
+
+	return iTurn;
 }
 
 /* other I/F */
