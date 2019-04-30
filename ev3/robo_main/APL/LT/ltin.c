@@ -466,10 +466,6 @@ void lt_proc_CalibrateWhite( void )
 
 void lt_proc_Correct_Calib( void )
 {
-
-	static int wait_count = 0;
-
-
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 

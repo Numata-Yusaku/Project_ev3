@@ -132,34 +132,34 @@ void ld_rcv_staRunning_req( S_MSG_DATA* spRecv )
 
 void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
 {
-	int iSendTaskId = 0;
-	int iLogNum = 0;
-	int iLoop = 0;
-	S_LD* spLd = (S_LD*)NULL;
-	FILE* fpWrite = (FILE*)NULL;
-	S_TASK_LOGINFO_STATUSLOG* psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
-	S_TASK_LOGDATA_STATUSLOG stLogData[D_TASK_BUFFNUM_STATUSLOG];
+//	int iSendTaskId = 0;
+//	int iLogNum = 0;
+//	int iLoop = 0;
+//	S_LD* spLd = (S_LD*)NULL;
+//	FILE* fpWrite = (FILE*)NULL;
+//	S_TASK_LOGINFO_STATUSLOG* psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+//	S_TASK_LOGDATA_STATUSLOG stLogData[D_TASK_BUFFNUM_STATUSLOG];
 	
-	/* グローバル領域取得 */
-	spLd = ld_get_Global();
-	if( (S_LD*)NULL == spLd )
-	{
-		return;
-	}
+	///* グローバル領域取得 */
+	//spLd = ld_get_Global();
+	//if( (S_LD*)NULL == spLd )
+	//{
+	//	return;
+	//}
+	//
+	//memset( &stLogData, 0x00, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	//
+	//if( (S_TASK_LOGINFO_STATUSLOG*)NULL == spRecv->vpPara )
+	//{
+	//	return;
+	//}
+	//
+	///* 受信データ取得 */
+	//psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)spRecv->vpPara;
 	
-	memset( &stLogData, 0x00, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
-	
-	if( (S_TASK_LOGINFO_STATUSLOG*)NULL == spRecv->vpPara )
-	{
-		return;
-	}
-	
-	/* 受信データ取得 */
-	psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)spRecv->vpPara;
-	
-	iSendTaskId = psRecvPara->iTaskId;
-	iLogNum = psRecvPara->iLogNum;
-	memcpy( &stLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+//	iSendTaskId = psRecvPara->iTaskId;
+//	iLogNum = psRecvPara->iLogNum;
+//	memcpy( &stLogData, &(psRecvPara->stLSog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
 	
 	//printf("%d\n",stLogData[0].iStatus );
 	//printf("%d\n",stLogData[100].iStatus );

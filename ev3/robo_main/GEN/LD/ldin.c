@@ -334,10 +334,9 @@ void ld_log_Systemlog_open( void )
 	
 	/* ヘッダ出力 */
 #if	(__TARGET_EV3__)
-	fprintf( spLd->stFileInfo.fpSystemLog, "SysClock(msec),");
+	sprintf( cPrintLine, "SysClock(msec),");
 #else	/* __TARGET_EV3__ */
 	sprintf( cPrintLine, "SysCount,");
-//	fprintf( spLd->stFileInfo.fpSystemLog.fpFile, "SysCount,");
 #endif	/* __TARGET_EV3__ */
 	
 #if	(D_LD_LOGMODE_SYSTEM_BALANCEINFO)

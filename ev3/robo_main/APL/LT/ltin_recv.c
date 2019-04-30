@@ -261,7 +261,6 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv )
 
 void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 {
-	int iRet = D_LT_NG;
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -285,13 +284,6 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 			/* フェール処理 */
 			break;
 	}
-	
-	///* 下位モジュールが停止状態かチェック */
-	//iRet = lt_get_StopState();
-	//if( D_LT_OK == iRet )
-	//{
-	//	spLt->iStatus = E_LT_STATUS_STOP;
-	//}
 	
 	return;
 }
