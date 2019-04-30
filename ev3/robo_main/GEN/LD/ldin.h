@@ -17,8 +17,7 @@
 #define	D_LD_CHECK_OK		(1)
 #define	D_LD_CHECK_NG		(0)
 
-#define	D_LD_RECVDATA_SIZE	(128)
-
+#define	D_LD_PRINTLINE_NUM	(512)
 
 /* ログファイル */
 //#define	D_LD_FILENAME_STATUSLOG					"OutData/StatusLog_Ld.csv"
@@ -77,25 +76,65 @@ enum EN_LD_STATUS
 	E_LD_STATUS_INVALID = -1
 };
 
+enum EN_LD_LOGKIND
+{
+	E_LD_LOGKIND_SYSTEMLOG = 0,
+//	E_LD_LOGKIND_STATUSLOG_LT,
+
+	/* ここより上に定義すること */
+	E_LD_LOGKIND_NUM,
+	E_LD_LOGKIND_END = E_LD_LOGKIND_NUM,
+	E_LD_LOGKIND_STOP
+};
+
 /***** 構造体 *****/
 typedef void( *F_LD_RECVFUNCPTR )( S_MSG_DATA* spRecv );
 typedef void( *F_LD_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 
-/* 常駐領域 */
+/* ファイルデータ */
 typedef struct
 {
-	FILE* fpStatusLog_Lt;
-	FILE* fpCalibrateLog;
-	FILE* fpSystemLog;
+	int iWritePageNum;
+	FILE* fpFile;
+}S_LD_FILEDATA;
+
+/* ファイルポインタ */
+typedef struct
+{
+	S_LD_FILEDATA fpStatusLog_Lt;
+	S_LD_FILEDATA fpCalibrateLog;
+	S_LD_FILEDATA fpSystemLog;
 }S_LD_FILEINFO;
+
+/* ログリスト：システムログ */
+typedef struct S_LD_LOGLISTPAGE_SYSTEMLOG
+{
+	int iPageNo;							/* ページ数 */
+	S_TASK_LOGINFO_SYSTEMLOG* spData;		/* データ */
+	struct S_LD_LOGLISTPAGE_SYSTEMLOG* spNextPage;	/* 次データへのリンクアドレス */
+}S_LD_LOGLISTPAGE_SYSTEMLOG;
+
+/* ログリスト：システムログ */
+typedef struct
+{
+	int iAllPageNum;						/* 総ページ数 */
+	S_LD_LOGLISTPAGE_SYSTEMLOG* spList;		/* リストデータトップ */
+}S_LD_LOGLISTINFO_SYSTEMLOG;
+
+/* ログリスト */
+typedef struct
+{
+	int iNowWrite;
+	S_LD_LOGLISTINFO_SYSTEMLOG stLogListInfo_SystemLog;
+}S_LD_LOGLIST;
 
 /* 常駐領域 */
 typedef struct
 {
 	int iStatus;		/* クラスステータス */
 	int iWupChk;
-	FILE* fpLdFile;		/* Bluetoo通信ポート */
 	S_LD_FILEINFO stFileInfo;
+	S_LD_LOGLIST stLogList;
 }S_LD;
 
 typedef struct
@@ -126,9 +165,13 @@ void ld_proc( void );
 void ld_proc_Ready( void );
 void ld_proc_LogDump( void );
 
+void ld_log_Dump( void );
+
 void ld_log_Statuslog_open( void );
 void ld_log_Calibratelog_open( void );
 void ld_log_Systemlog_open( void );
+
+int ld_log_DumpSystemlog( void );
 
 /*** ldin_recv.c **/
 /* FrameWork */
@@ -151,7 +194,7 @@ void ld_send_test_res( S_MSG_DATA* spSend );					/* テスト */
 void ld_send_Wupchk_res( void );								/* 起動 */
 void ld_send_Stop_res( void );									/* 停止 */
 void ld_send_staLogDump_res( void );							/* ログダンプ開始 */
-void ld_send_chgLogDump_res( void );							/* ログダンプ状態更新 */
+void ld_send_chgLogDump_res( S_TASK_CHGLOGDUMP_RES* psSend );	/* ログダンプ状態更新 */
 void ld_send_endLogDump_res( void );							/* ログダンプ終了 */
 
 

@@ -223,14 +223,14 @@ enum EN_LT_STATUS
 	E_LT_STATUS_INVALID = -1
 };
 
-enum EN_LT_WUPSTATE
+enum EN_LT_STASTOSTATE
 {
-	E_LT_WUPSTATE_READY = 0,		/* 未起動 */
-	E_LT_WUPSTATE_WAIT,				/* 応答待ち */
-	E_LT_WUPSTATE_DONE,				/* 応答完了 */
+	E_LT_STASTOSTATE_NOREQ = 0,		/* 未送信 */
+	E_LT_STASTOSTATE_WAIT,				/* 応答待ち */
+	E_LT_STASTOSTATE_DONE,				/* 応答完了 */
 	
 	/* ここより上に定義すること */
-	E_LT_WUPSTATE_INVALID = -1
+	E_LT_STASTOSTATE_INVALID = -1
 };
 
 /* WUPCHK管理モジュール */
@@ -377,6 +377,7 @@ typedef struct
 
 typedef struct
 {
+	unsigned long				ulTime;
 	S_LT_BALANCEINFO			stBalanceInfo;
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 }S_LT_LOGDATA_SYSTEMLOG;
@@ -384,7 +385,7 @@ typedef struct
 typedef struct
 {
 	int							iLogNum;
-	S_TASK_LOGDATA_SYSTEMLOG	stLog[D_TASK_BUFFNUM_STATUSLOG];
+	S_LT_LOGDATA_SYSTEMLOG		stLog[D_TASK_BUFFNUM_SYSTEMLOG];
 }S_LT_LOGINFO_SYSTEMLOG;
 
 /* ログ情報 */
@@ -393,6 +394,9 @@ typedef struct
 	S_LT_LOGINFO_STATUSLOG		stStatusLog;
 	S_LT_LOGINFO_CALIBRATELOG	stCalibrateLog;
 	S_LT_LOGINFO_SYSTEMLOG		stSystemLog;
+#if	(__VC_DEBUG__)
+	unsigned long				ulSystemLogCounta;
+#endif	/* __VC_DEBUG__ */
 }S_LT_LOGINFO;
 
 /* 常駐領域 */
@@ -400,6 +404,7 @@ typedef struct
 {
 	int							iStatus;
 	int							iWupStatus;
+	int							iStopStatus;
 	int							iWupChk[E_LT_WUPCHK_NUM];
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
@@ -470,6 +475,8 @@ int lt_get_MotorPort( int iParts );
 /* WUPCHK */
 int lt_chk_WupChkRetry( void );
 int lt_get_WupchkNum( void );
+int lt_chk_StopChkRetry( void );
+int lt_get_StopchkNum( void );
 
 /* calibrate */
 void lt_Caliblate( void );
@@ -488,7 +495,7 @@ void lt_RunStop( void );
 
 /* other I/F */
 int lt_get_SonarAlert( void );
-int lt_get_StopState( void );
+//int lt_get_StopState( void );
 
 /* per_angle_calculation */
 float calc_pre_angle( int mode );
@@ -523,7 +530,8 @@ void lt_send_Wupchk_req( void );											/* 起動 */
 void lt_send_Wupchk_req_Retry( void );										/* 起動リトライ */
 void lt_send_Wupchk_bt_req( void );											/* 起動：BT */
 void lt_send_Wupchk_ld_req( void );											/* 起動：LD */
-int lt_send_Stop_req( void );												/* 停止 */
+void lt_send_Stop_req( void );												/* 停止 */
+void lt_send_Stop_req_Retry( void );										/* 停止リトライ */
 void lt_send_Stop_bt_req( void );											/* 停止：BT */
 void lt_send_Stop_ld_req( void );											/* 停止：LD */
 void lt_send_ShutDown_res( void );											/* シャットダウン */
@@ -544,6 +552,7 @@ int lt_cre_Timer( int iTimerId );
 int lt_del_Timer( int iTimerId );
 int lt_sta_Timer( int iTimerId );
 void lt_WupChkTimer_CallBack( void );
+void lt_StopChkTimer_CallBack( void );
 void lt_ButtonTimer_CallBack( void );
 void lt_LogDumpTimer_CallBack( void );
 
@@ -557,5 +566,7 @@ int lt_balance_set_MotorPower( void );
 void lt_log_set_Calibratelog( void );
 void lt_log_set_Systemlog( void );
 void lt_log_set_Statuslog( void );
+void lt_log_set_LastLog( void );
+void lt_log_set_LastLog_Systemlog( void );
 
 #endif	/* __LTIN_H__ */

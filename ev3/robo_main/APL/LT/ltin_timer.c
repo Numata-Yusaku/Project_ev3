@@ -79,6 +79,19 @@ void lt_WupChkTimer_CallBack( void )
 	return;
 }
 
+void lt_StopChkTimer_CallBack( void )
+{
+	S_LT_TIMERINFO stTimerInfo;
+	
+	memset( &stTimerInfo, 0x00, sizeof(S_LT_TIMERINFO) );
+	
+	stTimerInfo.iTimerId = E_TIMERID_LT_STOPCHK;
+	
+	lt_send_Timer_res( &stTimerInfo );
+	
+	return;
+}
+
 void lt_ButtonTimer_CallBack( void )
 {
 	S_LT_TIMERINFO stTimerInfo;

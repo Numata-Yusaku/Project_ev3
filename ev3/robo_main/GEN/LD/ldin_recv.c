@@ -99,11 +99,11 @@ void ld_rcv_Stop_req( S_MSG_DATA* spRecv )
 		return;
 	}
 	
-	if( (FILE*)NULL != spLd->fpLdFile )
-	{
-		fclose(spLd->fpLdFile);
-		spLd->fpLdFile = (FILE*)NULL;
-	}
+	//if( (FILE*)NULL != spLd->fpLdFile )
+	//{
+	//	fclose(spLd->fpLdFile);
+	//	spLd->fpLdFile = (FILE*)NULL;
+	//}
 	
 	spLd->iWupChk = D_LD_FLAG_OFF;
 	
@@ -204,7 +204,128 @@ void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv )
 
 void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
 {
-	printf("recv:SystemLog\n");
+	int iLogNum = 0;
+	int iLoop = 0;
+	S_LD* spLd = (S_LD*)NULL;
+	S_TASK_LOGINFO_SYSTEMLOG* psRecvPara = (S_TASK_LOGINFO_SYSTEMLOG*)NULL;
+	S_TASK_LOGDATA_SYSTEMLOG* spLogData = (S_TASK_LOGDATA_SYSTEMLOG*)NULL;
+	
+	S_LD_LOGLISTPAGE_SYSTEMLOG* spLogListPage = (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL;
+	S_LD_LOGLISTPAGE_SYSTEMLOG* spWork = (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL;
+	
+	if( (void*)NULL == spRecv->vpPara )
+	{
+		goto ERR;
+	}
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		goto ERR;
+	}
+	
+	/* ログ出力中はログを破棄する */
+	if( E_LD_STATUS_LOGDUMP == spLd->iStatus )
+	{
+		goto ERR;
+	}
+
+	/* 受信データ取得 */
+	psRecvPara = (S_TASK_LOGINFO_SYSTEMLOG*)spRecv->vpPara;
+	
+	/* ログ数取得 */
+	iLogNum = psRecvPara->iLogNum;
+	if( 0 >= iLogNum )
+	{
+		goto ERR;
+	}
+	
+	/* ログデータ取得 */
+	spLogData = (S_TASK_LOGDATA_SYSTEMLOG*)malloc( sizeof(S_TASK_LOGDATA_SYSTEMLOG) * D_TASK_BUFFNUM_SYSTEMLOG );
+	if( (S_TASK_LOGDATA_SYSTEMLOG*)NULL == spLogData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogData, 0x00, sizeof( S_TASK_LOGDATA_SYSTEMLOG ) * D_TASK_BUFFNUM_SYSTEMLOG );
+	memcpy( spLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_SYSTEMLOG ) * D_TASK_BUFFNUM_SYSTEMLOG );
+	
+	/*** ページデータ作成 ***/
+	spLogListPage = (S_LD_LOGLISTPAGE_SYSTEMLOG*)malloc( sizeof(S_LD_LOGLISTPAGE_SYSTEMLOG) );
+	if( (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL == spLogListPage )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage, 0x00, sizeof( S_LD_LOGLISTPAGE_SYSTEMLOG ) );
+
+	/* ページ番号 */
+	spLogListPage->iPageNo = spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum + 1;
+		
+	/* データ設定 */
+	spLogListPage->spData = (S_TASK_LOGINFO_SYSTEMLOG*)malloc( sizeof(S_TASK_LOGINFO_SYSTEMLOG) );
+	if( (S_TASK_LOGINFO_SYSTEMLOG*)NULL == spLogListPage->spData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage->spData, 0x00, sizeof(S_TASK_LOGINFO_SYSTEMLOG) );
+	
+	spLogListPage->spData->iLogNum = iLogNum;
+	memcpy( spLogListPage->spData->stLog, spLogData, sizeof( S_TASK_LOGDATA_SYSTEMLOG ) * D_TASK_BUFFNUM_SYSTEMLOG );
+	
+	/*** ログリスト設定 ***/
+	if( (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL == spLd->stLogList.stLogListInfo_SystemLog.spList )
+	{
+		spLd->stLogList.stLogListInfo_SystemLog.spList = spLogListPage;
+	}
+	else
+	{
+		spWork = spLd->stLogList.stLogListInfo_SystemLog.spList;
+		for( iLoop = 0; iLoop < spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum; iLoop++ )
+		{
+			if( (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL != spWork->spNextPage )
+			{
+				/* リスト探索継続 */
+				spWork = spWork->spNextPage;
+			}
+			else
+			{
+				/* 末尾にデータを設定 */
+				spWork->spNextPage = spLogListPage;
+				break;
+			}
+		}
+	}
+
+	/* ページ総数更新 */
+	spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum ++;
+	
+//	printf("recv:SystemLog %d\n", spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum);
+
+	return;
+
+ERR:
+
+	if( (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL != spLogListPage )
+	{
+		if( (S_TASK_LOGINFO_SYSTEMLOG*)NULL != spLogListPage->spData )
+		{
+			free(spLogListPage->spData);
+			spLogListPage->spData = (S_TASK_LOGINFO_SYSTEMLOG*)NULL;
+		}
+		
+		free(spLogListPage);
+		spLogListPage = (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL;
+	}
+	
+	if( (S_TASK_LOGDATA_SYSTEMLOG*)NULL != spLogData )
+	{
+		free(spLogData);
+		spLogData = (S_TASK_LOGDATA_SYSTEMLOG*)NULL;
+	}
+	
 	return;
 }
 
@@ -245,22 +366,22 @@ void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv )
 	}
 	
 	/* ファイルクローズ */
-	if( (FILE*)NULL != spLd->stFileInfo.fpStatusLog_Lt )
+	if( (FILE*)NULL != spLd->stFileInfo.fpStatusLog_Lt.fpFile )
 	{
-		fclose( spLd->stFileInfo.fpStatusLog_Lt );
-		spLd->stFileInfo.fpStatusLog_Lt = (FILE*)NULL;
+		fclose( spLd->stFileInfo.fpStatusLog_Lt.fpFile );
+		spLd->stFileInfo.fpStatusLog_Lt.fpFile = (FILE*)NULL;
 	}
 	
-	if( (FILE*)NULL != spLd->stFileInfo.fpCalibrateLog )
+	if( (FILE*)NULL != spLd->stFileInfo.fpCalibrateLog.fpFile )
 	{
-		fclose( spLd->stFileInfo.fpCalibrateLog );
-		spLd->stFileInfo.fpCalibrateLog = (FILE*)NULL;
+		fclose( spLd->stFileInfo.fpCalibrateLog.fpFile );
+		spLd->stFileInfo.fpCalibrateLog.fpFile = (FILE*)NULL;
 	}
 	
-	if( (FILE*)NULL != spLd->stFileInfo.fpSystemLog )
+	if( (FILE*)NULL != spLd->stFileInfo.fpSystemLog.fpFile )
 	{
-		fclose( spLd->stFileInfo.fpSystemLog );
-		spLd->stFileInfo.fpSystemLog = (FILE*)NULL;
+		fclose( spLd->stFileInfo.fpSystemLog.fpFile );
+		spLd->stFileInfo.fpSystemLog.fpFile = (FILE*)NULL;
 	}
 	
 	/* ログダンプ終了応答 */

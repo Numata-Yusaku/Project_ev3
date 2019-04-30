@@ -276,26 +276,26 @@ void lt_proc_Ready( void )
 	}
 	
 	/* 起動調停 */
-	if( E_LT_WUPSTATE_READY == spLt->iWupStatus )
+	if( E_LT_STASTOSTATE_NOREQ == spLt->iWupStatus )
 	{
 		/* WUPCHK要求 */
 		lt_send_Wupchk_req();
 		
 		/* 応答待ち */
-		spLt->iWupStatus = E_LT_WUPSTATE_WAIT;
+		spLt->iWupStatus = E_LT_STASTOSTATE_WAIT;
 		
 		/* リトライタイマー開始 */
 		lt_cre_Timer( E_TIMERID_LT_WUPCHK );
 		lt_sta_Timer( E_TIMERID_LT_WUPCHK );
 		
 	}
-	else if( E_LT_WUPSTATE_WAIT == spLt->iWupStatus )
+	else if( E_LT_STASTOSTATE_WAIT == spLt->iWupStatus )
 	{
 		/* 応答状況確認 */
 		iWupChk = lt_get_WupchkNum();
 		if( E_LT_WUPCHK_NUM == iWupChk )
 		{
-			spLt->iWupStatus = E_LT_WUPSTATE_DONE;
+			spLt->iWupStatus = E_LT_STASTOSTATE_DONE;
 			spLt->iStatus = E_LT_STATUS_IDLE;
 		}
 	}
@@ -673,20 +673,40 @@ void lt_proc_Stop( void )
 		return;
 	}
 	
-	/* STOP */
-	iStopChk = lt_send_Stop_req();
-	if( E_LT_STOP_NUM == iStopChk )
+	/* 停止調停 */
+	if( E_LT_STASTOSTATE_NOREQ == spLt->iStopStatus )
 	{
-		/* モータの固定を解除 */
-		RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_FALSE);
-		RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE);
-		RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE);
+		/* STOP要求 */
+		lt_send_Stop_req();
 		
-		/* システム終了 */
-		lt_shutdown();
+		/* 応答待ち */
+		spLt->iStopStatus = E_LT_STASTOSTATE_WAIT;
+		
+		/* リトライタイマー開始 */
+		lt_cre_Timer( E_TIMERID_LT_STOPCHK );
+		lt_sta_Timer( E_TIMERID_LT_STOPCHK );
+		
+	}
+	else if( E_LT_STASTOSTATE_WAIT == spLt->iStopStatus )
+	{
+		/* 応答状況確認 */
+		iStopChk = lt_get_StopchkNum();
+		if( E_LT_WUPCHK_NUM == iStopChk )
+		{
+			spLt->iStopStatus = E_LT_STASTOSTATE_DONE;
+
+			/* モータの固定を解除 */
+			RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_FALSE);
+			RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE);
+			RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE);
+		
+			/* システム終了 */
+			lt_shutdown();
 #if	(__VC_DEBUG__)
-		lt_send_ShutDown_res();
+			lt_send_ShutDown_res();
 #endif	/* __VC_DEBUG__ */
+
+		}
 	}
 	
 	return;
@@ -838,6 +858,50 @@ int lt_get_WupchkNum( void )
 	}
 	
 	return iWupChk;
+}
+
+int lt_chk_StopChkRetry( void )
+{
+	int iRetry = D_LT_RETRY;
+	int iWupChk = 0;
+	
+	/* 応答状況確認 */
+	iWupChk = lt_get_StopchkNum();
+	if( E_LT_WUPCHK_NUM != iWupChk )
+	{
+		iRetry = D_LT_RETRY;
+	}
+	else
+	{
+		iRetry = D_LT_NOTRETRY;
+	}
+	
+	return iRetry;
+}
+
+int lt_get_StopchkNum( void )
+{
+	int iStopChk = 0;
+	int iLoop = 0;
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return 0;
+	}
+
+	for( iLoop = 0; iLoop < E_LT_STOP_NUM; iLoop++ )
+	{
+		if (D_LT_FLAG_ON == spLt->iStopChk[iLoop])
+		{
+			/* WUPCHK受信数インクリメント */
+			iStopChk++;
+		}
+	}
+	
+	return iStopChk;
 }
 
 /* calibrate */
@@ -1172,6 +1236,10 @@ void lt_RunStop( void )
 	RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
 	
 	/*** ログダンプ ***/
+	/* ラストデータ送信 */
+	lt_log_set_LastLog();
+
+
 	/* ログダンプスタート */
 	lt_send_staLogDump_req();
 	
@@ -1239,28 +1307,28 @@ int lt_get_SonarAlert( void )
 	return iAlert;
 }
 
-int lt_get_StopState( void )
-{
-	int iLoop = 0;
-	S_LT* spLt = (S_LT*)NULL;
-	
-	/* グローバル領域取得 */
-	spLt = lt_get_Global();
-	if( (S_LT*)NULL == spLt )
-	{
-		return D_LT_NG;
-	}
-	
-	for( iLoop = 0; iLoop < E_LT_STOP_NUM; iLoop++ )
-	{
-		if( D_LT_FLAG_ON != spLt->iStopChk[iLoop] )
-		{
-			return D_LT_NG;
-		}
-	}
-	
-	return D_LT_OK;
-}
+//int lt_get_StopState( void )
+//{
+//	int iLoop = 0;
+//	S_LT* spLt = (S_LT*)NULL;
+//	
+//	/* グローバル領域取得 */
+//	spLt = lt_get_Global();
+//	if( (S_LT*)NULL == spLt )
+//	{
+//		return D_LT_NG;
+//	}
+//	
+//	for( iLoop = 0; iLoop < E_LT_STOP_NUM; iLoop++ )
+//	{
+//		if( D_LT_FLAG_ON != spLt->iStopChk[iLoop] )
+//		{
+//			return D_LT_NG;
+//		}
+//	}
+//	
+//	return D_LT_OK;
+//}
 
 float calc_pre_angle( int mode )
 {

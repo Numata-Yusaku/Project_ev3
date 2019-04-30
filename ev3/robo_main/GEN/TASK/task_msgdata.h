@@ -7,7 +7,7 @@
 #define	D_TASK_RECVDATA_SIZE			(4)
 #define	D_TASK_BUFFNUM_STATUSLOG		(1024)
 #define	D_TASK_BUFFNUM_CALIBRATELOG		(1)
-#define	D_TASK_BUFFNUM_SYSTEMLOG		(1024)
+#define	D_TASK_BUFFNUM_SYSTEMLOG		(256)
 
 
 /* キャリブレーションパラメータ通知 */
@@ -57,7 +57,7 @@ typedef struct
 typedef struct
 {
 	int							iLogNum;
-	S_TASK_LOGDATA_CALIBRATELOG	stLog[D_TASK_BUFFNUM_STATUSLOG];
+	S_TASK_LOGDATA_CALIBRATELOG	stLog[D_TASK_BUFFNUM_CALIBRATELOG];
 }S_TASK_LOGINFO_CALIBRATELOG;
 
 /* システムログ */
@@ -87,6 +87,7 @@ typedef struct
 
 typedef struct
 {
+	unsigned long				ulTime;
 	S_TASK_BALANCEINFO			stBalanceInfo;
 	S_TASK_BALANCE_CONTROL		stBacanceControl;
 }S_TASK_LOGDATA_SYSTEMLOG;
@@ -94,8 +95,14 @@ typedef struct
 typedef struct
 {
 	int							iLogNum;
-	S_TASK_LOGDATA_SYSTEMLOG	stLog[D_TASK_BUFFNUM_STATUSLOG];
+	S_TASK_LOGDATA_SYSTEMLOG	stLog[D_TASK_BUFFNUM_SYSTEMLOG];
 }S_TASK_LOGINFO_SYSTEMLOG;
 
+typedef struct
+{
+	int							iAllLogNum;
+	int							iNowLogNo;
+	int							iProgress;
+}S_TASK_CHGLOGDUMP_RES;
 
 #endif	/* __TASK_MSGDATA_H__ */

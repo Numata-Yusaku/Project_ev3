@@ -212,11 +212,11 @@ END:
 	return;
 }
 
-void ld_send_chgLogDump_res( void )
+void ld_send_chgLogDump_res( S_TASK_CHGLOGDUMP_RES* psSend )
 {
 	int iRet = D_TASK_NG;
 	S_MSG_DATA* psSendData = (S_MSG_DATA*)NULL;
-	void* psSendPara = (void*)NULL;
+	S_TASK_CHGLOGDUMP_RES* psSendPara = (S_TASK_CHGLOGDUMP_RES*)NULL;
 	
 	/* 領域確保 */
 	psSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
@@ -225,21 +225,25 @@ void ld_send_chgLogDump_res( void )
 		goto END;
 	}
 	
-	psSendPara = (void*)malloc( sizeof( int ) );
-	if ((void*)NULL == psSendPara)
+	psSendPara = (S_TASK_CHGLOGDUMP_RES*)malloc( sizeof( S_TASK_CHGLOGDUMP_RES ) );
+	if ((S_TASK_CHGLOGDUMP_RES*)NULL == psSendPara)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
 	memset( psSendData, 0x00, sizeof( S_MSG_DATA ) );
-	memset( psSendPara, 0x00, sizeof( int ) );
+	memset( psSendPara, 0x00, sizeof( S_TASK_CHGLOGDUMP_RES ) );
 	
+	/* 送信パラメータ設定 */
+	psSendPara->iAllLogNum = psSend->iAllLogNum;
+	psSendPara->iNowLogNo = psSend->iNowLogNo;
+	psSendPara->iProgress = psSend->iProgress;
 	
 	/* 送信データ設定 */
 	psSendData->iMsgid = E_MSGID_LD_CHGLOGDUMP_RES;
-	psSendData->iSize = sizeof( S_MSG_DATA );
-	psSendData->vpPara = psSendPara;
+	psSendData->iSize = sizeof( S_TASK_CHGLOGDUMP_RES );
+	psSendData->vpPara = (void*)psSendPara;
 	
 	/* MSG送信 */
 	iRet = TASK_msgsend( E_TASK_TASKID_LT, psSendData );

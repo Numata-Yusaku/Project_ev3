@@ -95,12 +95,27 @@ void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
 			
 			break;
 		
+		case E_TIMERID_LT_STOPCHK:
+			/* 停止調停 */
+			iRetry = lt_chk_StopChkRetry();
+			if( D_LT_NOTRETRY == iRetry )
+			{
+				/* タイマ削除 */
+				lt_del_Timer( E_TIMERID_LT_STOPCHK );
+			}
+			else
+			{
+				/* リトライ */
+				lt_send_Stop_req_Retry();
+			}
+			
+			break;
+		
 		case E_TIMERID_LT_LOGDUMP:
 				/* タイマ削除 */
 				lt_del_Timer( E_TIMERID_LT_LOGDUMP );
 				
 				/* 停止 */
-				lt_send_Stop_req();
 				spLt->iStatus = E_LT_STATUS_STOP;
 				
 			break;
@@ -271,12 +286,12 @@ void lt_rcv_Stop_res( S_MSG_DATA* spRecv )
 			break;
 	}
 	
-	/* 下位モジュールが停止状態かチェック */
-	iRet = lt_get_StopState();
-	if( D_LT_OK == iRet )
-	{
-		spLt->iStatus = E_LT_STATUS_STOP;
-	}
+	///* 下位モジュールが停止状態かチェック */
+	//iRet = lt_get_StopState();
+	//if( D_LT_OK == iRet )
+	//{
+	//	spLt->iStatus = E_LT_STATUS_STOP;
+	//}
 	
 	return;
 }
@@ -329,7 +344,7 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv )
 {
 #if (__VC_DEBUG__)
-	printf("LogDump ===START===\n");
+//	printf("LogDump ===START===\n");
 #endif /* __VC_DEBUG__ */
 	
 	return;
@@ -338,7 +353,19 @@ void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv )
 void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
+	S_TASK_CHGLOGDUMP_RES* spRecvPara = (S_TASK_CHGLOGDUMP_RES*)NULL;
 	
+	if( (S_MSG_DATA*)NULL == spRecv )
+	{
+		return;
+	}
+
+	spRecvPara = (S_TASK_CHGLOGDUMP_RES*)(spRecv->vpPara);
+	if( (S_TASK_CHGLOGDUMP_RES*)NULL == spRecvPara )
+	{
+		return;
+	}
+
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if( (S_LT*)NULL == spLt )
@@ -353,11 +380,18 @@ void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
 	}
 
 #if (__VC_DEBUG__)
-	printf(".");
+	printf("Dump:%2d /%2d %3d%%\n",
+		spRecvPara->iNowLogNo,
+		spRecvPara->iAllLogNum,
+		spRecvPara->iProgress );
 #endif /* __VC_DEBUG__ */
 	
-	/* 完了になったら */
-	lt_send_endLogDump_req();
+	/* ログダンプ完了 */
+	if( ( spRecvPara->iAllLogNum == spRecvPara->iNowLogNo ) &&
+		( 100 == spRecvPara->iProgress ))
+	{
+		lt_send_endLogDump_req();
+	}
 	
 	return;
 }
@@ -374,7 +408,7 @@ void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv )
 	}
 	
 #if (__VC_DEBUG__)
-	printf("\nLogDump ===END===\n");
+//	printf("\nLogDump ===END===\n");
 #endif /* __VC_DEBUG__ */
 	
 	/* 走行体完全停止 */
