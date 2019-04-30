@@ -13,24 +13,23 @@
 /* キャリブレーションパラメータ通知 */
 typedef struct
 {
-	int iSize;
-	char aData[D_TASK_RECVDATA_SIZE];
-	char cCmd;
+	int		iSize;
+	char	aData[D_TASK_RECVDATA_SIZE];
+	char	cCmd;
 }S_TASK_CHGCALIBRATION_RES;
-
 
 /* クライアント送信：GYRO */
 typedef struct
 {
-	int iGyro;
+	int	iGyro;
 }S_TASK_SETCLIENTSEND_GYRO;
 
 /*** ログ設定通知 ***/
 /* ステータスログ */
 typedef struct
 {
-	unsigned long ulTime;		/* 経過時刻(msec) */
-	int iStatus;				/* 状態 */
+	unsigned long	ulTime;		/* 経過時刻(msec) */
+	int				iStatus;	/* 状態 */
 }S_TASK_LOGDATA_STATUSLOG;
 
 typedef struct
@@ -43,15 +42,15 @@ typedef struct
 /* キャリブレーションログ */
 typedef struct
 {
-	int iColor;
-	int iReflect;
+	int	iColor;
+	int	iReflect;
 }S_TASK_COLORINFO;
 
 typedef struct
 {
-	int iGyro;
-	S_TASK_COLORINFO stBlack;
-	S_TASK_COLORINFO stWhite;
+	int					iGyro;
+	S_TASK_COLORINFO	stBlack;
+	S_TASK_COLORINFO	stWhite;
 }S_TASK_LOGDATA_CALIBRATELOG;
 
 typedef struct
@@ -100,9 +99,9 @@ typedef struct
 
 typedef struct
 {
-	int							iAllLogNum;
-	int							iNowLogNo;
-	int							iProgress;
+	int	iAllLogNum;
+	int	iNowLogNo;
+	int	iProgress;
 }S_TASK_CHGLOGDUMP_RES;
 
 #endif	/* __TASK_MSGDATA_H__ */

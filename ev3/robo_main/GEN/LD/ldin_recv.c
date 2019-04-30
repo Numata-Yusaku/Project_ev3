@@ -8,7 +8,6 @@ void ld_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_LD_RECVFUNCPTR pvRecvFunc = (F_LD_RECVFUNCPTR)NULL;
 	
-//	printf("%08x\n",iMsgId);
 	/* 実行関数取得 */
 	pvRecvFunc = ld_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)
@@ -58,6 +57,7 @@ F_LD_RECVFUNCPTR ld_get_RecvFunc( int iMsgId )
 void ld_rcv_test_req( S_MSG_DATA* spRecv )
 {
 	ld_send_test_res( spRecv );
+	
 	return;
 }
 
@@ -98,12 +98,6 @@ void ld_rcv_Stop_req( S_MSG_DATA* spRecv )
 	{
 		return;
 	}
-	
-	//if( (FILE*)NULL != spLd->fpLdFile )
-	//{
-	//	fclose(spLd->fpLdFile);
-	//	spLd->fpLdFile = (FILE*)NULL;
-	//}
 	
 	spLd->iWupChk = D_LD_FLAG_OFF;
 	
@@ -230,7 +224,7 @@ void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
 	{
 		goto ERR;
 	}
-
+	
 	/* 受信データ取得 */
 	psRecvPara = (S_TASK_LOGINFO_SYSTEMLOG*)spRecv->vpPara;
 	
@@ -298,16 +292,14 @@ void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
 			}
 		}
 	}
-
+	
 	/* ページ総数更新 */
 	spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum ++;
 	
-//	printf("recv:SystemLog %d\n", spLd->stLogList.stLogListInfo_SystemLog.iAllPageNum);
-
 	return;
 
 ERR:
-
+	/*** 解放処理 ***/
 	if( (S_LD_LOGLISTPAGE_SYSTEMLOG*)NULL != spLogListPage )
 	{
 		if( (S_TASK_LOGINFO_SYSTEMLOG*)NULL != spLogListPage->spData )

@@ -1,8 +1,7 @@
-#include "ltin.h"
+ï»¿#include "ltin.h"
 #include "ltin_timertable.h"
 
-
-/* ‹N“®’²’â */
+/* èµ·å‹•èª¿åœ */
 int lt_cre_Timer( int iTimerId )
 {
 	int iRet = D_LT_NG;
@@ -11,17 +10,17 @@ int lt_cre_Timer( int iTimerId )
 	S_TM_TIMERINFO* psTable = (S_TM_TIMERINFO*)NULL;
 	S_TM_TIMERINFO stTimerInfo;
 	
-	/* ‰Šú‰» */
+	/* åˆæœŸåŒ– */
 	memset( &stTimerInfo, 0x00, sizeof(S_TM_TIMERINFO) );
 	
-	/* óMƒe[ƒuƒ‹İ’è */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¨­å®š */
 	psTable =T_LT_TIMER_TABLE;
 	if((S_TM_TIMERINFO*)NULL == psTable )
 	{
 		return iRet;
 	}
 	
-	/* óMƒe[ƒuƒ‹—v‘f”æ“¾ */
+	/* å—ä¿¡ãƒ†ãƒ¼ãƒ–ãƒ«è¦ç´ æ•°å–å¾— */
 	iNum = sizeof( T_LT_TIMER_TABLE ) / sizeof( S_TM_TIMERINFO );
 	if( 0 >= iNum )
 	{
@@ -32,12 +31,12 @@ int lt_cre_Timer( int iTimerId )
 	{
 		if( iTimerId == psTable[iLoop].iId )
 		{
-			/* ƒf[ƒ^İ’è */
+			/* ãƒ‡ãƒ¼ã‚¿è¨­å®š */
 			stTimerInfo.iId = psTable[iLoop].iId;
 			stTimerInfo.iCycle = psTable[iLoop].iCycle;
 			stTimerInfo.pFunc = (F_TM_CALLBACKFUNCPTR)psTable[iLoop].pFunc;
 			
-			/* ƒ^ƒCƒ}¶¬ */
+			/* ã‚¿ã‚¤ãƒç”Ÿæˆ */
 			iRet = TM_cre_Timer( &stTimerInfo );
 			
 			break;
@@ -65,7 +64,7 @@ int lt_sta_Timer( int iTimerId )
 	return iRet;
 }
 
-/* ƒ^ƒCƒ}ƒR[ƒ‹ƒoƒbƒNŠÖ” */
+/* ã‚¿ã‚¤ãƒã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•° */
 void lt_WupChkTimer_CallBack( void )
 {
 	S_LT_TIMERINFO stTimerInfo;
@@ -97,7 +96,7 @@ void lt_ButtonTimer_CallBack( void )
 	S_LT_TIMERINFO stTimerInfo;
 	S_LT* spLt = (S_LT*)NULL;
 	
-	/* ƒOƒ[ƒoƒ‹—Ìˆææ“¾ */
+	/* ã‚°ãƒ­ãƒ¼ãƒãƒ«é ˜åŸŸå–å¾— */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
@@ -127,4 +126,3 @@ void lt_LogDumpTimer_CallBack( void )
 	
 	return;
 }
-

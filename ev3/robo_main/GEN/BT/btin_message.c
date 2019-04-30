@@ -25,8 +25,6 @@ void bt_set_SerialMessage( char* cpSendData, int iSize )
 		fflush( spBt->fpBtFile );
 	}
 	
-//	fseek( spBt->fpBtFile, -(iSize), SEEK_CUR );
-	
 	return;
 }
 
@@ -168,7 +166,6 @@ void bt_check_SerialMessageRecv( void )
 		/* サイズが0の場合は受信データ取得しない */
 	}
 	
-	
 	/* 受信コマンド関数取得 */
 	pvRecvCmdFunc = bt_get_MessageRecvFunc( cCmd );
 	if( (F_BT_RECVCMDFUNCPTR)NULL != pvRecvCmdFunc)
@@ -255,7 +252,6 @@ F_BT_RECVCMDFUNCPTR bt_get_MessageRecvFunc( char cCmd )
 	
 	return func;
 }
-
 
 int bt_check_SerialMessageCommand( char cVal )
 {

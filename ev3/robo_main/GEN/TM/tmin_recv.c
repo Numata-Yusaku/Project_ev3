@@ -8,7 +8,6 @@ void tm_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_TM_RECVFUNCPTR pvRecvFunc = (F_TM_RECVFUNCPTR)NULL;
 	
-//	printf("%08x\n",iMsgId);
 	/* 実行関数取得 */
 	pvRecvFunc = tm_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)
@@ -58,5 +57,6 @@ F_TM_RECVFUNCPTR tm_get_RecvFunc( int iMsgId )
 void tm_rcv_test_req( S_MSG_DATA* spRecv )
 {
 	tm_send_test_res( spRecv );
+	
 	return;
 }

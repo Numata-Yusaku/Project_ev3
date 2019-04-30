@@ -6,17 +6,17 @@ S_LD* gspLd = (S_LD*)NULL;
 void ld_main( void )
 {
 	int iRet				= D_LD_NG;
-	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
+	S_MSG_DATA*	spRecvData	= (S_MSG_DATA*)NULL;
 	
 	/* 領域確保 */
-	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
-	if ((S_MSG_DATA*)NULL == psRecvData)
+	spRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == spRecvData)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
-	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* 起動準備 */
 	ld_init();
@@ -24,23 +24,22 @@ void ld_main( void )
 	/* LD_TASK */
 	while(1)
 	{
-		iRet = TASK_msgrecv( E_TASK_TASKID_LD, psRecvData );
+		iRet = TASK_msgrecv( E_TASK_TASKID_LD, spRecvData );
 		if( ( D_TASK_OK == iRet ) &&
-			( E_MSGID_LD_INVALID != psRecvData->iMsgid) )
+			( E_MSGID_LD_INVALID != spRecvData->iMsgid) )
 		{
 			/* 受信処理 */
-			ld_recv( psRecvData );
-			
+			ld_recv( spRecvData );
 		}
 		
 		/* 受信データクリア */
-		if ((void*)NULL != psRecvData->vpPara)
+		if ((void*)NULL != spRecvData->vpPara)
 		{
-			free( psRecvData->vpPara );
-			psRecvData->vpPara = (void*)NULL;
+			free( spRecvData->vpPara );
+			spRecvData->vpPara = (void*)NULL;
 		}
 		
-		memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+		memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
 		
 		/* 常駐処理 */
 		ld_proc();
@@ -51,10 +50,10 @@ void ld_main( void )
 
 END:
 	/*** 解放処理 ***/
-	if ((S_MSG_DATA*)NULL != psRecvData)
+	if ((S_MSG_DATA*)NULL != spRecvData)
 	{
-		free( psRecvData );
-		psRecvData = (S_MSG_DATA*)NULL;
+		free( spRecvData );
+		spRecvData = (S_MSG_DATA*)NULL;
 	}
 	
 	ld_shutdown();
@@ -92,7 +91,7 @@ void ld_set_Global( void )
 	memset( spLd, 0x00, sizeof(S_LD) );
 	
 	/* 初期化値設定 */
-
+	
 	/* グローバル設定 */
 	gspLd = spLd;
 	

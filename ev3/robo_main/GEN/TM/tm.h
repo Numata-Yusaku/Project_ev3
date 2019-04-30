@@ -30,9 +30,9 @@ typedef void( *F_TM_CALLBACKFUNCPTR )(void);
 /* タイマ情報 */
 typedef struct
 {
-	int iId;
-	int iCycle;
-	F_TM_CALLBACKFUNCPTR pFunc;
+	int						iId;
+	int						iCycle;
+	F_TM_CALLBACKFUNCPTR	pFunc;
 }S_TM_TIMERINFO;
 
 /***** 関数プロトタイプ *****/

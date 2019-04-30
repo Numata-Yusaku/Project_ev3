@@ -36,17 +36,18 @@ typedef struct
 
 typedef struct
 {
-	int		iFlag;
-	int		iHead;
-	int		iTail;
-	int		iNum;
+	int	iFlag;
+	int	iHead;
+	int	iTail;
+	int	iNum;
 }S_MSG_STATUS;
 
 typedef struct
 {
-	S_MSG_STATUS stStatus;
-	S_MSG_DATA stData[D_TASK_QUE_MAX];
+	S_MSG_STATUS	stStatus;
+	S_MSG_DATA		stData[D_TASK_QUE_MAX];
 }S_MSG_QUE;
+
 /***** 関数プロトタイプ *****/
 void TASK_init( void );
 void TASK_sleep( int iCycle );

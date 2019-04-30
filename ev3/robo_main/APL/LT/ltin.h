@@ -15,17 +15,17 @@
 #include "lt.h"
 
 /***** 定数 *****/
-#define	D_LT_FLAG_ON		(1)
-#define	D_LT_FLAG_OFF		(0)
+#define	D_LT_FLAG_ON							(1)		/* フラグオン */
+#define	D_LT_FLAG_OFF							(0)		/* フラグオフ */
 
-#define	D_LT_TRUE			(1)
-#define	D_LT_FALSE			(0)
+#define	D_LT_TRUE								(1)		/* True */
+#define	D_LT_FALSE								(0)		/* False */
 
-#define	D_LT_NOTRETRY		(0)
-#define	D_LT_RETRY			(1)
+#define	D_LT_NOTRETRY							(0)		/* リトライなし */
+#define	D_LT_RETRY								(1)		/* リトライあり */
 
 /* Wait */
-#define	D_LT_CALIBRATEEND_WAIT					(100)
+#define	D_LT_CALIBRATEEND_WAIT					(100)	/* 暫定：キャリブレーション終了時のウエイト(ms) */
 
 /* クライアント送信満了カウンタ */
 #define	D_LT_CLIENTSENDTIME_GYRO				( 1000 / ( D_TASK_CYCLE_BT ) )
@@ -37,11 +37,7 @@
 /* 転倒タイムアウト */
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
-/* ログファイル */
-//#define	D_LT_FILENAME_STATUSLOG					"OutData/StatusLog_Lt.csv"
-#define	D_LT_FILENAME_CALIBRATELOG				"OutData/CalibrateLog.csv"
-#define	D_LT_FILENAME_SYSTEMLOG					"OutData/SystemLog.csv"
-
+/* ログ数(1ページ内のログ数) */
 #define	D_LT_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
 #define	D_LT_BUFFNUM_CALIBRATELOG				D_TASK_BUFFNUM_CALIBRATELOG
 #define	D_LT_BUFFNUM_SYSTEMLOG					D_TASK_BUFFNUM_SYSTEMLOG
@@ -77,39 +73,33 @@
 
 
 /* 音響 */
-#define	D_LT_TONE_VOLUME				(1)		/* 音量 */
-#define	D_LT_TONE_DURATION				(100)	/* 音響継続時間 */
+#define	D_LT_TONE_VOLUME				(1)						/* 音量 */
+#define	D_LT_TONE_DURATION				(100)					/* 音響継続時間 */
 
 /* 尻尾 */
-#define	D_LT_TAIL_CALIBRATE_DEGREES		(60)	/* 尻尾回転角度 */
-#define	D_LT_TAIL_CALIBRATE_SPEED		(10)	/* 尻尾回転速度 */
+#define	D_LT_TAIL_CALIBRATE_DEGREES		(60)					/* 尻尾回転角度 */
+#define	D_LT_TAIL_CALIBRATE_SPEED		(10)					/* 尻尾回転速度 */
 
 #define	D_LT_TAIL_STANDUP_KICK_DEGREES	(10)
 #define	D_LT_TAIL_STANDUP_BACK_DEGREES	(D_LT_TAIL_CALIBRATE_DEGREES + D_LT_TAIL_STANDUP_KICK_DEGREES)
 #define	D_LT_TAIL_STANDUP_SPEED			(50)
 
-#define	D_LT_RECVDATA_SIZE				(4)		/* 受信データサイズ */
-
 /* 尻尾自動制御 */
-#define D_LT_TASK_TIME_STEP					(0.004F)	/* LTタスクのタイムステップ */
-#define D_LT_PRE_ANGLE_MAX					(180.0F)	/* pre_angleの最大値 */
-#define D_LT_PRE_ANGLE_MIN					(-180.0F)	/* pre_angleの最小値 */
-#define D_LT_STANDING_ANGLE_REF				(-92)		/* 直立したとみなす角度 */
-#define D_LT_ROUGH_COUNT_MAX				(100)		/* 指令値を送る頻度を決めるカウンターの最大値 */
+#define D_LT_TASK_TIME_STEP					(0.004F)			/* LTタスクのタイムステップ */
+#define D_LT_PRE_ANGLE_MAX					(180.0F)			/* pre_angleの最大値 */
+#define D_LT_PRE_ANGLE_MIN					(-180.0F)			/* pre_angleの最小値 */
+#define D_LT_STANDING_ANGLE_REF				(-92)				/* 直立したとみなす角度 */
+#define D_LT_ROUGH_COUNT_MAX				(100)				/* 指令値を送る頻度を決めるカウンターの最大値 */
 #define D_LT_ANGLE_RANGE					{-120, -110, -100}
 #define D_LT_ANGLE_RANGE_NUM				(3)
 #define D_LT_ANGLE_DIF_MAP					{10, 6, 2, 1}
 #define D_LT_ANGLE_DIF_MAP_NUM				(4)
 
-/* 色 */
-#define	D_LT_COLORSENSOR_REFLECT_BLACK		(0)		/* 黒 */
-#define	D_LT_COLORSENSOR_REFLECT_WHITE		(55)	/* 白 */
-
 /* 超音波センサ */
-#define	D_LT_SONAR_ARERT_NON_OBSTRUCTION	(0)	/* 障害なし */
-#define	D_LT_SONAR_ARERT_OBSTRUCTION		(1)	/* 障害あり */
+#define	D_LT_SONAR_ARERT_NON_OBSTRUCTION	(0)					/* 障害なし */
+#define	D_LT_SONAR_ARERT_OBSTRUCTION		(1)					/* 障害あり */
 
-#define D_LT_SONAR_ALERT_DISTANCE			(30) /* 超音波センサによる障害物検知距離[cm] */
+#define D_LT_SONAR_ALERT_DISTANCE			(30)				/* 超音波センサによる障害物検知距離[cm] */
 
 /*** 走行指令値 ***/
 /* 前後進指令 */
@@ -122,16 +112,16 @@
 #define	D_LT_PWM_MIN						(-100)
 
 /* 旋回指令 */
-#define	D_LT_TURN_STOP						(0)		/* 旋回しない */
-#define	D_LT_TURN_RUN						(1)		/* 旋回する */
-#define	D_LT_TURN_RIGHT						(-20)	/* 旋回する：右旋回 */
-#define	D_LT_TURN_LEFT						(20)	/* 旋回する：右旋回 */
-#define D_LT_TURN_START_WAIT				(250)	/* 旋回制御を開始するまでの待ちカウント */
+#define	D_LT_TURN_STOP						(0)					/* 旋回しない */
+#define	D_LT_TURN_RUN						(1)					/* 旋回する */
+#define	D_LT_TURN_RIGHT						(-20)				/* 旋回する：右旋回 */
+#define	D_LT_TURN_LEFT						(20)				/* 旋回する：右旋回 */
+#define D_LT_TURN_START_WAIT				(250)				/* 旋回制御を開始するまでの待ちカウント */
 
 #define rt_SATURATE(sig,ll,ul)	(((sig) >= (ul)) ? (ul) : (((sig) <= (ll)) ? (ll) : (sig)) )
 
 /* バックラッシュ */
-#define	D_LT_BACKLASH_HALF		(4)			/* バックラッシュの半分[deg] */
+#define	D_LT_BACKLASH_HALF		(4)								/* バックラッシュの半分[deg] */
 
 /* ジャイロオフセット */
 #define	D_LT_GYRO_OFFSET		(0)
@@ -139,32 +129,32 @@
 /*** ライントレース制御値 ***/
 #define D_LT_LOWSPEED_MODE		(0)
 #define D_LT_HIGHSPEED_MODE		(1)
-#define D_LT_RUNNING_MODE		D_LT_LOWSPEED_MODE		/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
+#define D_LT_RUNNING_MODE		D_LT_LOWSPEED_MODE				/* 【重要】高速走行するときはここをD_LT_HIGHSPEED_MODEにする */
 
 #define	D_LT_LINETRACE_P		(1.2F)
 #define	D_LT_LINETRACE_I		(0.0F)
 #define	D_LT_LINETRACE_D		(0.3F)
 #define	D_LT_ON_OFF_FACTOR		(40)
 
-#define D_LT_KPID_EDGE_FACTOR	(1)	/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
-#define D_LT_KPID_TURN_LIMIT	(100)	/* 旋回指示値 限界値 */
+#define D_LT_KPID_EDGE_FACTOR	(1)								/* ライントレース方向 1 or -1 （1のとき黒線の右側を走る） */
+#define D_LT_KPID_TURN_LIMIT	(100)							/* 旋回指示値 限界値 */
 
 /*** バランス制御値 ***/
-#define	D_LT_CMD_MAX			(100.0F)			/* 前進/旋回命令絶対最大値 */
-#define	D_LT_DEG2RAD			(0.01745329238F)	/* 角度単位変換係数(=pi/180) */
-#define	D_LT_EXEC_PERIOD		(0.00500000000F)	/* バランス制御実行周期(秒) */
+#define	D_LT_CMD_MAX			(100.0F)						/* 前進/旋回命令絶対最大値 */
+#define	D_LT_DEG2RAD			(0.01745329238F)				/* 角度単位変換係数(=pi/180) */
+#define	D_LT_EXEC_PERIOD		(0.00500000000F)				/* バランス制御実行周期(秒) */
 
-#define	D_LT_A_D				(0.8F)				/* ローパスフィルタ係数(左右車輪の平均回転角度用) */
-#define	D_LT_A_R				(0.996F)			/* ローパスフィルタ係数(左右車輪の目標平均回転角度用) */
+#define	D_LT_A_D				(0.8F)							/* ローパスフィルタ係数(左右車輪の平均回転角度用) */
+#define	D_LT_A_R				(0.996F)						/* ローパスフィルタ係数(左右車輪の目標平均回転角度用) */
 
 #if 1	/* ゲイン調整 */
 /* 状態フィードバック係数 */
 /* ***2018年度*** */
 #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE
-#	define	D_LT_K_F1				(-5.0F)			/* 車輪回転角度係数 */
-#	define	D_LT_K_F2				(-40.0F)		/* 車体傾斜角度係数 */
-#	define	D_LT_K_F3				(-2.0F)			/* 車輪回転角速度係数 */
-#	define	D_LT_K_F4				(-4.0F)			/* 車体傾斜角速度係数 */
+#	define	D_LT_K_F1				(-5.0F)						/* 車輪回転角度係数 */
+#	define	D_LT_K_F2				(-40.0F)					/* 車体傾斜角度係数 */
+#	define	D_LT_K_F3				(-2.0F)						/* 車輪回転角速度係数 */
+#	define	D_LT_K_F4				(-4.0F)						/* 車体傾斜角速度係数 */
 #else
 #	define	D_LT_K_F1				(-5.0F)	
 #	define	D_LT_K_F2				(-50.0F)
@@ -172,15 +162,15 @@
 #	define	D_LT_K_F4				(-5.0F)	
 #endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
 
-#define	D_LT_K_I				(-0.2F)			/* サーボ制御用積分フィードバック係数 */
-#define	D_LT_K_PHIDOT			(25.0F*2.75F)	/* 車体目標旋回角速度係数 */
-#define	D_LT_K_THETADOT			(6.00F)			/* モータ目標回転角速度係数 */
+#define	D_LT_K_I				(-0.2F)							/* サーボ制御用積分フィードバック係数 */
+#define	D_LT_K_PHIDOT			(25.0F*2.75F)					/* 車体目標旋回角速度係数 */
+#define	D_LT_K_THETADOT			(6.00F)							/* モータ目標回転角速度係数 */
 
-#define	D_LT_BATTERY_GAIN		(0.001089F)		/* PWM出力算出用バッテリ電圧補正係数 */
-#define	D_LT_BATTERY_OFFSET		(0.625F)		/* PWM出力算出用バッテリ電圧補正オフセット */
+#define	D_LT_BATTERY_GAIN		(0.001089F)						/* PWM出力算出用バッテリ電圧補正係数 */
+#define	D_LT_BATTERY_OFFSET		(0.625F)						/* PWM出力算出用バッテリ電圧補正オフセット */
 
-#define D_LT_P_GAIN					(2.5F)		/* 完全停止用モーター制御比例係数 */
-#define D_LT_PWM_ABS_MAX			(60)		/* 完全停止用モーター制御PWM絶対最大値 */
+#define D_LT_P_GAIN					(2.5F)						/* 完全停止用モーター制御比例係数 */
+#define D_LT_PWM_ABS_MAX			(60)						/* 完全停止用モーター制御PWM絶対最大値 */
 #else	/* ゲイン調整 */
 :/* サンプル初期値 */
 :/* 状態フィードバック係数 */
@@ -202,22 +192,21 @@
 
 enum EN_LT_STATUS
 {
-	E_LT_STATUS_READY = 0,			/* 起動準備中 */
-	E_LT_STATUS_IDLE,				/* 起動中 */
-	E_LT_STATUS_CALIBLATE_GYRO,		/* キャリブレーション中(ジャイロ) */
-	E_LT_STATUS_CALIBLATE_TAIL,		/* キャリブレーション中(尻尾) */
-	E_LT_STATUS_CALIBLATE_BLACK,	/* キャリブレーション中(黒) */
-	E_LT_STATUS_CALIBLATE_WHITE,	/* キャリブレーション中(白) */
-	E_LT_STATUS_CORRECT_ANGLE_CALIB,/* 姿勢角を調整開始初期化処理待ち */
-	E_LT_STATUS_CORRECT_ANGLE_WAIT,	/* 姿勢角を調整開始指示待ち中*/
-	E_LT_STATUS_CORRECTING_ANGLE,	/* 姿勢角を調整中*/
-//	E_LT_STATUS_WAITING,			/* 待機中 */
-	E_LT_STATUS_RUN_STANDUP,		/* 走行中(起動) */
-	E_LT_STATUS_RUN_LOWSPEED,		/* 走行中(低速) */
-	E_LT_STATUS_RUN_HIGHSPEED,		/* 走行中(高速) */
-	E_LT_STATUS_RUN_PAUSE,			/* 走行中(停止) */
-	E_LT_STATUS_STOP_WAIT,			/* 走行体完全停止待ち */
-	E_LT_STATUS_STOP,				/* 走行体完全停止 */
+	E_LT_STATUS_READY = 0,				/* 起動準備中 */
+	E_LT_STATUS_IDLE,					/* 起動中 */
+	E_LT_STATUS_CALIBLATE_GYRO,			/* キャリブレーション中(ジャイロ) */
+	E_LT_STATUS_CALIBLATE_TAIL,			/* キャリブレーション中(尻尾) */
+	E_LT_STATUS_CALIBLATE_BLACK,		/* キャリブレーション中(黒) */
+	E_LT_STATUS_CALIBLATE_WHITE,		/* キャリブレーション中(白) */
+	E_LT_STATUS_CORRECT_ANGLE_CALIB,	/* 姿勢角を調整開始初期化処理待ち */
+	E_LT_STATUS_CORRECT_ANGLE_WAIT,		/* 姿勢角を調整開始指示待ち中*/
+	E_LT_STATUS_CORRECTING_ANGLE,		/* 姿勢角を調整中*/
+	E_LT_STATUS_RUN_STANDUP,			/* 走行中(起動) */
+	E_LT_STATUS_RUN_LOWSPEED,			/* 走行中(低速) */
+	E_LT_STATUS_RUN_HIGHSPEED,			/* 走行中(高速) */
+	E_LT_STATUS_RUN_PAUSE,				/* 走行中(停止) */
+	E_LT_STATUS_STOP_WAIT,				/* 走行体完全停止待ち */
+	E_LT_STATUS_STOP,					/* 走行体完全停止 */
 	
 	/* ここより上に定義すること */
 	E_LT_STATUS_INVALID = -1
@@ -225,7 +214,7 @@ enum EN_LT_STATUS
 
 enum EN_LT_STASTOSTATE
 {
-	E_LT_STASTOSTATE_NOREQ = 0,		/* 未送信 */
+	E_LT_STASTOSTATE_NOREQ = 0,			/* 未送信 */
 	E_LT_STASTOSTATE_WAIT,				/* 応答待ち */
 	E_LT_STASTOSTATE_DONE,				/* 応答完了 */
 	
@@ -283,53 +272,53 @@ typedef void( *F_LT_RECVFUNCPTR )(S_MSG_DATA* spRecv);
 /* タイマー情報 */
 typedef struct
 {
-	int iTimerId;
+	int	iTimerId;
 }S_LT_TIMERINFO;
 
 /* センサー */
 typedef struct
 {
-	int iTouch;
-	int iColor;
-	int iGyro;
-	int iSonar;
+	int	iTouch;
+	int	iColor;
+	int	iGyro;
+	int	iSonar;
 }S_LT_PORT_SENSOR;
 
 /* モータ */
 typedef struct
 {
-	int iLeftWheel;
-	int iRightWheel;
-	int iTail;
+	int	iLeftWheel;
+	int	iRightWheel;
+	int	iTail;
 }S_LT_PORT_MOTOR;
 
 /* ポート */
 typedef struct
 {
-	S_LT_PORT_SENSOR iSensor;
-	S_LT_PORT_MOTOR iMotor;
+	S_LT_PORT_SENSOR	iSensor;
+	S_LT_PORT_MOTOR		iMotor;
 }S_LT_PORT;
 
 /* カラーセンサ */
 typedef struct
 {
-	int iColor;
-	int iReflect;
+	int	iColor;
+	int	iReflect;
 }S_LT_COLORINFO;
 
 /* キャリブレーション情報 */
 typedef struct
 {
-	int iGyro;
-	S_LT_COLORINFO stBlack;
-	S_LT_COLORINFO stWhite;
+	int				iGyro;
+	S_LT_COLORINFO	stBlack;
+	S_LT_COLORINFO	stWhite;
 }S_LT_CALIBRATEINFO;
 
 /* バランス制御情報 */
 typedef struct
 {
-	int iIntegral;
-	int iDeviation;
+	int	iIntegral;
+	int	iDeviation;
 }S_LT_LINETRACEINFO;
 
 /* バランス制御情報 */
@@ -345,22 +334,22 @@ typedef struct
 /* バランスコントロール */
 typedef struct
 {
-	float			fCmdForward;		/* 前後進命令値		100(前進最大)～100(後進最大) */
-	float			fCmdTurn;			/* 旋回命令値		100(右旋回最大)～-100(左旋回最大) */
-	float			fGyro;				/* ジャイロセンサ値 */
-	float			fGyroOffset;		/* ジャイロセンサオフセット値 */
-	float			fThetaMLeft;		/* 左モータエンコーダ値[度] */
-	float			fThetaMRight;		/* 右モータエンコーダ値[度] */
-	float			fBattery;			/* バッテリ電圧値[mV] */
-	signed char		scPwmLeft;			/* 左モータ PWM 出力値 */
-	signed char		scPwmRight;			/* 右モータ PWM 出力値 */
+	float		fCmdForward;	/* 前後進命令値		100(前進最大)～100(後進最大) */
+	float		fCmdTurn;		/* 旋回命令値		100(右旋回最大)～-100(左旋回最大) */
+	float		fGyro;			/* ジャイロセンサ値 */
+	float		fGyroOffset;	/* ジャイロセンサオフセット値 */
+	float		fThetaMLeft;	/* 左モータエンコーダ値[度] */
+	float		fThetaMRight;	/* 右モータエンコーダ値[度] */
+	float		fBattery;		/* バッテリ電圧値[mV] */
+	signed char	scPwmLeft;		/* 左モータ PWM 出力値 */
+	signed char	scPwmRight;		/* 右モータ PWM 出力値 */
 }S_LT_BALANCE_CONTROL;
 
 /* ステータスログ */
 typedef struct
 {
-	unsigned long ulTime;		/* 経過時刻(msec) */
-	int iStatus;				/* 状態 */
+	unsigned long	ulTime;		/* 経過時刻(msec) */
+	int				iStatus;	/* 状態 */
 }S_LT_LOGDATA_STATUSLOG;
 
 typedef struct
@@ -409,12 +398,12 @@ typedef struct
 	int							iStopChk[E_LT_STOP_NUM];
 	int							iFallDownCount;
 	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
-	unsigned char				button_valid;					/* ボタンを押したとき、連続して次の状態に行かないようにフラグを管理する */
+	unsigned char				button_valid;		/* ボタンを押したとき、連続して次の状態に行かないようにフラグを管理する */
 	S_LT_PORT					stPort;
 	S_LT_CALIBRATEINFO			stCalibrateInfo;
 	S_LT_CALIBRATEINFO			stOldCalibrateInfo;
 	S_LT_LINETRACEINFO			stLineTraceInfo;
-	S_LT_BALANCEINFO			stBalanceInfo;					/* バランス制御情報 */
+	S_LT_BALANCEINFO			stBalanceInfo;
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 	S_LT_LOGINFO				stLogInfo;
 }S_LT;
@@ -428,9 +417,9 @@ typedef struct
 /* ポート情報 */
 typedef struct
 {
-	int		iParts;
-	int		iPort;
-	int		iType;
+	int	iParts;
+	int	iPort;
+	int	iType;
 }S_LT_PORTINFO;
 
 /***** 関数プロトタイプ *****/
@@ -455,14 +444,13 @@ void lt_proc_CalibrateGyro( void );
 void lt_proc_CalibrateTail( void );
 void lt_proc_CalibrateBlack( void );
 void lt_proc_CalibrateWhite( void );
-void lt_proc_Correct_Calib(void);
+void lt_proc_Correct_Calib( void );
 void lt_proc_Correct_Wait( void );
 void lt_proc_Correcting( void );
 void lt_proc_StandUp( void );
 void lt_proc_LowSpeed( void );
 void lt_proc_HighSpeed(void);
 void lt_proc_Pause( void );
-void lt_proc_StopWait( void );
 void lt_proc_Stop( void );
 
 /* port */
@@ -495,7 +483,6 @@ void lt_RunStop( void );
 
 /* other I/F */
 int lt_get_SonarAlert( void );
-//int lt_get_StopState( void );
 
 /* per_angle_calculation */
 float calc_pre_angle( int mode );
@@ -519,9 +506,9 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* 起動 */
 void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* 停止 */
 void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* キャリブレーション更新 */
 void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート */
-void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv );
-void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv );
-void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv );
+void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ開始 */
+void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ変化 */
+void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ終了 */
 
 /*** ltin_send.c **/
 void lt_send_test_res( S_MSG_DATA* spSend );								/* テスト */

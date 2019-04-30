@@ -26,8 +26,6 @@ void lt_log_set_Statuslog( void )
 	spLt->stLogInfo.stStatusLog.stLog[spLt->stLogInfo.stStatusLog.iLogNum].ulTime = ulTime;
 	spLt->stLogInfo.stStatusLog.stLog[spLt->stLogInfo.stStatusLog.iLogNum].iStatus = spLt->iStatus;
 	
-//	fprintf( spLt->fpStatusLog, "%08ld,",ulTime );
-	
 	spLt->stLogInfo.stStatusLog.iLogNum++;
 	
 	/* バッファ上限に到達 */
@@ -102,14 +100,14 @@ void lt_log_set_Systemlog( void )
 	
 	/* カウンタ */
 	stLogData.ulTime							= ulTime;
-
+	
 	/* バランス制御情報 */
 	stLogData.stBalanceInfo.fErr_theta			= spLt->stBalanceInfo.fErr_theta;
 	stLogData.stBalanceInfo.fPsi				= spLt->stBalanceInfo.fPsi;
 	stLogData.stBalanceInfo.fThetaLpf			= spLt->stBalanceInfo.fThetaLpf;
 	stLogData.stBalanceInfo.fThetaRef			= spLt->stBalanceInfo.fThetaRef;
 	stLogData.stBalanceInfo.fThetadotCmdLpf		= spLt->stBalanceInfo.fThetadotCmdLpf;
-
+	
 	/* バランスコントロール */
 	stLogData.stBacanceControl.fCmdForward		= spLt->stBacanceControl.fCmdForward;
 	stLogData.stBacanceControl.fCmdTurn			= spLt->stBacanceControl.fCmdTurn;
@@ -121,73 +119,27 @@ void lt_log_set_Systemlog( void )
 	stLogData.stBacanceControl.scPwmLeft		= spLt->stBacanceControl.scPwmLeft;
 	stLogData.stBacanceControl.scPwmRight		= spLt->stBacanceControl.scPwmRight;
 	
+	/* データ設定 */
 	memcpy( &(spLt->stLogInfo.stSystemLog.stLog[spLt->stLogInfo.stSystemLog.iLogNum]), &stLogData, sizeof(S_LT_LOGDATA_SYSTEMLOG) );
-
+	
 	/* ログ数更新 */
 	spLt->stLogInfo.stSystemLog.iLogNum ++;
 	if( D_TASK_BUFFNUM_SYSTEMLOG == spLt->stLogInfo.stSystemLog.iLogNum )
 	{
 		/* ログ送信 */
 		lt_send_setLog_SystemLog_req( &(spLt->stLogInfo.stSystemLog) );
-
+		
 		/* メモリクリア */
 		memset( &(spLt->stLogInfo.stSystemLog), 0x00, sizeof(S_LT_LOGINFO_SYSTEMLOG));
 	}
-
-//#if	(D_LT_LOGMODE_SYSTEM)
-//	S_LT* spLt = (S_LT*)NULL;
-//	
-//	/* グローバル領域取得 */
-//	spLt = lt_get_Global();
-//	if( (S_LT*)NULL == spLt )
-//	{
-//		return;
-//	}
-//	
-//	if( (FILE*)NULL == spLt->fpSystemLog )
-//	{
-//		return;
-//	}
-//	
-//#if	(__TARGET_EV3__)
-//	SYSTIM	stime;
-//	get_tim(&stime);
-//	fprintf( spLt->fpSystemLog, "%08ld,",stime );
-//#endif	/* __TARGET_EV3__ */
-//	
-//#if	(D_LT_LOGMODE_SYSTEM_BALANCEINFO)
-//	/* バランス制御情報 */
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fErr_theta);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fPsi);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fThetaLpf);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fThetaRef);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBalanceInfo.fThetadotCmdLpf);
-//#endif	/* D_LT_LOGMODE_SYSTEM_BALANCEINFO */
-//	
-//#if	(D_LT_LOGMODE_SYSTEM_BALANCECONTROL)
-//	/* バランスコントロール */
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fCmdForward);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fCmdTurn);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fGyro);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fGyroOffset);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fThetaMLeft);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fThetaMRight);
-//	fprintf( spLt->fpSystemLog, "%lf,",spLt->stBacanceControl.fBattery);
-//	fprintf( spLt->fpSystemLog, "%d,", spLt->stBacanceControl.scPwmLeft);
-//	fprintf( spLt->fpSystemLog, "%d,", spLt->stBacanceControl.scPwmRight);
-//#endif	/* D_LT_LOGMODE_SYSTEM_BALANCECONTROL */
-//	
-//	fprintf( spLt->fpSystemLog, "\n");
-//	fflush( spLt->fpSystemLog );
-//#endif	/* D_LT_LOGMODE_SYSTEM */
 	
 	return;
 }
 
 void lt_log_set_LastLog( void )
 {
-	printf("=== LAST LOG SEND ===\n");
 	lt_log_set_LastLog_Systemlog();
+	
 	return;
 }
 
@@ -217,14 +169,14 @@ void lt_log_set_LastLog_Systemlog( void )
 	
 	/* カウンタ */
 	stLogData.ulTime							= ulTime;
-
+	
 	/* バランス制御情報 */
 	stLogData.stBalanceInfo.fErr_theta			= spLt->stBalanceInfo.fErr_theta;
 	stLogData.stBalanceInfo.fPsi				= spLt->stBalanceInfo.fPsi;
 	stLogData.stBalanceInfo.fThetaLpf			= spLt->stBalanceInfo.fThetaLpf;
 	stLogData.stBalanceInfo.fThetaRef			= spLt->stBalanceInfo.fThetaRef;
 	stLogData.stBalanceInfo.fThetadotCmdLpf		= spLt->stBalanceInfo.fThetadotCmdLpf;
-
+	
 	/* バランスコントロール */
 	stLogData.stBacanceControl.fCmdForward		= spLt->stBacanceControl.fCmdForward;
 	stLogData.stBacanceControl.fCmdTurn			= spLt->stBacanceControl.fCmdTurn;
@@ -236,15 +188,17 @@ void lt_log_set_LastLog_Systemlog( void )
 	stLogData.stBacanceControl.scPwmLeft		= spLt->stBacanceControl.scPwmLeft;
 	stLogData.stBacanceControl.scPwmRight		= spLt->stBacanceControl.scPwmRight;
 	
+	/* データ設定 */
 	memcpy( &(spLt->stLogInfo.stSystemLog.stLog[spLt->stLogInfo.stSystemLog.iLogNum]), &stLogData, sizeof(S_LT_LOGDATA_SYSTEMLOG) );
-
+	
 	/* ログ数更新 */
 	spLt->stLogInfo.stSystemLog.iLogNum ++;
+	
 	/* ログ送信 */
 	lt_send_setLog_SystemLog_req( &(spLt->stLogInfo.stSystemLog) );
 	
 	/* メモリクリア */
 	memset( &(spLt->stLogInfo.stSystemLog), 0x00, sizeof(S_LT_LOGINFO_SYSTEMLOG));
-
+	
 	return;
 }

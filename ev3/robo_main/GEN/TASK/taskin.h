@@ -44,5 +44,4 @@ void task_msglog( int iDir, int iTask, int iMsgId );
 
 /***** テーブル *****/
 
-
 #endif	/* __TASKIN_H__ */

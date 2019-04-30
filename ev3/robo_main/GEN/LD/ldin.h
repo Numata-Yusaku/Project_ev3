@@ -94,60 +94,60 @@ typedef void( *F_LD_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 /* ファイルデータ */
 typedef struct
 {
-	int iWritePageNum;
-	FILE* fpFile;
+	int		iWritePageNum;
+	FILE*	fpFile;
 }S_LD_FILEDATA;
 
 /* ファイルポインタ */
 typedef struct
 {
-	S_LD_FILEDATA fpStatusLog_Lt;
-	S_LD_FILEDATA fpCalibrateLog;
-	S_LD_FILEDATA fpSystemLog;
+	S_LD_FILEDATA	fpStatusLog_Lt;
+	S_LD_FILEDATA	fpCalibrateLog;
+	S_LD_FILEDATA	fpSystemLog;
 }S_LD_FILEINFO;
 
 /* ログリスト：システムログ */
 typedef struct S_LD_LOGLISTPAGE_SYSTEMLOG
 {
-	int iPageNo;							/* ページ数 */
-	S_TASK_LOGINFO_SYSTEMLOG* spData;		/* データ */
-	struct S_LD_LOGLISTPAGE_SYSTEMLOG* spNextPage;	/* 次データへのリンクアドレス */
+	int									iPageNo;	/* ページ数 */
+	S_TASK_LOGINFO_SYSTEMLOG*			spData;		/* データ */
+	struct S_LD_LOGLISTPAGE_SYSTEMLOG*	spNextPage;	/* 次データへのリンクアドレス */
 }S_LD_LOGLISTPAGE_SYSTEMLOG;
 
 /* ログリスト：システムログ */
 typedef struct
 {
-	int iAllPageNum;						/* 総ページ数 */
-	S_LD_LOGLISTPAGE_SYSTEMLOG* spList;		/* リストデータトップ */
+	int							iAllPageNum;	/* 総ページ数 */
+	S_LD_LOGLISTPAGE_SYSTEMLOG*	spList;			/* リストデータトップ */
 }S_LD_LOGLISTINFO_SYSTEMLOG;
 
 /* ログリスト */
 typedef struct
 {
-	int iNowWrite;
-	S_LD_LOGLISTINFO_SYSTEMLOG stLogListInfo_SystemLog;
+	int							iNowWrite;
+	S_LD_LOGLISTINFO_SYSTEMLOG	stLogListInfo_SystemLog;
 }S_LD_LOGLIST;
 
 /* 常駐領域 */
 typedef struct
 {
-	int iStatus;		/* クラスステータス */
-	int iWupChk;
-	S_LD_FILEINFO stFileInfo;
-	S_LD_LOGLIST stLogList;
+	int				iStatus;		/* クラスステータス */
+	int				iWupChk;
+	S_LD_FILEINFO	stFileInfo;
+	S_LD_LOGLIST	stLogList;
 }S_LD;
 
 typedef struct
 {
-	int iMsgId;
-	void* func;
+	int		iMsgId;
+	void*	func;
 }S_LD_RECV_TABLE;
 
 typedef struct
 {
-	char cCommand;
-	int iSize;
-	void* vpFunc;
+	char	cCommand;
+	int		iSize;
+	void*	vpFunc;
 }S_LD_MESSAGE_TABLE;
 
 /***** 関数プロトタイプ *****/
@@ -196,6 +196,5 @@ void ld_send_Stop_res( void );									/* 停止 */
 void ld_send_staLogDump_res( void );							/* ログダンプ開始 */
 void ld_send_chgLogDump_res( S_TASK_CHGLOGDUMP_RES* psSend );	/* ログダンプ状態更新 */
 void ld_send_endLogDump_res( void );							/* ログダンプ終了 */
-
 
 #endif	/* __LDIN_H__ */

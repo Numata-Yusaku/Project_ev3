@@ -3,13 +3,6 @@
 
 S_LT* gspLt = (S_LT*)NULL;
 
-void test( signed char* aaa )
-{
-//	signed char ldp = (signed char)(&(*aaa));
-//	printf("[%d]]\n",ldp);
-	return;
-}
-
 void lt_startup( void )
 {
 	/* 起動準備 */
@@ -25,46 +18,46 @@ void lt_startup( void )
 void lt_main( void )
 {
 	int			iRet		= D_LT_NG;
-	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
+	S_MSG_DATA*	spRecvData	= (S_MSG_DATA*)NULL;
 	
 	/* 領域確保 */
-	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
-	if((S_MSG_DATA*)NULL == psRecvData)
+	spRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if((S_MSG_DATA*)NULL == spRecvData)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
-	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* LT_TASK */
-	iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
+	iRet = TASK_msgrecv( E_TASK_TASKID_LT, spRecvData );
 	if ((D_TASK_OK == iRet) &&
-		(E_MSGID_LT_INVALID != psRecvData->iMsgid))
+		(E_MSGID_LT_INVALID != spRecvData->iMsgid))
 	{
 		/* 受信処理 */
-		lt_recv( psRecvData );
+		lt_recv( spRecvData );
 	
 	}
 	
 	/* 受信データクリア */
-	if ((void*)NULL != psRecvData->vpPara)
+	if ((void*)NULL != spRecvData->vpPara)
 	{
-		free( psRecvData->vpPara );
-		psRecvData->vpPara = (void*)NULL;
+		free( spRecvData->vpPara );
+		spRecvData->vpPara = (void*)NULL;
 	}
 	
-	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* 常駐処理 */
 	lt_proc();
 
 END:
 	/*** 解放処理 ***/
-	if ((S_MSG_DATA*)NULL != psRecvData)
+	if ((S_MSG_DATA*)NULL != spRecvData)
 	{
-		free( psRecvData );
-		psRecvData = (S_MSG_DATA*)NULL;
+		free( spRecvData );
+		spRecvData = (S_MSG_DATA*)NULL;
 	}
 	
 	return;
@@ -73,17 +66,17 @@ END:
 void lt_main_debug( void )
 {
 	int			iRet		= D_LT_NG;
-	S_MSG_DATA*	psRecvData	= (S_MSG_DATA*)NULL;
+	S_MSG_DATA*	spRecvData	= (S_MSG_DATA*)NULL;
 	
 	/* 領域確保 */
-	psRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
-	if((S_MSG_DATA*)NULL == psRecvData)
+	spRecvData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if((S_MSG_DATA*)NULL == spRecvData)
 	{
 		goto END;
 	}
 	
 	/* 初期化 */
-	memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* 起動準備 */
 	lt_init();
@@ -91,37 +84,36 @@ void lt_main_debug( void )
 	/* LT_TASK */
 	while(1)
 	{
-		iRet = TASK_msgrecv( E_TASK_TASKID_LT, psRecvData );
+		iRet = TASK_msgrecv( E_TASK_TASKID_LT, spRecvData );
 		if ((D_TASK_OK == iRet) &&
-			(E_MSGID_LT_INVALID != psRecvData->iMsgid))
+			(E_MSGID_LT_INVALID != spRecvData->iMsgid))
 		{
 			/* 受信処理 */
-			lt_recv( psRecvData );
-
+			lt_recv( spRecvData );
 		}
-
+		
 		/* 受信データクリア */
-		if ((void*)NULL != psRecvData->vpPara)
+		if ((void*)NULL != spRecvData->vpPara)
 		{
-			free( psRecvData->vpPara );
-			psRecvData->vpPara = (void*)NULL;
+			free( spRecvData->vpPara );
+			spRecvData->vpPara = (void*)NULL;
 		}
-
-		memset( psRecvData, 0x00, sizeof( S_MSG_DATA ) );
-
+		
+		memset( spRecvData, 0x00, sizeof( S_MSG_DATA ) );
+		
 		/* 常駐処理 */
 		lt_proc();
-
+		
 		/* タスクサイクル(ms) */
 		TASK_sleep( D_TASK_CYCLE_LT );
 	}
 
 END:
 	/*** 解放処理 ***/
-	if ((S_MSG_DATA*)NULL != psRecvData)
+	if ((S_MSG_DATA*)NULL != spRecvData)
 	{
-		free( psRecvData );
-		psRecvData = (S_MSG_DATA*)NULL;
+		free( spRecvData );
+		spRecvData = (S_MSG_DATA*)NULL;
 	}
 	
 	lt_shutdown();
@@ -141,6 +133,7 @@ void lt_init( void )
 void lt_shutdown( void )
 {
 	RSI_extend_stp_cyc( D_EV3_CYC_RUN_LT );
+	
 	return;
 }
 
@@ -207,27 +200,27 @@ void lt_proc( void )
 		case E_LT_STATUS_CALIBLATE_GYRO:
 			lt_proc_CalibrateGyro();
 			break;
-			
+		
 		case E_LT_STATUS_CALIBLATE_TAIL:
 			lt_proc_CalibrateTail();
 			break;
-			
+		
 		case E_LT_STATUS_CALIBLATE_BLACK:
 			lt_proc_CalibrateBlack();
 			break;
-			
+		
 		case E_LT_STATUS_CALIBLATE_WHITE:
 			lt_proc_CalibrateWhite();
 			break;
-
+		
 		case E_LT_STATUS_CORRECT_ANGLE_CALIB:
 			lt_proc_Correct_Calib();
 			break;
-
+		
 		case E_LT_STATUS_CORRECT_ANGLE_WAIT:
 			lt_proc_Correct_Wait();
 			break;
-			
+		
 		case E_LT_STATUS_CORRECTING_ANGLE:
 			lt_proc_Correcting();
 			break;
@@ -239,7 +232,7 @@ void lt_proc( void )
 		case E_LT_STATUS_RUN_LOWSPEED:
 			lt_proc_LowSpeed();
 			break;
-
+		
 		case E_LT_STATUS_RUN_HIGHSPEED:
 			lt_proc_HighSpeed();
 			break;
@@ -249,7 +242,7 @@ void lt_proc( void )
 			break;
 		
 		case E_LT_STATUS_STOP_WAIT:
-			//lt_proc_StopWait();
+			/* 処理しない */
 			break;
 		
 		case E_LT_STATUS_STOP:
@@ -257,6 +250,7 @@ void lt_proc( void )
 			break;
 		
 		default:
+			/* フェール処理 */
 			break;
 	}
 	
@@ -468,49 +462,46 @@ void lt_proc_Correct_Calib( void )
 {
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
 		return;
 	}
-
+	
 	/* 角度修正開始する前に車体をうつ伏せにする。うつ伏せ完了したらボタンを押す。 */
 	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_CALIB);
-
+	
 	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
 	}
-
+	
 	if (D_LT_TRUE == isPressed)
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
-
+		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_F4, D_LT_TONE_DURATION);
-
+		
 		/* 待ちフラグを処理 */
 		spLt->button_valid = D_LT_FALSE;
-
+		
 		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 
 		
 	}
-
+	
 	return;
-
-
 }
 
 void lt_proc_Correct_Wait( void )
 {
-
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
 		
@@ -520,76 +511,70 @@ void lt_proc_Correct_Wait( void )
 	{
 		return;
 	}
-
+	
 	/* 角度修正開始指示を待つ。この間は角度を計算し続ける。 */
 	calc_pre_angle((int)E_LT_STATUS_CORRECT_ANGLE_WAIT);
-
+	
 	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
 	}
-
+	
 	if ( D_LT_TRUE == isPressed )
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
-
+		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_G4, D_LT_TONE_DURATION);
-
+		
 		/* 待ちフラグを処理 */
 		spLt->button_valid = D_LT_FALSE;
-
+		
 		/* 次の待ちタイマーを起動 */
 		lt_cre_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		lt_sta_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 	}
-		
+	
 	return;
-
 }
 
 void lt_proc_Correcting( void ) 
 {
-
 	int isPressed = D_LT_FALSE;
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
 		return;
 	}
-
+	
 	/* 角度修正中 */
 	calc_pre_angle((int)E_LT_STATUS_CORRECTING_ANGLE);
-
+	
 	if (spLt->button_valid == D_LT_TRUE)
 	{
 		lt_del_Timer(E_TIMERID_BUTTON_WAIT_TIMER);
 		isPressed = RSI_touch_sensor_is_pressed(spLt->stPort.iSensor.iTouch);
 	}
-
+	
 	if (D_LT_TRUE == isPressed)
 	{
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
-
-
+		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone(D_RSI_HW_NOTE_A4, D_LT_TONE_DURATION);
-
+		
 		/* 待ちフラグを処理 */
 		spLt->button_valid = D_LT_FALSE;
-
 	}
-
+	
 	return;
-
 }
-
 
 void lt_proc_StandUp( void )
 {
@@ -624,7 +609,7 @@ void lt_proc_StandUp( void )
 #else
 	spLt->iStatus = E_LT_STATUS_RUN_HIGHSPEED;
 #endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
-
+	
 	return;
 }
 
@@ -640,7 +625,7 @@ void lt_proc_HighSpeed(void)
 {
 	/* 走行制御 */
 	lt_Running(D_LT_FORWORD_HIGHSPEED, D_LT_TURN_RUN );
-
+	
 	return;
 }
 
@@ -649,11 +634,6 @@ void lt_proc_Pause( void )
 	/* 走行制御 */
 	lt_Running( D_LT_FORWORD_PAUSE, D_LT_TURN_STOP );
 	
-	return;
-}
-
-void lt_proc_StopWait( void )
-{
 	return;
 }
 
@@ -681,7 +661,6 @@ void lt_proc_Stop( void )
 		/* リトライタイマー開始 */
 		lt_cre_Timer( E_TIMERID_LT_STOPCHK );
 		lt_sta_Timer( E_TIMERID_LT_STOPCHK );
-		
 	}
 	else if( E_LT_STASTOSTATE_WAIT == spLt->iStopStatus )
 	{
@@ -695,13 +674,12 @@ void lt_proc_Stop( void )
 			RSI_motor_stop( spLt->stPort.iMotor.iTail, D_LT_FALSE);
 			RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE);
 			RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_FALSE);
-		
+			
 			/* システム終了 */
 			lt_shutdown();
 #if	(__VC_DEBUG__)
 			lt_send_ShutDown_res();
 #endif	/* __VC_DEBUG__ */
-
 		}
 	}
 	
@@ -734,7 +712,7 @@ void lt_set_Port( void )
 	spLt->stPort.iMotor.iLeftWheel = lt_get_MotorPort( E_LT_PARTS_LEFT_MOTOR );
 	spLt->stPort.iMotor.iRightWheel = lt_get_MotorPort( E_LT_PARTS_RIGHT_MOTOR );
 	spLt->stPort.iMotor.iTail = lt_get_MotorPort( E_LT_PARTS_TAIL_MOTOR );
-
+	
 	return;
 }
 
@@ -750,7 +728,6 @@ void lt_set_SensorPort( void )
 		{
 			RSI_sensor_config( spSensorTable[iLoop].iPort, spSensorTable[iLoop].iType );
 		}
-		
 	}
 	
 	return;
@@ -769,10 +746,9 @@ int lt_get_SensorPort( int iParts )
 			iRet = spSensorTable[iLoop].iPort;
 			break;
 		}
-		
 	}
 	
-	return iRet;		/* Ret:ポート */
+	return iRet;
 }
 
 void lt_set_MotorPort( void )
@@ -787,7 +763,6 @@ void lt_set_MotorPort( void )
 		{
 			RSI_motor_config( spMotorTable[iLoop].iPort, spMotorTable[iLoop].iType );
 		}
-		
 	}
 	
 	return;
@@ -806,10 +781,9 @@ int lt_get_MotorPort( int iParts )
 			iRet = spMotorTable[iLoop].iPort;
 			break;
 		}
-		
 	}
 	
-	return iRet;		/* Ret:ポート */
+	return iRet;
 }
 
 int lt_chk_WupChkRetry( void )
@@ -843,7 +817,7 @@ int lt_get_WupchkNum( void )
 	{
 		return 0;
 	}
-
+	
 	for( iLoop = 0; iLoop < E_LT_WUPCHK_NUM; iLoop++ )
 	{
 		if (D_LT_FLAG_ON == spLt->iWupChk[iLoop])
@@ -1051,7 +1025,7 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	int iRet = D_LT_NG;
 	int iAlert = D_LT_SONAR_ARERT_NON_OBSTRUCTION;
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	static int control_wait_count = 0;
 	
 	/* グローバル領域取得 */
@@ -1060,10 +1034,6 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	{
 		return;
 	}
-	
-#if	(__VC_DEBUG__)
-//	printf("■\n");
-#endif	/* __VC_DEBUG__ */
 	
 	/* 障害物判定 */
 	iAlert = lt_get_SonarAlert();
@@ -1078,7 +1048,7 @@ void lt_Running( int iForwardLevel, int iTurnMode )
 	{
 		/* 前進指令値取得 */
 		spLt->stBacanceControl.fCmdForward = (float)iForwardLevel;
-
+		
 		/* 旋回指令値取得 */
 		if (control_wait_count >= D_LT_TURN_START_WAIT)
 		{
@@ -1142,11 +1112,8 @@ int lt_get_RunningTurnDir( void )
 	iReflect = (int)RSI_color_sensor_get_reflect( spLt->stPort.iSensor.iColor );
 	
 	/* 路面の反射光平均値を取得 */
-#if 0	/* T.B.D ▲3 */
-	iThreshold = (D_LT_COLORSENSOR_REFLECT_WHITE + D_LT_COLORSENSOR_REFLECT_BLACK) / 2;
-#else	/* T.B.D ▲3 */
 	iThreshold = ( spLt->stCalibrateInfo.stWhite.iReflect + spLt->stCalibrateInfo.stBlack.iReflect ) / 2;
-#endif	/* T.B.D ▲3 */
+	
 	/* ライン閾値からの偏差取得 */
 	iDeviation = iThreshold - iReflect;
 	
@@ -1155,12 +1122,9 @@ int lt_get_RunningTurnDir( void )
 #else
 	iTurnDir = lt_get_ControlLedValiable_OnOff( iDeviation );
 #endif		/* #if D_LT_RUNNING_MODE ==  D_LT_LOWSPEED_MODE */
-
 	
 	return iTurnDir;		/* 旋回方向 */
 }
-
-
 
 int lt_get_ControlLedValiable_PID( int iDeviation )
 {
@@ -1234,8 +1198,7 @@ void lt_RunStop( void )
 	/*** ログダンプ ***/
 	/* ラストデータ送信 */
 	lt_log_set_LastLog();
-
-
+	
 	/* ログダンプスタート */
 	lt_send_staLogDump_req();
 	
@@ -1250,14 +1213,14 @@ int lt_get_ControlLedValiable_OnOff(int iDeviation)
 {
 	int iTurn = 0;				/* 旋回命令: -100 (左旋回) ～ 100 (右旋回) */
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
 		return iTurn;
 	}
-
+	
 	/* ON/OFF制御 */
 	/* ただし現状は未完成であり、旋回時に大回りしてコースから外れやすい。 */
 	if (iDeviation > 0)
@@ -1303,52 +1266,26 @@ int lt_get_SonarAlert( void )
 	return iAlert;
 }
 
-//int lt_get_StopState( void )
-//{
-//	int iLoop = 0;
-//	S_LT* spLt = (S_LT*)NULL;
-//	
-//	/* グローバル領域取得 */
-//	spLt = lt_get_Global();
-//	if( (S_LT*)NULL == spLt )
-//	{
-//		return D_LT_NG;
-//	}
-//	
-//	for( iLoop = 0; iLoop < E_LT_STOP_NUM; iLoop++ )
-//	{
-//		if( D_LT_FLAG_ON != spLt->iStopChk[iLoop] )
-//		{
-//			return D_LT_NG;
-//		}
-//	}
-//	
-//	return D_LT_OK;
-//}
-
 float calc_pre_angle( int mode )
 {
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	static float pre_angle = 0.0F;
 	static int rough_count = 0;
 	static unsigned char finish_standing = D_LT_FALSE;
-
+	
 	const long angle_range[D_LT_ANGLE_RANGE_NUM] = D_LT_ANGLE_RANGE;
 	const long angle_dif_map[D_LT_ANGLE_DIF_MAP_NUM] = D_LT_ANGLE_DIF_MAP;
-
+	
 	long tail_angle_dif = 0;
-
-
-
+	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
 	{
 		return pre_angle;
 	}
-
-
+	
 	if (mode == (int)E_LT_STATUS_CORRECT_ANGLE_CALIB)
 	{
 		/* 角度を初期化する */
@@ -1413,7 +1350,7 @@ float calc_pre_angle( int mode )
 		{
 			finish_standing = D_LT_TRUE;
 		}
-
+		
 		/* 制御指示を送る。4ms周期で送るとトルクが抜けてしまうので、少しずつ送る */
 		rough_count++;
 		if (rough_count >= D_LT_ROUGH_COUNT_MAX)
@@ -1421,15 +1358,11 @@ float calc_pre_angle( int mode )
 			RSI_motor_rotate(spLt->stPort.iMotor.iTail, tail_angle_dif, D_LT_TAIL_CALIBRATE_SPEED, D_LT_FALSE);
 			rough_count = 0;
 		}
-
 	}
 	else
 	{
 		/* Do Nothing */
 	}
-
-
-
+	
 	return pre_angle;
-
 }

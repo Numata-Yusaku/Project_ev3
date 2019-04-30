@@ -18,6 +18,6 @@ void LT_main_debug( void )
 void LT_startup( void )
 {
 	lt_startup();
-
+	
 	return;
 }

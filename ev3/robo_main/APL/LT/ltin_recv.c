@@ -57,6 +57,7 @@ F_LT_RECVFUNCPTR lt_get_RecvFunc( int iMsgId )
 void lt_rcv_test_req( S_MSG_DATA* spRecv )
 {
 	lt_send_test_res( spRecv );
+	
 	return;
 }
 
@@ -66,7 +67,7 @@ void lt_rcv_Timer_res( S_MSG_DATA* spRecv )
 	int iTimerId = 0;
 	S_LT_TIMERINFO* spTimerInfo = (S_LT_TIMERINFO*)NULL;
 	S_LT* spLt = (S_LT*)NULL;
-
+	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
 	if ((S_LT*)NULL == spLt)
@@ -138,7 +139,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 	{
 		return;
 	}
-
+	
 	switch( spLt->iStatus )
 	{
 		case E_LT_STATUS_CALIBLATE_GYRO:
@@ -149,7 +150,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			
 		case E_LT_STATUS_CORRECT_ANGLE_CALIB:
 #if (__VC_DEBUG__)
-			printf("ANGLE_WAIT...\n");
+			printf("[LT]ANGLE_WAIT...\n");
 #endif /* __VC_DEBUG__ */
 			spLt->iStatus = E_LT_STATUS_CORRECT_ANGLE_WAIT;
 			break;
@@ -157,7 +158,7 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 		case E_LT_STATUS_CORRECT_ANGLE_WAIT:
 			spLt->iStatus = E_LT_STATUS_CORRECTING_ANGLE;
 #if (__VC_DEBUG__)
-			printf("Goto The Start Ready ...\n");
+			printf("[LT]Goto The Start Ready ...\n");
 #endif /* __VC_DEBUG__ */
 			break;
 			
@@ -165,14 +166,15 @@ void lt_rcv_TouchButton_req( S_MSG_DATA* spRecv )
 			lt_send_staRunning_req();
 			spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 #if (__VC_DEBUG__)
-			printf("Gooooooooooooo!!!\n");
+			printf("[LT]Gooooooooooooo!!!\n");
 #endif /* __VC_DEBUG__ */
 			break;
+		
 		default:
 			/* フェール処理 */
 			break;
 	}
-
+	
 	return;
 }
 
@@ -187,7 +189,7 @@ void lt_rcv_BackButton_req( S_MSG_DATA* spRecv )
 	{
 		return;
 	}
-
+	
 	/*** 車輪制御 ***/
 	/* モータの角速度リセット */
 	RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_FALSE );
@@ -226,7 +228,6 @@ void lt_rcv_RightButton_req( S_MSG_DATA* spRecv )
 
 void lt_rcv_CenterButton_req( S_MSG_DATA* spRecv )
 {
-	printf("Center\n");
 	return;
 }
 
@@ -327,7 +328,7 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 		lt_send_staRunning_req();
 		spLt->iStatus = E_LT_STATUS_RUN_STANDUP;
 #if (__VC_DEBUG__)
-		printf("[Remote]Gooooooooooooo!!!\n");
+		printf("[LT][Remote]Gooooooooooooo!!!\n");
 #endif /* __VC_DEBUG__ */
 	}
 	return;
@@ -335,10 +336,6 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 
 void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv )
 {
-#if (__VC_DEBUG__)
-//	printf("LogDump ===START===\n");
-#endif /* __VC_DEBUG__ */
-	
 	return;
 }
 
@@ -372,7 +369,7 @@ void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
 	}
 
 #if (__VC_DEBUG__)
-	printf("Dump:%2d /%2d %3d%%\n",
+	printf("[LT]Dump:%2d /%2d %3d%%\n",
 		spRecvPara->iNowLogNo,
 		spRecvPara->iAllLogNum,
 		spRecvPara->iProgress );
@@ -398,10 +395,6 @@ void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv )
 	{
 		return;
 	}
-	
-#if (__VC_DEBUG__)
-//	printf("\nLogDump ===END===\n");
-#endif /* __VC_DEBUG__ */
 	
 	/* 走行体完全停止 */
 	spLt->iStatus = E_LT_STATUS_STOP;

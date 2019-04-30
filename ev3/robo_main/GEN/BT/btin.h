@@ -19,9 +19,6 @@
 
 #define	D_BT_RECVDATA_SIZE	(128)
 
-/* ログファイル */
-#define	D_BT_FILENAME_STATUSLOG					"OutData/StatusLog_Bt.csv"
-
 /*** ログ出力 ***/
 #define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_OFF)
 
@@ -46,23 +43,23 @@ typedef void( *F_BT_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 /* 常駐領域 */
 typedef struct
 {
-	int iStatus;		/* クラスステータス */
-	int iWupChk;
-	FILE* fpBtFile;		/* Bluetoo通信ポート */
-	FILE* fpStatusLog;
+	int		iStatus;		/* クラスステータス */
+	int		iWupChk;
+	FILE*	fpBtFile;		/* Bluetoo通信ポート */
+	FILE*	fpStatusLog;
 }S_BT;
 
 typedef struct
 {
-	int iMsgId;
-	void* func;
+	int		iMsgId;
+	void*	func;
 }S_BT_RECV_TABLE;
 
 typedef struct
 {
-	char cCommand;
-	int iSize;
-	void* vpFunc;
+	char	cCommand;
+	int		iSize;
+	void*	vpFunc;
 }S_BT_MESSAGE_TABLE;
 
 /***** 関数プロトタイプ *****/

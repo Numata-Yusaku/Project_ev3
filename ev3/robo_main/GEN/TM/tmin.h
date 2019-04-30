@@ -14,13 +14,13 @@
 #define	D_TM_FLAG_ON		(1)
 #define	D_TM_FLAG_OFF		(0)
 
-#define	D_TM_TIMER_NUM			(16)
+#define	D_TM_TIMER_NUM		(16)
 
 enum EN_TM_STATUS
 {
 	E_TM_STATUS_READY = 0,		/* 起動準備中 */
 	E_TM_STATUS_IDLE,			/* 起動中 */
-	
+
 	/* ここより上に定義すること */
 	E_TM_STATUS_INVALID = -1
 };
@@ -32,11 +32,11 @@ typedef void( *F_TM_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 /* システム内部カウンタ */
 typedef struct
 {
-	int iCount;
-	int iRegist;
-	int iRunStat;
-	int iCycCount;
-	F_TM_CALLBACKFUNCPTR pFunc;
+	int						iCount;
+	int						iRegist;
+	int						iRunStat;
+	int						iCycCount;
+	F_TM_CALLBACKFUNCPTR	pFunc;
 }S_TM_TIMERDATA;
 
 /* システム内部カウンタ */
@@ -44,29 +44,27 @@ typedef struct
 {
 	unsigned long int uiCount;		/* 1カウント = 100msec */
 	unsigned long int uiSec;		/* 経過秒 */
-//	unsigned long int uiMin;		/* 経過分 */
-//	unsigned long int uiHour;		/* 経過時間 */
 }S_TM_SYSCOUNT;
 
 /* 常駐領域 */
 typedef struct
 {
 	int iStatus;					/* クラスステータス */
-	S_TM_SYSCOUNT stSysCount;		/* システムカウンタ */
-	S_TM_TIMERDATA stTimerData[E_TASK_TASKID_NUM][D_TM_TIMER_NUM];
+	S_TM_SYSCOUNT	stSysCount;		/* システムカウンタ */
+	S_TM_TIMERDATA	stTimerData[E_TASK_TASKID_NUM][D_TM_TIMER_NUM];
 }S_TM;
 
 typedef struct
 {
-	int iMsgId;
-	void* func;
+	int		iMsgId;
+	void*	func;
 }S_TM_RECV_TABLE;
 
 typedef struct
 {
-	char cCommand;
-	int iSize;
-	void* vpFunc;
+	char	cCommand;
+	int		iSize;
+	void*	vpFunc;
 }S_TM_MESSAGE_TABLE;
 
 /***** 関数プロトタイプ *****/

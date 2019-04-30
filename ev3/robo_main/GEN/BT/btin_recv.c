@@ -8,7 +8,6 @@ void bt_recv( S_MSG_DATA* spRecv)
 	int iMsgId = spRecv->iMsgid;
 	F_BT_RECVFUNCPTR pvRecvFunc = (F_BT_RECVFUNCPTR)NULL;
 	
-//	printf("%08x\n",iMsgId);
 	/* 実行関数取得 */
 	pvRecvFunc = bt_get_RecvFunc( iMsgId );
 	if( (void*)NULL != pvRecvFunc)
@@ -136,7 +135,7 @@ void bt_rcv_staCalibration_req( S_MSG_DATA* spRecv )
 void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv )
 {
 	S_BT* spBt = (S_BT*)NULL;
-	char cSendData[] = {"Remote Ready:"};
+	char cSendData[] = {"[BT]Remote Ready:"};
 	
 	/* グローバル領域取得 */
 	spBt = bt_get_Global();
@@ -147,7 +146,7 @@ void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv )
 	
 	/* キャリブレーション完了通知 */
 	bt_set_SerialMessage( cSendData, (int)strlen(cSendData) );
-
+	
 	spBt->iStatus = E_BT_STATUS_WAITING;
 	
 	return;
@@ -208,7 +207,6 @@ void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv )
 	{
 		return;
 	}
-	
 	
 	return;
 }

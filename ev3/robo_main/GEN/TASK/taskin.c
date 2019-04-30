@@ -52,9 +52,9 @@ S_TASK* task_get_Global( void )
 /* Message */
 int task_msgsend( int iTask, S_MSG_DATA* spPara )
 {
-	S_MSG_QUE* psQue = (S_MSG_QUE*)NULL;
-	S_MSG_DATA* psSend = (S_MSG_DATA*)NULL;
-	void* psData = (void*)NULL;
+	S_MSG_QUE* spQue = (S_MSG_QUE*)NULL;
+	S_MSG_DATA* spSend = (S_MSG_DATA*)NULL;
+	void* spData = (void*)NULL;
 	
 	/* 引数チェック */
 	if(E_TASK_TASKID_NUM < iTask ||
@@ -64,94 +64,94 @@ int task_msgsend( int iTask, S_MSG_DATA* spPara )
 	}
 	
 	/* 領域確保 */
-	psSend = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
-	if((S_MSG_DATA*)NULL == psSend)
+	spSend = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if((S_MSG_DATA*)NULL == spSend)
 	{
 		goto END;
 	}
-	memset( psSend, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spSend, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* キュー取得 */
-	psQue = &pgQue[iTask];
-	if( (S_MSG_QUE*)NULL == psQue )
+	spQue = &pgQue[iTask];
+	if( (S_MSG_QUE*)NULL == spQue )
 	{
 		goto END;
 	}
 	
 	/* キュー溢れ */
-	if( D_TASK_QUE_MAX <= psQue->stStatus.iNum )
+	if( D_TASK_QUE_MAX <= spQue->stStatus.iNum )
 	{
 		printf( "que over: %08x\n",iTask);
 		goto END;
 	}
 	
 	/* 送信データ退避 */
-	psSend->iMsgid = spPara->iMsgid;
-	psSend->iSize = spPara->iSize;
-	if( 0 >= psSend->iSize )
+	spSend->iMsgid = spPara->iMsgid;
+	spSend->iSize = spPara->iSize;
+	if( 0 >= spSend->iSize )
 	{
 		goto END;
 	}
 	
-	psData = (void*)malloc( psSend->iSize );
-	if ((void*)NULL == psData)
+	spData = (void*)malloc( spSend->iSize );
+	if ((void*)NULL == spData)
 	{
 		goto END;
 	}
-	memset( psData, 0x00, psSend->iSize );
-	memcpy( psData, spPara->vpPara, psSend->iSize );
-	psSend->vpPara = psData;
+	memset( spData, 0x00, spSend->iSize );
+	memcpy( spData, spPara->vpPara, spSend->iSize );
+	spSend->vpPara = spData;
 	
-	psQue->stStatus.iFlag = D_TASK_MODE_ON;
+	spQue->stStatus.iFlag = D_TASK_MODE_ON;
 	/************/
 	
 	/*** データ設定 ***/
 	/* ID */
-	psQue->stData[psQue->stStatus.iTail].iMsgid = psSend->iMsgid;
+	spQue->stData[spQue->stStatus.iTail].iMsgid = spSend->iMsgid;
 	/* パラメータサイズ */
-	psQue->stData[psQue->stStatus.iTail].iSize = psSend->iSize;
+	spQue->stData[spQue->stStatus.iTail].iSize = spSend->iSize;
 	/* パラメータアドレス */
-	psQue->stData[psQue->stStatus.iTail].vpPara = psSend->vpPara;
+	spQue->stData[spQue->stStatus.iTail].vpPara = spSend->vpPara;
 	
 	/* ログ出力 */
-	task_msglog( E_TASK_MSGDIR_SEND, iTask, psSend->iMsgid );
+	task_msglog( E_TASK_MSGDIR_SEND, iTask, spSend->iMsgid );
 	
 	/*** 状態更新 ***/
 	/* キュー数 */
-	psQue->stStatus.iNum++;
+	spQue->stStatus.iNum++;
 	/* 終端 */
-	psQue->stStatus.iTail++;
+	spQue->stStatus.iTail++;
 	
 	/* 終端の場合は先頭に戻す */
-	if (D_TASK_QUE_MAX == psQue->stStatus.iTail)
+	if (D_TASK_QUE_MAX == spQue->stStatus.iTail)
 	{
-		psQue->stStatus.iTail = 0;
+		spQue->stStatus.iTail = 0;
 	}
 	
 	/************/
-	psQue->stStatus.iFlag = D_TASK_MODE_OFF;	
+	spQue->stStatus.iFlag = D_TASK_MODE_OFF;	
 	
 	/*** 解放処理 ***/
-	if ((S_MSG_DATA*)NULL != psSend)
+	if ((S_MSG_DATA*)NULL != spSend)
 	{
-		free( psSend );
-		psSend = (S_MSG_DATA*)NULL;
+		free( spSend );
+		spSend = (S_MSG_DATA*)NULL;
 	}
 	
 	return D_TASK_OK;
 
 END:
 	/*** 解放処理 ***/
-	if ( (S_MSG_DATA*)NULL != psSend)
+	if ( (S_MSG_DATA*)NULL != spSend)
 	{
-		free( psSend );
-		psSend = (S_MSG_DATA*)NULL;
+		free( spSend );
+		spSend = (S_MSG_DATA*)NULL;
 	}
 	
-	if ((void*)NULL == psData)
+	if ((void*)NULL == spData)
 	{
-		free( psData );
-		psData = (S_MSG_DATA*)NULL;
+		free( spData );
+		spData = (S_MSG_DATA*)NULL;
 	}
 	
 	return D_TASK_NG;
@@ -159,9 +159,9 @@ END:
 
 int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 {
-	S_MSG_QUE* psQue = (S_MSG_QUE*)NULL;
-	S_MSG_DATA* psRecv = (S_MSG_DATA*)NULL;
-	void* psData = (void*)NULL;
+	S_MSG_QUE* spQue = (S_MSG_QUE*)NULL;
+	S_MSG_DATA* spRecv = (S_MSG_DATA*)NULL;
+	void* spData = (void*)NULL;
 	
 	/* 引数チェック */
 	if ( E_TASK_TASKID_NUM < iTask ||
@@ -171,97 +171,97 @@ int task_msgrecv( int iTask, S_MSG_DATA* spPara )
 	}
 	
 	/* 領域確保 */
-	psRecv = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
-	if ((S_MSG_DATA*)NULL == psRecv)
+	spRecv = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == spRecv)
 	{
 		goto END;
 	}
-	memset( psRecv, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spRecv, 0x00, sizeof( S_MSG_DATA ) );
 	
 	/* キュー取得 */
-	psQue = &pgQue[iTask];
-	if ((S_MSG_QUE*)NULL == psQue)
+	spQue = &pgQue[iTask];
+	if ((S_MSG_QUE*)NULL == spQue)
 	{
 		goto END;
 	}
 	
 	/* イベントなし */
-	if (0 == psQue->stStatus.iNum)
+	if (0 == spQue->stStatus.iNum)
 	{
 		goto END;
 	}
 	
-	psQue->stStatus.iFlag = D_TASK_MODE_ON;
+	spQue->stStatus.iFlag = D_TASK_MODE_ON;
 	/************/
 	/*** データ取得 ***/
 	/* ID */
-	psRecv->iMsgid = psQue->stData[psQue->stStatus.iHead].iMsgid;
+	spRecv->iMsgid = spQue->stData[spQue->stStatus.iHead].iMsgid;
 	/* パラメータサイズ */
-	psRecv->iSize = psQue->stData[psQue->stStatus.iHead].iSize;
+	spRecv->iSize = spQue->stData[spQue->stStatus.iHead].iSize;
 	/* パラメータアドレス */
-	psRecv->vpPara = psQue->stData[psQue->stStatus.iHead].vpPara;
+	spRecv->vpPara = spQue->stData[spQue->stStatus.iHead].vpPara;
 	
-	psData = (void*)malloc( psRecv->iSize );
-	if ((void*)NULL == psData)
+	spData = (void*)malloc( spRecv->iSize );
+	if ((void*)NULL == spData)
 	{
 		goto END;
 	}
-	memset( psData, 0x00, psRecv->iSize );
-	memcpy( psData, psRecv->vpPara, psRecv->iSize );
+	memset( spData, 0x00, spRecv->iSize );
+	memcpy( spData, spRecv->vpPara, spRecv->iSize );
 	
 	/* ログ出力 */
-	task_msglog( E_TASK_MSGDIR_RECV, iTask, psRecv->iMsgid );
+	task_msglog( E_TASK_MSGDIR_RECV, iTask, spRecv->iMsgid );
 	
 	/* 出力に設定 */
 	/* ID */
-	spPara->iMsgid = psRecv->iMsgid;
+	spPara->iMsgid = spRecv->iMsgid;
 	/* パラメータサイズ */
-	spPara->iSize = psRecv->iSize;
+	spPara->iSize = spRecv->iSize;
 	/* パラメータアドレス */
-	spPara->vpPara = psData;
+	spPara->vpPara = spData;
 	
 	/*** データクリア ***/
 	/* ID */
-	psQue->stData[psQue->stStatus.iHead].iMsgid = D_TASK_MSGID_INVALID;
+	spQue->stData[spQue->stStatus.iHead].iMsgid = D_TASK_MSGID_INVALID;
 	/* パラメータサイズ */
-	psQue->stData[psQue->stStatus.iHead].iSize = 0;
+	spQue->stData[spQue->stStatus.iHead].iSize = 0;
 	/* パラメータアドレス */
-	if( (void*)NULL != psQue->stData[psQue->stStatus.iHead].vpPara)
+	if( (void*)NULL != spQue->stData[spQue->stStatus.iHead].vpPara)
 	{
-		free( psQue->stData[psQue->stStatus.iHead].vpPara );
-		psQue->stData[psQue->stStatus.iHead].vpPara = (void*)NULL;
-		psRecv->vpPara = (void*)NULL;
+		free( spQue->stData[spQue->stStatus.iHead].vpPara );
+		spQue->stData[spQue->stStatus.iHead].vpPara = (void*)NULL;
+		spRecv->vpPara = (void*)NULL;
 	}
 	
 	/*** 状態更新 ***/
 	/* キュー数 */
-	psQue->stStatus.iNum--;
+	spQue->stStatus.iNum--;
 	/* 先頭 */
-	psQue->stStatus.iHead++;
+	spQue->stStatus.iHead++;
 	
 	/* 終端の場合は先頭に戻す */
-	if (D_TASK_QUE_MAX == psQue->stStatus.iHead)
+	if (D_TASK_QUE_MAX == spQue->stStatus.iHead)
 	{
-		psQue->stStatus.iHead = 0;
+		spQue->stStatus.iHead = 0;
 	}
 	
 	/************/
-	psQue->stStatus.iFlag = D_TASK_MODE_OFF;
+	spQue->stStatus.iFlag = D_TASK_MODE_OFF;
 	
 	return D_TASK_OK;
 
 END:
 	/*** 解放処理 ***/
-	if ((S_MSG_DATA*)NULL != psRecv)
+	if ((S_MSG_DATA*)NULL != spRecv)
 	{
-		free( psRecv );
-		psRecv = (S_MSG_DATA*)NULL;
+		free( spRecv );
+		spRecv = (S_MSG_DATA*)NULL;
 	}
 	
-	if ((void*)NULL == psData)
+	if ((void*)NULL == spData)
 	{
-		free( psData );
-		psData = (S_MSG_DATA*)NULL;
+		free( spData );
+		spData = (S_MSG_DATA*)NULL;
 	}
 	
 	return D_TASK_NG;
