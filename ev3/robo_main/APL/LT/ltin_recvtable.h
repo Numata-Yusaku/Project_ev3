@@ -16,6 +16,8 @@ S_LT_RECV_TABLE T_LT_RECV_TABLE[] =
 	{ E_MSGID_LT_CENTERBUTTON_REQ		,	lt_rcv_CenterButton_req		},
 	{ E_MSGID_BT_CHGCALIBRATION_RES		,	lt_rcv_ChgCalibration_res	},
 	{ E_MSGID_BT_REMOTESTART_RES		,	lt_rcv_RemoteStart_res		},
+	{ E_MSGID_BT_SETLOG_LOGLAST_RES		,	lt_rcv_setLog_LastLog_res	},
+	{ E_MSGID_LD_SETLOG_LOGLAST_RES		,	lt_rcv_setLog_LastLog_res	},
 	{ E_MSGID_LD_STALOGDUMP_RES			,	lt_rcv_staLogDump_res		},
 	{ E_MSGID_LD_CHGLOGDUMP_RES			,	lt_rcv_chgLogDump_res		},
 	{ E_MSGID_LD_ENDLOGDUMP_RES			,	lt_rcv_endLogDump_res		},

@@ -242,6 +242,16 @@ enum EN_LT_STOP
 	E_LT_STOP_NUM
 };
 
+/* 最終ログ保証モジュール */
+enum EN_LT_LASTLOG
+{
+	E_LT_LASTLOG_BT = 0,
+	E_LT_LASTLOG_LD,
+
+	/* ここより上に定義すること */
+	E_LT_LASTLOG_NUM
+};
+
 enum EN_LT_PARTS
 {
 	E_LT_PARTS_TOUCH_SENSOR = 1,
@@ -348,8 +358,9 @@ typedef struct
 /* ステータスログ */
 typedef struct
 {
-	unsigned long	ulTime;		/* 経過時刻(msec) */
+	S_TM_DAYTIME	stDayTime;
 	int				iStatus;	/* 状態 */
+	int				iTaskId;
 }S_LT_LOGDATA_STATUSLOG;
 
 typedef struct
@@ -392,19 +403,18 @@ typedef struct
 	S_LT_LOGINFO_STATUSLOG		stStatusLog;
 	S_LT_LOGINFO_CALIBRATELOG	stCalibrateLog;
 	S_LT_LOGINFO_SYSTEMLOG		stSystemLog;
-//#if	(__VC_DEBUG__)
-//	unsigned long				ulSystemLogCounta;
-//#endif	/* __VC_DEBUG__ */
 }S_LT_LOGINFO;
 
 /* 常駐領域 */
 typedef struct
 {
 	int							iStatus;
+	int							iOldStatus;
 	int							iWupStatus;
 	int							iStopStatus;
 	int							iWupChk[E_LT_WUPCHK_NUM];
 	int							iStopChk[E_LT_STOP_NUM];
+	int							iLastLogResNum;
 	int							iFallDownCount;
 	int							iClientSendCount[E_LT_CLIENTSEND_NUM];
 	unsigned char				button_valid;		/* ボタンを押したとき、連続して次の状態に行かないようにフラグを管理する */
@@ -515,6 +525,7 @@ void lt_rcv_Wupchk_res( S_MSG_DATA* spRecv );				/* 起動 */
 void lt_rcv_Stop_res( S_MSG_DATA* spRecv );					/* 停止 */
 void lt_rcv_ChgCalibration_res( S_MSG_DATA* spRecv );		/* キャリブレーション更新 */
 void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv );			/* リモートスタート */
+void lt_rcv_setLog_LastLog_res( S_MSG_DATA* spRecv );		/* 最終ログ設定 */
 void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ開始 */
 void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ変化 */
 void lt_rcv_endLogDump_res( S_MSG_DATA* spRecv );			/* ログダンプ終了 */
@@ -540,6 +551,7 @@ void lt_send_setClientSendColor_req( void );								/* クライアント送信�
 void lt_send_setLog_StatusLog_req( S_LT_LOGINFO_STATUSLOG* spSend );		/* ログ設定：ステータスログ */
 void lt_send_setLog_CalibrateLog_req( S_LT_LOGINFO_CALIBRATELOG* spSend );	/* ログ設定：キャリブレーションログ */
 void lt_send_setLog_SystemLog_req( S_LT_LOGINFO_SYSTEMLOG* spSend );		/* ログ設定：システムログ */
+void lt_send_setLog_LogLast_req( void );									/* 最終ログ設定 */
 void lt_send_staLogDump_req( void );										/* ログダンプ開始 */
 void lt_send_endLogDump_req( void );										/* ログダンプ終了 */
 
@@ -563,6 +575,7 @@ void lt_log_set_Calibratelog( void );
 void lt_log_set_Systemlog( void );
 void lt_log_set_Statuslog( void );
 void lt_log_set_LastLog( void );
+void lt_log_set_LastLog_Statuslog( void );
 void lt_log_set_LastLog_Systemlog( void );
 
 #endif	/* __LTIN_H__ */

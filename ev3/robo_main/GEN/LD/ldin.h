@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* GEN */
+#include "tm.h"
+
 /* LD */
 #include "ld.h"
 
@@ -20,10 +23,7 @@
 #define	D_LD_PRINTLINE_NUM	(512)
 
 /* ログファイル */
-//#define	D_LD_FILENAME_STATUSLOG					"OutData/StatusLog_Ld.csv"
-//#define	D_LD_LOGMODE_STATUS						(D_LD_FLAG_OFF)
-
-#define	D_LD_FILENAME_STATUSLOG_LT				"OutData/[LD]StatusLog_Lt.csv"
+#define	D_LD_FILENAME_STATUSLOG					"OutData/[LD]StatusLog.csv"
 #define	D_LD_FILENAME_CALIBRATELOG				"OutData/[LD]CalibrateLog.csv"
 #define	D_LD_FILENAME_SYSTEMLOG					"OutData/[LD]SystemLog.csv"
 
@@ -80,7 +80,7 @@ enum EN_LD_LOGKIND
 {
 	E_LD_LOGKIND_SYSTEMLOG = 0,
 	E_LD_LOGKIND_CALIBRATELOG,
-//	E_LD_LOGKIND_STATUSLOG_LT,
+	E_LD_LOGKIND_STATUSLOG,
 
 	/* ここより上に定義すること */
 	E_LD_LOGKIND_NUM,
@@ -92,6 +92,26 @@ enum EN_LD_LOGKIND
 typedef void( *F_LD_RECVFUNCPTR )( S_MSG_DATA* spRecv );
 typedef void( *F_LD_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 
+/* ステータスログ */
+typedef struct
+{
+	S_TM_DAYTIME	stDayTime;
+	int				iStatus;	/* 状態 */
+	int				iTaskId;
+}S_LD_LOGDATA_STATUSLOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_LD_LOGDATA_STATUSLOG		stLog[D_LD_BUFFNUM_STATUSLOG];
+}S_LD_LOGINFO_STATUSLOG;
+
+/* ログ情報 */
+typedef struct
+{
+	S_LD_LOGINFO_STATUSLOG		stStatusLog;
+}S_LD_LOGINFO;
+
 /* ファイルデータ */
 typedef struct
 {
@@ -102,10 +122,26 @@ typedef struct
 /* ファイルポインタ */
 typedef struct
 {
-	S_LD_FILEDATA	fpStatusLog_Lt;
+	S_LD_FILEDATA	fpStatusLog;
 	S_LD_FILEDATA	fpCalibrateLog;
 	S_LD_FILEDATA	fpSystemLog;
 }S_LD_FILEINFO;
+
+/*** ステータスログ ***/
+/* ログリストページ */
+typedef struct S_LD_LOGLISTPAGE_STATUSLOG
+{
+	int										iPageNo;		/* ページ数 */
+	S_TASK_LOGINFO_STATUSLOG*				spData;			/* データ */
+	struct S_LD_LOGLISTPAGE_STATUSLOG*		spNextPage;		/* 次データへのリンクアドレス */
+}S_LD_LOGLISTPAGE_STATUSLOG;
+
+/* ログリスト */
+typedef struct
+{
+	int										iAllPageNum;	/* 総ページ数 */
+	S_LD_LOGLISTPAGE_STATUSLOG*				spList;			/* リストデータトップ */
+}S_LD_LOGLISTINFO_STATUSLOG;
 
 /*** キャリブレーションログ ***/
 /* ログリストページ */
@@ -139,10 +175,10 @@ typedef struct
 	S_LD_LOGLISTPAGE_SYSTEMLOG*				spList;			/* リストデータトップ */
 }S_LD_LOGLISTINFO_SYSTEMLOG;
 
-/* ログリスト */
 typedef struct
 {
 	int								iNowWrite;
+	S_LD_LOGLISTINFO_STATUSLOG		stLogListInfo_StatusLog;
 	S_LD_LOGLISTINFO_CALIBRATELOG	stLogListInfo_CalibrateLog;
 	S_LD_LOGLISTINFO_SYSTEMLOG		stLogListInfo_SystemLog;
 }S_LD_LOGLIST;
@@ -151,8 +187,10 @@ typedef struct
 typedef struct
 {
 	int				iStatus;		/* クラスステータス */
+	int				iOldStatus;
 	int				iWupChk;
 	S_LD_FILEINFO	stFileInfo;
+	S_LD_LOGINFO	stLogInfo;
 	S_LD_LOGLIST	stLogList;
 }S_LD;
 
@@ -184,14 +222,18 @@ void ld_proc( void );
 void ld_proc_Ready( void );
 void ld_proc_LogDump( void );
 
+void ld_log_set_Statuslog( void );
+void ld_log_set_LastLog_Statuslog( void );
+
 void ld_log_Dump( void );
 
 void ld_log_Statuslog_open( void );
 void ld_log_Calibratelog_open( void );
 void ld_log_Systemlog_open( void );
 
-int ld_log_DumpSystemlog( void );
+int ld_log_DumpStatuslog( void );
 int ld_log_DumpCalibratelog( void );
+int ld_log_DumpSystemlog( void );
 
 /*** ldin_recv.c **/
 /* FrameWork */
@@ -199,22 +241,25 @@ void ld_recv( S_MSG_DATA* spRecv );
 F_LD_RECVFUNCPTR ld_get_RecvFunc( int iMsgId );
 
 /* RecvFunc */
-void ld_rcv_test_req( S_MSG_DATA* spRecv );						/* テスト */
-void ld_rcv_Wupchk_req( S_MSG_DATA* spRecv );					/* 起動 */
-void ld_rcv_Stop_req( S_MSG_DATA* spRecv );						/* 停止 */
-void ld_rcv_staRunning_req( S_MSG_DATA* spRecv );				/* 走行開始 */
-void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv );			/* ログ設定：ステータスログ */
-void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv );		/* ログ設定：キャリブレーションログ */
-void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv );			/* ログ設定：システムログ */
-void ld_rcv_staLogDump_req( S_MSG_DATA* spRecv );				/* ログダンプ開始 */
-void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv );				/* ログダンプ終了 */
+void ld_rcv_test_req( S_MSG_DATA* spRecv );								/* テスト */
+void ld_rcv_Wupchk_req( S_MSG_DATA* spRecv );							/* 起動 */
+void ld_rcv_Stop_req( S_MSG_DATA* spRecv );								/* 停止 */
+void ld_rcv_staRunning_req( S_MSG_DATA* spRecv );						/* 走行開始 */
+void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv );					/* ログ設定：ステータスログ */
+void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv );				/* ログ設定：キャリブレーションログ */
+void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv );					/* ログ設定：システムログ */
+void ld_rcv_setLog_LogLast_req( S_MSG_DATA* spRecv );					/* 最終ログ設定 */
+void ld_rcv_staLogDump_req( S_MSG_DATA* spRecv );						/* ログダンプ開始 */
+void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv );						/* ログダンプ終了 */
 
 /*** ldin_send.c **/
-void ld_send_test_res( S_MSG_DATA* spSend );					/* テスト */
-void ld_send_Wupchk_res( void );								/* 起動 */
-void ld_send_Stop_res( void );									/* 停止 */
-void ld_send_staLogDump_res( void );							/* ログダンプ開始 */
-void ld_send_chgLogDump_res( S_TASK_CHGLOGDUMP_RES* psSend );	/* ログダンプ状態更新 */
-void ld_send_endLogDump_res( void );							/* ログダンプ終了 */
+void ld_send_test_res( S_MSG_DATA* spSend );							/* テスト */
+void ld_send_Wupchk_res( void );										/* 起動 */
+void ld_send_Stop_res( void );											/* 停止 */
+void ld_send_setLog_StatusLog_req( S_LD_LOGINFO_STATUSLOG* spSend );	/* ログ設定：ステータスログ */
+void ld_send_setLog_LogLast_res( void );								/* 最終ログ設定 */
+void ld_send_staLogDump_res( void );									/* ログダンプ開始 */
+void ld_send_chgLogDump_res( S_TASK_CHGLOGDUMP_RES* psSend );			/* ログダンプ状態更新 */
+void ld_send_endLogDump_res( void );									/* ログダンプ終了 */
 
 #endif	/* __LDIN_H__ */

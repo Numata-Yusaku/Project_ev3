@@ -126,66 +126,125 @@ void ld_rcv_staRunning_req( S_MSG_DATA* spRecv )
 
 void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
 {
-//	int iSendTaskId = 0;
-//	int iLogNum = 0;
-//	int iLoop = 0;
-//	S_LD* spLd = (S_LD*)NULL;
-//	FILE* fpWrite = (FILE*)NULL;
-//	S_TASK_LOGINFO_STATUSLOG* psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
-//	S_TASK_LOGDATA_STATUSLOG stLogData[D_TASK_BUFFNUM_STATUSLOG];
+	int iLogNum = 0;
+	int iLoop = 0;
+	S_LD* spLd = (S_LD*)NULL;
+	S_TASK_LOGINFO_STATUSLOG* psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+	S_TASK_LOGDATA_STATUSLOG* spLogData = (S_TASK_LOGDATA_STATUSLOG*)NULL;
 	
-	///* グローバル領域取得 */
-	//spLd = ld_get_Global();
-	//if( (S_LD*)NULL == spLd )
-	//{
-	//	return;
-	//}
-	//
-	//memset( &stLogData, 0x00, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
-	//
-	//if( (S_TASK_LOGINFO_STATUSLOG*)NULL == spRecv->vpPara )
-	//{
-	//	return;
-	//}
-	//
-	///* 受信データ取得 */
-	//psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)spRecv->vpPara;
+	S_LD_LOGLISTPAGE_STATUSLOG* spLogListPage = (S_LD_LOGLISTPAGE_STATUSLOG*)NULL;
+	S_LD_LOGLISTPAGE_STATUSLOG* spWork = (S_LD_LOGLISTPAGE_STATUSLOG*)NULL;
 	
-//	iSendTaskId = psRecvPara->iTaskId;
-//	iLogNum = psRecvPara->iLogNum;
-//	memcpy( &stLogData, &(psRecvPara->stLSog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	if( (void*)NULL == spRecv->vpPara )
+	{
+		goto ERR;
+	}
 	
-	//printf("%d\n",stLogData[0].iStatus );
-	//printf("%d\n",stLogData[100].iStatus );
-	//printf("%d\n",stLogData[500].iStatus );
-	//printf("%d\n",stLogData[1000].iStatus );
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		goto ERR;
+	}
+	
+	/* ログ出力中はログを破棄する */
+	if( E_LD_STATUS_LOGDUMP == spLd->iStatus )
+	{
+		goto ERR;
+	}
+	
+	/* 受信データ取得 */
+	psRecvPara = (S_TASK_LOGINFO_STATUSLOG*)spRecv->vpPara;
+	
+	/* ログ数取得 */
+	iLogNum = psRecvPara->iLogNum;
+	if( 0 >= iLogNum )
+	{
+		goto ERR;
+	}
+	
+	/* ログデータ取得 */
+	spLogData = (S_TASK_LOGDATA_STATUSLOG*)malloc( sizeof(S_TASK_LOGDATA_STATUSLOG) * D_TASK_BUFFNUM_STATUSLOG );
+	if( (S_TASK_LOGDATA_STATUSLOG*)NULL == spLogData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogData, 0x00, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	memcpy( spLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+	/*** ページデータ作成 ***/
+	spLogListPage = (S_LD_LOGLISTPAGE_STATUSLOG*)malloc( sizeof(S_LD_LOGLISTPAGE_STATUSLOG) );
+	if( (S_LD_LOGLISTPAGE_STATUSLOG*)NULL == spLogListPage )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage, 0x00, sizeof( S_LD_LOGLISTPAGE_STATUSLOG ) );
 
-//	/* ログ出力先指定 */
-//	switch( iSendTaskId )
-//	{
-//		case E_TASK_TASKID_LT:
-//			fpWrite = spLd->stFileInfo.fpStatusLog_Lt;
-//			break;
-//	
-//		default:
-//			fpWrite = (FILE*)NULL;
-//			break;
-//	}
-//	
-//	if( (FILE*)NULL == fpWrite )
-//	{
-//		return;
-//	}
-//	
-////	printf("recv:StatusLog\n");
-//	for( iLoop = 0; iLoop < iLogNum; iLoop++ )
-//	{
-//		fprintf( fpWrite, "%08ld\n",stLogData[iLoop].ulTime );
-//		//fprintf( fpWrite, "%d,",stLogData[iLoop].iStatus);
-//		
-//		//fprintf( fpWrite, "\n");
-//		//fflush( fpWrite );
-//	}
+	/* ページ番号 */
+	spLogListPage->iPageNo = spLd->stLogList.stLogListInfo_StatusLog.iAllPageNum + 1;
+		
+	/* データ設定 */
+	spLogListPage->spData = (S_TASK_LOGINFO_STATUSLOG*)malloc( sizeof(S_TASK_LOGINFO_STATUSLOG) );
+	if( (S_TASK_LOGINFO_STATUSLOG*)NULL == spLogListPage->spData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage->spData, 0x00, sizeof(S_TASK_LOGINFO_STATUSLOG) );
+	
+	spLogListPage->spData->iLogNum = iLogNum;
+	memcpy( spLogListPage->spData->stLog, spLogData, sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+	/*** ログリスト設定 ***/
+	if( (S_LD_LOGLISTPAGE_STATUSLOG*)NULL == spLd->stLogList.stLogListInfo_StatusLog.spList )
+	{
+		spLd->stLogList.stLogListInfo_StatusLog.spList = spLogListPage;
+	}
+	else
+	{
+		spWork = spLd->stLogList.stLogListInfo_StatusLog.spList;
+		for( iLoop = 0; iLoop < spLd->stLogList.stLogListInfo_StatusLog.iAllPageNum; iLoop++ )
+		{
+			if( (S_LD_LOGLISTPAGE_STATUSLOG*)NULL != spWork->spNextPage )
+			{
+				/* リスト探索継続 */
+				spWork = spWork->spNextPage;
+			}
+			else
+			{
+				/* 末尾にデータを設定 */
+				spWork->spNextPage = spLogListPage;
+				break;
+			}
+		}
+	}
+	
+	/* ページ総数更新 */
+	spLd->stLogList.stLogListInfo_StatusLog.iAllPageNum ++;
+	
+	return;
+
+ERR:
+	/*** 解放処理 ***/
+	if( (S_LD_LOGLISTPAGE_STATUSLOG*)NULL != spLogListPage )
+	{
+		if( (S_TASK_LOGINFO_STATUSLOG*)NULL != spLogListPage->spData )
+		{
+			free(spLogListPage->spData);
+			spLogListPage->spData = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+		}
+		
+		free(spLogListPage);
+		spLogListPage = (S_LD_LOGLISTPAGE_STATUSLOG*)NULL;
+	}
+	
+	if( (S_TASK_LOGDATA_STATUSLOG*)NULL != spLogData )
+	{
+		free(spLogData);
+		spLogData = (S_TASK_LOGDATA_STATUSLOG*)NULL;
+	}
 	
 	return;
 }
@@ -440,6 +499,14 @@ ERR:
 	return;
 }
 
+void ld_rcv_setLog_LogLast_req( S_MSG_DATA* spRecv )
+{
+	ld_log_set_LastLog_Statuslog();
+	ld_send_setLog_LogLast_res();
+	
+	return;
+}
+
 void ld_rcv_staLogDump_req( S_MSG_DATA* spRecv )
 {
 	S_LD* spLd = (S_LD*)NULL;
@@ -477,10 +544,10 @@ void ld_rcv_endLogDump_req( S_MSG_DATA* spRecv )
 	}
 	
 	/* ファイルクローズ */
-	if( (FILE*)NULL != spLd->stFileInfo.fpStatusLog_Lt.fpFile )
+	if( (FILE*)NULL != spLd->stFileInfo.fpStatusLog.fpFile )
 	{
-		fclose( spLd->stFileInfo.fpStatusLog_Lt.fpFile );
-		spLd->stFileInfo.fpStatusLog_Lt.fpFile = (FILE*)NULL;
+		fclose( spLd->stFileInfo.fpStatusLog.fpFile );
+		spLd->stFileInfo.fpStatusLog.fpFile = (FILE*)NULL;
 	}
 	
 	if( (FILE*)NULL != spLd->stFileInfo.fpCalibrateLog.fpFile )

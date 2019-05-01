@@ -210,3 +210,11 @@ void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv )
 	
 	return;
 }
+
+void bt_rcv_setLog_LogLast_req( S_MSG_DATA* spRecv )
+{
+	bt_log_set_LastLog_Statuslog();
+	bt_send_setLog_LogLast_res();
+	
+	return;
+}

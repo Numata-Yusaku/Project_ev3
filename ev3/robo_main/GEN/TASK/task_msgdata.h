@@ -5,7 +5,7 @@
 /* MSGで送受信するデータの定義値／構造体を定義すること		 */
 /*************************************************************/
 #define	D_TASK_RECVDATA_SIZE			(4)
-#define	D_TASK_BUFFNUM_STATUSLOG		(1024)
+#define	D_TASK_BUFFNUM_STATUSLOG		(16)
 #define	D_TASK_BUFFNUM_CALIBRATELOG		(1)
 #define	D_TASK_BUFFNUM_SYSTEMLOG		(256)
 
@@ -40,13 +40,13 @@ typedef struct
 /* ステータスログ */
 typedef struct
 {
-	unsigned long	ulTime;		/* 経過時刻(msec) */
+	S_TASK_DAYTIME	stDayTime;
 	int				iStatus;	/* 状態 */
+	int				iTaskId;
 }S_TASK_LOGDATA_STATUSLOG;
 
 typedef struct
 {
-	int							iTaskId;
 	int							iLogNum;
 	S_TASK_LOGDATA_STATUSLOG	stLog[D_TASK_BUFFNUM_STATUSLOG];
 }S_TASK_LOGINFO_STATUSLOG;

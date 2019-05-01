@@ -152,6 +152,7 @@ void lt_set_Global( void )
 	memset( spLt, 0x00, sizeof(S_LT) );
 	
 	/*** 初期化値設定 ***/
+	spLt->iOldStatus = E_LT_STATUS_INVALID;
 	
 	/* グローバル設定 */
 	gspLt = spLt;
@@ -168,6 +169,7 @@ S_LT* lt_get_Global( void )
 void lt_proc( void )
 {
 	int iStatus = E_LT_STATUS_INVALID;
+	int iOldStatus = E_LT_STATUS_INVALID;
 	S_LT* spLt = (S_LT*)NULL;
 	
 	spLt = lt_get_Global();
@@ -183,8 +185,16 @@ void lt_proc( void )
 		return;
 	}
 	
-	/* ログ出力 */
-	lt_log_set_Statuslog();
+	/* 状態変化チェック */
+	iOldStatus = spLt->iOldStatus;
+	if( iOldStatus != iStatus )
+	{
+		/* ログ出力 */
+		lt_log_set_Statuslog();
+	}
+	
+	/* 旧状態更新 */
+	spLt->iOldStatus = iStatus;
 	
 	/* 状態に応じて処理実行 */
 	switch( iStatus )
@@ -1201,16 +1211,8 @@ void lt_RunStop( void )
 	RSI_motor_stop( spLt->stPort.iMotor.iLeftWheel, D_LT_TRUE);
 	RSI_motor_stop( spLt->stPort.iMotor.iRightWheel, D_LT_TRUE);
 	
-	/*** ログダンプ ***/
 	/* ラストデータ送信 */
 	lt_log_set_LastLog();
-	
-	/* ログダンプスタート */
-	lt_send_staLogDump_req();
-	
-	/* タイムアウトタイマー開始*/
-	lt_cre_Timer( E_TIMERID_LT_LOGDUMP );
-	lt_sta_Timer( E_TIMERID_LT_LOGDUMP );
 	
 	return;
 }

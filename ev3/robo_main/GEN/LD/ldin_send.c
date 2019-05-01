@@ -158,6 +158,114 @@ END:
 	return;
 }
 
+void ld_send_setLog_StatusLog_req( S_LD_LOGINFO_STATUSLOG* spSend )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* spSendData = (S_MSG_DATA*)NULL;
+	S_TASK_LOGINFO_STATUSLOG* spSendPara = (S_TASK_LOGINFO_STATUSLOG*)NULL;
+	
+	/* 領域確保 */
+	spSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == spSendData)
+	{
+		goto END;
+	}
+	
+	spSendPara = (S_TASK_LOGINFO_STATUSLOG*)malloc( sizeof( S_TASK_LOGINFO_STATUSLOG ) );
+	if ((void*)NULL == spSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( spSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spSendPara, 0x00, sizeof( S_TASK_LOGINFO_STATUSLOG ) );
+	
+	/* データ設定 */
+	spSendPara->iLogNum = spSend->iLogNum;
+	memcpy( &(spSendPara->stLog[0]), &(spSend->stLog[0]), sizeof( S_TASK_LOGDATA_STATUSLOG ) * D_TASK_BUFFNUM_STATUSLOG );
+	
+	/* 送信データ設定 */
+	spSendData->iMsgid = E_MSGID_LD_SETLOG_STATUSLOG_REQ;
+	spSendData->iSize = sizeof( S_TASK_LOGINFO_STATUSLOG );
+	spSendData->vpPara = (void*)spSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LD, spSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != spSendPara)
+	{
+		free( spSendPara );
+		spSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != spSendData)
+	{
+		free( spSendData );
+		spSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
+void ld_send_setLog_LogLast_res( void )
+{
+	int iRet = D_TASK_NG;
+	S_MSG_DATA* spSendData = (S_MSG_DATA*)NULL;
+	void* spSendPara = (void*)NULL;
+	
+	/* 領域確保 */
+	spSendData = (S_MSG_DATA*)malloc( sizeof( S_MSG_DATA ) );
+	if ((S_MSG_DATA*)NULL == spSendData)
+	{
+		goto END;
+	}
+	
+	spSendPara = (void*)malloc( sizeof( int ) );
+	if ((void*)NULL == spSendPara)
+	{
+		goto END;
+	}
+	
+	/* 初期化 */
+	memset( spSendData, 0x00, sizeof( S_MSG_DATA ) );
+	memset( spSendPara, 0x00, sizeof( int ) );
+	
+	/* 送信データ設定 */
+	spSendData->iMsgid = E_MSGID_LD_SETLOG_LOGLAST_RES;
+	spSendData->iSize = sizeof( S_MSG_DATA );
+	spSendData->vpPara = spSendPara;
+	
+	/* MSG送信 */
+	iRet = TASK_msgsend( E_TASK_TASKID_LT, spSendData );
+	if( D_TASK_OK != iRet )
+	{
+		printf("MSG_send err\n");
+	}
+
+END:
+	/*** 解放処理 ***/
+	if ((void*)NULL != spSendPara)
+	{
+		free( spSendPara );
+		spSendPara = (void*)NULL;
+	}
+	
+	if ((S_MSG_DATA*)NULL != spSendData)
+	{
+		free( spSendData );
+		spSendData = (S_MSG_DATA*)NULL;
+	}
+	
+	return;
+}
+
 void ld_send_staLogDump_res( void )
 {
 	int iRet = D_TASK_NG;

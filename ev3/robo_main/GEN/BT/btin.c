@@ -65,9 +65,6 @@ void bt_init( void )
 {
 	bt_set_Global();
 	
-	/* ログ */
-	bt_log_Statuslog_open();
-	
 	return;
 }
 
@@ -94,6 +91,7 @@ void bt_set_Global( void )
 	memset( spBt, 0x00, sizeof(S_BT) );
 	
 	/* 初期化値設定 */
+	spBt->iOldStatus = E_BT_STATUS_INVALID;
 	
 	/* グローバル設定 */
 	gspBt = spBt;
@@ -110,6 +108,7 @@ S_BT* bt_get_Global( void )
 void bt_proc( void )
 {
 	int iStatus = E_BT_STATUS_INVALID;
+	int iOldStatus = E_BT_STATUS_INVALID;
 	S_BT* spBt = (S_BT*)NULL;
 	
 	spBt = bt_get_Global();
@@ -125,8 +124,16 @@ void bt_proc( void )
 		return;
 	}
 	
-	/* ログ出力 */
-	bt_log_set_Statuslog();
+	/* 状態変化チェック */
+	iOldStatus = spBt->iOldStatus;
+	if( iOldStatus != iStatus )
+	{
+		/* ログ出力 */
+		bt_log_set_Statuslog();
+	}
+	
+	/* 旧状態更新 */
+	spBt->iOldStatus = iStatus;
 	
 	/* 状態に応じて処理実行 */
 	switch (iStatus)

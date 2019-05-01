@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+/*** GEN ***/
+#include "tm.h"
+
 /* BT */
 #include "bt.h"
 
@@ -22,6 +25,8 @@
 /*** ログ出力 ***/
 #define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_OFF)
 
+/* ログ数(1ページ内のログ数) */
+#define	D_BT_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
 
 enum EN_BT_STATUS
 {
@@ -40,13 +45,34 @@ enum EN_BT_STATUS
 typedef void( *F_BT_RECVFUNCPTR )( S_MSG_DATA* spRecv );
 typedef void( *F_BT_RECVCMDFUNCPTR )( char* cpRecvData, int iSize );
 
+/* ステータスログ */
+typedef struct
+{
+	S_TM_DAYTIME	stDayTime;
+	int				iStatus;	/* 状態 */
+	int				iTaskId;
+}S_BT_LOGDATA_STATUSLOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_BT_LOGDATA_STATUSLOG		stLog[D_BT_BUFFNUM_STATUSLOG];
+}S_BT_LOGINFO_STATUSLOG;
+
+/* ログ情報 */
+typedef struct
+{
+	S_BT_LOGINFO_STATUSLOG		stStatusLog;
+}S_BT_LOGINFO;
+
 /* 常駐領域 */
 typedef struct
 {
-	int		iStatus;		/* クラスステータス */
-	int		iWupChk;
-	FILE*	fpBtFile;		/* Bluetoo通信ポート */
-	FILE*	fpStatusLog;
+	int				iStatus;		/* クラスステータス */
+	int				iOldStatus;
+	int				iWupChk;
+	FILE*			fpBtFile;		/* Bluetoo通信ポート */
+	S_BT_LOGINFO	stLogInfo;
 }S_BT;
 
 typedef struct
@@ -92,6 +118,7 @@ void bt_rcv_endCalibration_req( S_MSG_DATA* spRecv );				/* キャリブレー�
 void bt_rcv_staRunning_req( S_MSG_DATA* spRecv );					/* 走行開始 */
 void bt_rcv_setClientSendGyro_req( S_MSG_DATA* spRecv );			/* クライアント送信：ジャイロ */
 void bt_rcv_setClientSendColor_req( S_MSG_DATA* spRecv );			/* クライアント送信：カラー */
+void bt_rcv_setLog_LogLast_req( S_MSG_DATA* spRecv );				/* 最終ログ設定 */
 
 /*** btin_send.c **/
 void bt_send_test_res( S_MSG_DATA* spSend );							/* テスト */
@@ -99,6 +126,8 @@ void bt_send_Wupchk_res( void );										/* 起動 */
 void bt_send_Stop_res( void );											/* 停止 */
 void bt_send_chgCalibration_res( S_TASK_CHGCALIBRATION_RES* spSend );	/* キャリブレーション更新 */
 void bt_send_RemoteStart_res( void );									/* リモートスタート */
+void bt_send_setLog_StatusLog_req( S_BT_LOGINFO_STATUSLOG* spSend );	/* ログ設定：ステータスログ */
+void bt_send_setLog_LogLast_res( void );								/* 最終ログ設定 */
 
 /*** btin_message.c **/
 void bt_set_SerialMessage( char* cpSendData, int iSize );
@@ -112,7 +141,7 @@ int bt_check_SerialMessageNumber( char cVal );
 void bt_recvCmd_s( char* cpRecvData, int iSize );
 
 /*** btin_log.c **/
-void bt_log_Statuslog_open( void );
 void bt_log_set_Statuslog( void );
+void bt_log_set_LastLog_Statuslog( void );
 
 #endif	/* __BTIN_H__ */

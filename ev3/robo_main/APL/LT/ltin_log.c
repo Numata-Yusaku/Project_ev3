@@ -2,9 +2,9 @@
 
 void lt_log_set_Statuslog( void )
 {
-#if	(D_LT_LOGMODE_STATUS)
 	S_LT* spLt = (S_LT*)NULL;
-	unsigned long ulTime = 0;
+	S_TM_DAYTIME stDayTime;
+	S_LT_LOGDATA_STATUSLOG stLogData;
 	
 	/* グローバル領域取得 */
 	spLt = lt_get_Global();
@@ -12,33 +12,35 @@ void lt_log_set_Statuslog( void )
 	{
 		return;
 	}
-
-#if	(__TARGET_EV3__)
-	/* 現在時刻取得 */
-	get_tim(&ulTime);
-#else	/* __TARGET_EV3__ */
-	static unsigned long ulCounta = 0;
-	ulTime = ulCounta;
-	ulCounta++;
-#endif	/* __TARGET_EV3__ */
+	
+	/* 初期化 */
+	memset( &stDayTime, 0x00, sizeof(S_TM_DAYTIME) );
+	memset( &stLogData, 0x00, sizeof(S_LT_LOGDATA_STATUSLOG) );
+	
+	TM_get_NowTime( &stDayTime );
+	
+	/* カウンタ */
+	memcpy( &stLogData.stDayTime, &stDayTime, sizeof(S_TM_DAYTIME) );
+	
+	/* 走行状態 */
+	stLogData.iStatus = spLt->iStatus;
+	
+	/* タスクID */
+	stLogData.iTaskId = E_TASK_TASKID_LT;
 	
 	/* データ設定 */
-	spLt->stLogInfo.stStatusLog.stLog[spLt->stLogInfo.stStatusLog.iLogNum].ulTime = ulTime;
-	spLt->stLogInfo.stStatusLog.stLog[spLt->stLogInfo.stStatusLog.iLogNum].iStatus = spLt->iStatus;
+	memcpy( &(spLt->stLogInfo.stStatusLog.stLog[spLt->stLogInfo.stStatusLog.iLogNum]), &stLogData, sizeof(S_LT_LOGDATA_STATUSLOG) );
 	
-	spLt->stLogInfo.stStatusLog.iLogNum++;
-	
-	/* バッファ上限に到達 */
+	/* ログ数更新 */
+	spLt->stLogInfo.stStatusLog.iLogNum ++;
 	if( D_LT_BUFFNUM_STATUSLOG == spLt->stLogInfo.stStatusLog.iLogNum )
 	{
-		/* ログ出力要求 */
+		/* ログ送信 */
 		lt_send_setLog_StatusLog_req( &(spLt->stLogInfo.stStatusLog) );
 		
-		/* ログクリア */
-		memset( &(spLt->stLogInfo.stStatusLog.stLog[0]), 0x00, sizeof( S_LT_LOGDATA_STATUSLOG ) * D_LT_BUFFNUM_STATUSLOG );
-		spLt->stLogInfo.stStatusLog.iLogNum = 0;
+		/* メモリクリア */
+		memset( &(spLt->stLogInfo.stStatusLog), 0x00, sizeof(S_LT_LOGINFO_STATUSLOG));
 	}
-#endif	/* D_LT_LOGMODE_STATUS */
 	
 	return;
 }
@@ -132,6 +134,30 @@ void lt_log_set_Systemlog( void )
 void lt_log_set_LastLog( void )
 {
 	lt_log_set_LastLog_Systemlog();
+	lt_log_set_LastLog_Statuslog();
+	
+	/* ラストログ設定要求 */
+	lt_send_setLog_LogLast_req();
+
+	return;
+}
+
+void lt_log_set_LastLog_Statuslog( void )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	/* ログ送信 */
+	lt_send_setLog_StatusLog_req( &(spLt->stLogInfo.stStatusLog) );
+	
+	/* メモリクリア */
+	memset( &(spLt->stLogInfo.stStatusLog), 0x00, sizeof(S_LT_LOGINFO_STATUSLOG));
 	
 	return;
 }

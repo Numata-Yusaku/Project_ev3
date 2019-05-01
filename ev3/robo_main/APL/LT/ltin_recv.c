@@ -334,6 +334,33 @@ void lt_rcv_RemoteStart_res( S_MSG_DATA* spRecv )
 	return;
 }
 
+void lt_rcv_setLog_LastLog_res( S_MSG_DATA* spRecv )
+{
+	S_LT* spLt = (S_LT*)NULL;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	spLt->iLastLogResNum ++;
+	
+	if( E_LT_LASTLOG_NUM == spLt->iLastLogResNum )
+	{
+		/*** ログダンプ ***/
+		/* ログダンプスタート */
+		lt_send_staLogDump_req();
+	
+		/* タイムアウトタイマー開始*/
+		lt_cre_Timer( E_TIMERID_LT_LOGDUMP );
+		lt_sta_Timer( E_TIMERID_LT_LOGDUMP );
+	}
+	
+	return;
+}
+
 void lt_rcv_staLogDump_res( S_MSG_DATA* spRecv )
 {
 	return;
