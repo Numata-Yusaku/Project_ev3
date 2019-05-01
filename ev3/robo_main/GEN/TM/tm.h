@@ -35,6 +35,18 @@ typedef struct
 	F_TM_CALLBACKFUNCPTR	pFunc;
 }S_TM_TIMERINFO;
 
+/* 日時情報 */
+typedef struct
+{
+	unsigned short	usYear;
+	unsigned short	usMonth;
+	unsigned short	usDay;
+	unsigned short	usHour;
+	unsigned short	usMinute;
+	unsigned short	usSecond;
+	unsigned short	usMilliSec;
+}S_TM_DAYTIME;
+
 /***** 関数プロトタイプ *****/
 void TM_startup( void );
 void TM_main( void );
@@ -44,6 +56,7 @@ int TM_cre_Timer( S_TM_TIMERINFO* spTimerInfo );
 int TM_del_Timer( int iId );
 int TM_sta_Timer( int iId );
 int TM_stp_Timer( int iId );
+int TM_get_NowTime( S_TM_DAYTIME* spDayTime );
 
 /***** テーブル *****/
 

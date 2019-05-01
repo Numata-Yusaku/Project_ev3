@@ -196,6 +196,11 @@ void ld_log_Dump( void )
 			case E_LD_LOGKIND_SYSTEMLOG:
 				iProgress = ld_log_DumpSystemlog();
 				break;
+			
+			case E_LD_LOGKIND_CALIBRATELOG:
+				iProgress = ld_log_DumpCalibratelog();
+				break;
+			
 			default:
 				/* フェール処理 */
 				break;
@@ -275,6 +280,9 @@ void ld_log_Calibratelog_open( void )
 #if	(D_LD_LOGMODE_CALIBRATE)
 	S_LD* spLd = (S_LD*)NULL;
 	FILE* fpCalirateLog = (FILE*)NULL;
+	char cPrintLine[D_LD_PRINTLINE_NUM];
+	
+	memset( &cPrintLine, 0x00, sizeof(cPrintLine) );
 	
 	spLd = ld_get_Global();
 	if( (S_LD*)NULL == spLd )
@@ -292,16 +300,24 @@ void ld_log_Calibratelog_open( void )
 	spLd->stFileInfo.fpCalibrateLog.fpFile = fpCalirateLog;
 	
 	/* ヘッダ出力 */
-	/* ジャイロ */
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "iGyro,");
-	/* 黒 */
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "stBlack.iColor,");
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "stBlack.iReflect,");
-	/* 白 */
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "stWhite.iColor,");
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "stWhite.iReflect,");
+	/* 時刻 */
+	sprintf( cPrintLine, "SysClock,");
 	
-	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "\n");
+	/* 走行状態 */
+	sprintf( cPrintLine, "%sLT Status,",cPrintLine);
+	
+	/* ジャイロ */
+	sprintf( cPrintLine, "%siGyro,",cPrintLine);
+	
+	/* 黒 */
+	sprintf( cPrintLine, "%sstBlack.iColor,",cPrintLine);
+	sprintf( cPrintLine, "%sstBlack.iReflect,",cPrintLine);
+	
+	/* 白 */
+	sprintf( cPrintLine, "%sstWhite.iColor,",cPrintLine);
+	sprintf( cPrintLine, "%sstWhite.iReflect,",cPrintLine);
+	
+	fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "%s\n", cPrintLine );
 	fflush( spLd->stFileInfo.fpCalibrateLog.fpFile );
 #endif	/* D_LD_LOGMODE_CALIBRATE */
 	return;
@@ -332,12 +348,12 @@ void ld_log_Systemlog_open( void )
 	spLd->stFileInfo.fpSystemLog.fpFile = fpSystemLog;
 	
 	/* ヘッダ出力 */
-#if	(__TARGET_EV3__)
-	sprintf( cPrintLine, "SysClock(msec),");
-#else	/* __TARGET_EV3__ */
-	sprintf( cPrintLine, "SysCount,");
-#endif	/* __TARGET_EV3__ */
+	/* 時刻 */
+	sprintf( cPrintLine, "SysClock,");
 	
+	/* 走行状態 */
+	sprintf( cPrintLine, "%sLT Status,",cPrintLine);
+
 #if	(D_LD_LOGMODE_SYSTEM_BALANCEINFO)
 	/* バランス制御情報 */
 	sprintf( cPrintLine, "%sfErr_theta,",cPrintLine);
@@ -419,37 +435,50 @@ int ld_log_DumpSystemlog( void )
 		memset( &stSystemLogData, 0x00, sizeof(S_TASK_LOGDATA_SYSTEMLOG) );
 		memcpy( &stSystemLogData, &(spWork->spData->stLog[iLoop]), sizeof(S_TASK_LOGDATA_SYSTEMLOG) );
 
-	/***********************/
-	/* ログ出力 */
-	sprintf( cPrintLine, "%ld,",stSystemLogData.ulTime );
-	
+		/***********************/
+		/* 時刻 */
+		sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
+			stSystemLogData.stDayTime.usYear, stSystemLogData.stDayTime.usMonth, stSystemLogData.stDayTime.usDay,
+			stSystemLogData.stDayTime.usHour, stSystemLogData.stDayTime.usMinute, stSystemLogData.stDayTime.usSecond,
+			stSystemLogData.stDayTime.usMilliSec );
+
+		/* 走行状態 */
+		sprintf( cPrintLine, "%s%d,",
+			cPrintLine,
+			stSystemLogData.iLtStatus );
+
 #if	(D_LD_LOGMODE_SYSTEM_BALANCEINFO)
-	/* バランス制御情報 */
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBalanceInfo.fErr_theta );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBalanceInfo.fPsi );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBalanceInfo.fThetaLpf );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBalanceInfo.fThetaRef );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBalanceInfo.fThetadotCmdLpf );
+		/* バランス制御情報 */
+		sprintf( cPrintLine, "%s%lf,%lf,%lf,%lf,%lf,",
+			cPrintLine,
+			stSystemLogData.stBalanceInfo.fErr_theta,
+			stSystemLogData.stBalanceInfo.fPsi,
+			stSystemLogData.stBalanceInfo.fThetaLpf,
+			stSystemLogData.stBalanceInfo.fThetaRef,
+			stSystemLogData.stBalanceInfo.fThetadotCmdLpf );
 #endif	/* D_LD_LOGMODE_SYSTEM_BALANCEINFO */
 	
 #if	(D_LD_LOGMODE_SYSTEM_BALANCECONTROL)
-	/* バランスコントロール */
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fCmdForward );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fCmdTurn );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fGyro );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fGyroOffset );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fThetaMLeft );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fThetaMRight );
-	sprintf( cPrintLine, "%s%lf,",cPrintLine, stSystemLogData.stBacanceControl.fBattery );
-	sprintf( cPrintLine, "%s%d,",cPrintLine, stSystemLogData.stBacanceControl.scPwmLeft );
-	sprintf( cPrintLine, "%s%d,",cPrintLine, stSystemLogData.stBacanceControl.scPwmRight );
+		/* バランスコントロール */
+		sprintf( cPrintLine, "%s%lf,%lf,%lf,%lf,%lf,%lf,%lf,%d,%d,",
+			cPrintLine,
+			stSystemLogData.stBacanceControl.fCmdForward,
+			stSystemLogData.stBacanceControl.fCmdTurn,
+			stSystemLogData.stBacanceControl.fGyro,
+			stSystemLogData.stBacanceControl.fGyroOffset,
+			stSystemLogData.stBacanceControl.fThetaMLeft,
+			stSystemLogData.stBacanceControl.fThetaMRight,
+			stSystemLogData.stBacanceControl.fBattery,
+			stSystemLogData.stBacanceControl.scPwmLeft,
+			stSystemLogData.stBacanceControl.scPwmRight );
 #endif	/* D_LD_LOGMODE_SYSTEM_BALANCECONTROL */
-	
-	fprintf( spLd->stFileInfo.fpSystemLog.fpFile, "%s\n", cPrintLine );
-	fflush( spLd->stFileInfo.fpSystemLog.fpFile );
+		/***********************/
+		
+		/* ログ書き込み */
+		fprintf( spLd->stFileInfo.fpSystemLog.fpFile, "%s\n", cPrintLine );
+		fflush( spLd->stFileInfo.fpSystemLog.fpFile );
 	
 	}
-	/***********************/
 	
 	/* 書き込みページ数更新 */
 	spLd->stFileInfo.fpSystemLog.iWritePageNum++;
@@ -462,6 +491,105 @@ int ld_log_DumpSystemlog( void )
 	else
 	{
 		iProgress = (spLd->stFileInfo.fpSystemLog.iWritePageNum * 100) / iAllPageNum;
+	}
+
+	return iProgress;
+}
+
+int ld_log_DumpCalibratelog( void )
+{
+	int iProgress = 0;			/* 進捗率 */
+	int iAllPageNum = 0;		/* 全ページ数 */
+	int iWritePage = 0;			/* 書き込みページ */
+	int iLogNum = 0;			/* 1ページ内ログ数 */
+	int iLoop = 0;				/* ループカウンタ */
+	S_LD* spLd = (S_LD*)NULL;
+	S_LD_LOGLISTPAGE_CALIBRATELOG* spWork = (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL;
+	S_TASK_LOGDATA_CALIBRATELOG stCalibrateLogData;
+	char cPrintLine[D_LD_PRINTLINE_NUM];
+	
+	memset( &cPrintLine, 0x00, sizeof(cPrintLine) );
+	memset( &stCalibrateLogData, 0x00, sizeof(S_TASK_LOGDATA_CALIBRATELOG) );
+	
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		return D_LD_NG;
+	}
+	
+	if( (FILE*)NULL == spLd->stFileInfo.fpCalibrateLog.fpFile )
+	{
+		return D_LD_NG;
+	}
+	
+	/* 全ページ数取得 */
+	iAllPageNum = spLd->stLogList.stLogListInfo_CalibrateLog.iAllPageNum;
+	
+	/* 書き込みページ取得 */
+	iWritePage = spLd->stFileInfo.fpCalibrateLog.iWritePageNum;
+	
+	/* ページトップ取得 */
+	spWork = spLd->stLogList.stLogListInfo_CalibrateLog.spList;
+
+	/* 書き込みページデータアドレス取得 */
+	for( iLoop = 0; iLoop < iWritePage; iLoop++ )
+	{
+		spWork = spWork->spNextPage;
+	}
+	
+	if( (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL == spWork )
+	{
+		return D_LD_NG;
+	}
+	
+	/* ログ数取得 */
+	iLogNum = spWork->spData->iLogNum;
+	for( iLoop = 0; iLoop < iLogNum; iLoop++ )
+	{
+		memset( &stCalibrateLogData, 0x00, sizeof(S_TASK_LOGDATA_CALIBRATELOG) );
+		memcpy( &stCalibrateLogData, &(spWork->spData->stLog[iLoop]), sizeof(S_TASK_LOGDATA_CALIBRATELOG) );
+
+		/***********************/
+		/* 時刻 */
+		sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
+			stCalibrateLogData.stDayTime.usYear, stCalibrateLogData.stDayTime.usMonth, stCalibrateLogData.stDayTime.usDay,
+			stCalibrateLogData.stDayTime.usHour, stCalibrateLogData.stDayTime.usMinute, stCalibrateLogData.stDayTime.usSecond,
+			stCalibrateLogData.stDayTime.usMilliSec );
+
+		/* 走行状態 */
+		sprintf( cPrintLine, "%s%d,",
+			cPrintLine,
+			stCalibrateLogData.iLtStatus );
+
+#if	(D_LD_LOGMODE_SYSTEM_BALANCEINFO)
+		/* キャリブレーションログ */
+		sprintf( cPrintLine, "%s%d,%d,%d,%d,%d,",
+			cPrintLine,
+			stCalibrateLogData.stCalibrateInfo.iGyro,
+			stCalibrateLogData.stCalibrateInfo.stBlack.iColor,
+			stCalibrateLogData.stCalibrateInfo.stBlack.iReflect,
+			stCalibrateLogData.stCalibrateInfo.stWhite.iColor,
+			stCalibrateLogData.stCalibrateInfo.stWhite.iReflect );
+#endif	/* D_LD_LOGMODE_SYSTEM_BALANCEINFO */
+		/***********************/
+		
+		/* ログ書き込み */
+		fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "%s\n", cPrintLine );
+		fflush( spLd->stFileInfo.fpCalibrateLog.fpFile );
+	
+	}
+	
+	/* 書き込みページ数更新 */
+	spLd->stFileInfo.fpCalibrateLog.iWritePageNum++;
+	
+	/* ページ書き出し比率の確認 */
+	if( iAllPageNum == spLd->stFileInfo.fpCalibrateLog.iWritePageNum )
+	{
+		iProgress = 100;
+	}
+	else
+	{
+		iProgress = (spLd->stFileInfo.fpCalibrateLog.iWritePageNum * 100) / iAllPageNum;
 	}
 
 	return iProgress;

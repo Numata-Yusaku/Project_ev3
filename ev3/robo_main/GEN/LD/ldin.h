@@ -79,6 +79,7 @@ enum EN_LD_STATUS
 enum EN_LD_LOGKIND
 {
 	E_LD_LOGKIND_SYSTEMLOG = 0,
+	E_LD_LOGKIND_CALIBRATELOG,
 //	E_LD_LOGKIND_STATUSLOG_LT,
 
 	/* ここより上に定義すること */
@@ -106,26 +107,44 @@ typedef struct
 	S_LD_FILEDATA	fpSystemLog;
 }S_LD_FILEINFO;
 
-/* ログリスト：システムログ */
-typedef struct S_LD_LOGLISTPAGE_SYSTEMLOG
+/*** キャリブレーションログ ***/
+/* ログリストページ */
+typedef struct S_LD_LOGLISTPAGE_CALIBRATELOG
 {
-	int									iPageNo;	/* ページ数 */
-	S_TASK_LOGINFO_SYSTEMLOG*			spData;		/* データ */
-	struct S_LD_LOGLISTPAGE_SYSTEMLOG*	spNextPage;	/* 次データへのリンクアドレス */
-}S_LD_LOGLISTPAGE_SYSTEMLOG;
+	int										iPageNo;		/* ページ数 */
+	S_TASK_LOGINFO_CALIBRATELOG*			spData;			/* データ */
+	struct S_LD_LOGLISTPAGE_CALIBRATELOG*	spNextPage;		/* 次データへのリンクアドレス */
+}S_LD_LOGLISTPAGE_CALIBRATELOG;
 
-/* ログリスト：システムログ */
+/* ログリスト */
 typedef struct
 {
-	int							iAllPageNum;	/* 総ページ数 */
-	S_LD_LOGLISTPAGE_SYSTEMLOG*	spList;			/* リストデータトップ */
+	int										iAllPageNum;	/* 総ページ数 */
+	S_LD_LOGLISTPAGE_CALIBRATELOG*			spList;			/* リストデータトップ */
+}S_LD_LOGLISTINFO_CALIBRATELOG;
+
+/*** システムログ ***/
+/* ログリストページ */
+typedef struct S_LD_LOGLISTPAGE_SYSTEMLOG
+{
+	int										iPageNo;		/* ページ数 */
+	S_TASK_LOGINFO_SYSTEMLOG*				spData;			/* データ */
+	struct S_LD_LOGLISTPAGE_SYSTEMLOG*		spNextPage;		/* 次データへのリンクアドレス */
+}S_LD_LOGLISTPAGE_SYSTEMLOG;
+
+/* ログリスト */
+typedef struct
+{
+	int										iAllPageNum;	/* 総ページ数 */
+	S_LD_LOGLISTPAGE_SYSTEMLOG*				spList;			/* リストデータトップ */
 }S_LD_LOGLISTINFO_SYSTEMLOG;
 
 /* ログリスト */
 typedef struct
 {
-	int							iNowWrite;
-	S_LD_LOGLISTINFO_SYSTEMLOG	stLogListInfo_SystemLog;
+	int								iNowWrite;
+	S_LD_LOGLISTINFO_CALIBRATELOG	stLogListInfo_CalibrateLog;
+	S_LD_LOGLISTINFO_SYSTEMLOG		stLogListInfo_SystemLog;
 }S_LD_LOGLIST;
 
 /* 常駐領域 */
@@ -172,6 +191,7 @@ void ld_log_Calibratelog_open( void );
 void ld_log_Systemlog_open( void );
 
 int ld_log_DumpSystemlog( void );
+int ld_log_DumpCalibratelog( void );
 
 /*** ldin_recv.c **/
 /* FrameWork */

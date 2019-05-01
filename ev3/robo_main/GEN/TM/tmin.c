@@ -526,6 +526,27 @@ int tm_stp_Timer( int iId )
 	return D_TM_OK;
 }
 
+int tm_get_NowTime( S_TM_DAYTIME* spDayTime )
+{
+#if	(__TARGET_EV3__)
+#else	/* __TARGET_EV3__ */
+	SYSTEMTIME stSysTime;
+	memset( &stSysTime, 0x00, sizeof(SYSTEMTIME) );
+
+	GetSystemTime( &stSysTime );
+
+	/* 出力に設定 */
+	spDayTime->usYear = stSysTime.wYear;
+	spDayTime->usMonth = stSysTime.wMonth;
+	spDayTime->usDay = stSysTime.wDay;
+	spDayTime->usHour = stSysTime.wHour;
+	spDayTime->usMinute = stSysTime.wMinute;
+	spDayTime->usSecond = stSysTime.wSecond;
+	spDayTime->usMilliSec = stSysTime.wMilliseconds;
+#endif	/* __TARGET_EV3__ */
+	return D_TM_OK;
+}
+
 int tm_get_ModuleId( int iTimerId )
 {
 	int iModuleId = D_TM_NG;

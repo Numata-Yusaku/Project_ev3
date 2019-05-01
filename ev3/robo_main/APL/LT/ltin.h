@@ -360,13 +360,22 @@ typedef struct
 
 typedef struct
 {
+	S_TM_DAYTIME				stDayTime;
+	int							iLtStatus;
 	int							iLogNum;
-	S_LT_CALIBRATEINFO			stLog[D_TASK_BUFFNUM_STATUSLOG];
+	S_LT_CALIBRATEINFO			stCalibrateInfo;
+}S_LT_LOGDATA_CALIBRATELOG;
+
+typedef struct
+{
+	int							iLogNum;
+	S_LT_LOGDATA_CALIBRATELOG	stLog[D_LT_BUFFNUM_CALIBRATELOG];
 }S_LT_LOGINFO_CALIBRATELOG;
 
 typedef struct
 {
-	unsigned long				ulTime;
+	S_TM_DAYTIME				stDayTime;
+	int							iLtStatus;
 	S_LT_BALANCEINFO			stBalanceInfo;
 	S_LT_BALANCE_CONTROL		stBacanceControl;
 }S_LT_LOGDATA_SYSTEMLOG;
@@ -374,7 +383,7 @@ typedef struct
 typedef struct
 {
 	int							iLogNum;
-	S_LT_LOGDATA_SYSTEMLOG		stLog[D_TASK_BUFFNUM_SYSTEMLOG];
+	S_LT_LOGDATA_SYSTEMLOG		stLog[D_LT_BUFFNUM_SYSTEMLOG];
 }S_LT_LOGINFO_SYSTEMLOG;
 
 /* ログ情報 */
@@ -383,9 +392,9 @@ typedef struct
 	S_LT_LOGINFO_STATUSLOG		stStatusLog;
 	S_LT_LOGINFO_CALIBRATELOG	stCalibrateLog;
 	S_LT_LOGINFO_SYSTEMLOG		stSystemLog;
-#if	(__VC_DEBUG__)
-	unsigned long				ulSystemLogCounta;
-#endif	/* __VC_DEBUG__ */
+//#if	(__VC_DEBUG__)
+//	unsigned long				ulSystemLogCounta;
+//#endif	/* __VC_DEBUG__ */
 }S_LT_LOGINFO;
 
 /* 常駐領域 */

@@ -53,3 +53,11 @@ int TM_stp_Timer( int iId )
 	
 	return iRet;
 }
+
+int TM_get_NowTime( S_TM_DAYTIME* spDayTime )
+{
+	int iRet = D_TM_NG;
+	iRet = tm_get_NowTime( spDayTime );
+	
+	return iRet;
+}

@@ -922,6 +922,9 @@ void lt_set_CalibrateGyro( void )
 	/* データ設定 */
 	spLt->stCalibrateInfo.iGyro = RSI_gyro_sensor_get_angle( spLt->stPort.iSensor.iGyro );
 	
+	/* キャリブレーションログ出力 */
+	lt_log_set_Calibratelog();
+	
 	/* 設定完了通知 */
 	RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_C4, D_LT_TONE_DURATION );
 	
@@ -959,6 +962,9 @@ void lt_set_CalibrateBlack( void )
 		/* データ設定 */
 		spLt->stCalibrateInfo.stBlack.iColor = iColor;
 		spLt->stCalibrateInfo.stBlack.iReflect = iReflect;
+		
+		/* キャリブレーションログ出力 */
+		lt_log_set_Calibratelog();
 		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_D4, D_LT_TONE_DURATION );
@@ -999,14 +1005,14 @@ void lt_set_CalibrateWhite( void )
 		spLt->stCalibrateInfo.stWhite.iColor = iColor;
 		spLt->stCalibrateInfo.stWhite.iReflect = iReflect;
 		
+		/* キャリブレーションログ出力 */
+		lt_log_set_Calibratelog();
+		
 		/* Bluetoothによるキャリブレーション通信を終了 */
 		lt_send_endCalibration_req();
 		
 		/* 設定完了通知 */
 		RSI_hw_speaker_play_tone( D_RSI_HW_NOTE_E4, D_LT_TONE_DURATION );
-		
-		/* キャリブレーションログ出力 */
-		lt_log_set_Calibratelog();
 		
 		/* すぐ状態遷移するとタッチセンサを検知してしまうのでWaitをかける */
 		TASK_sleep( D_LT_CALIBRATEEND_WAIT );

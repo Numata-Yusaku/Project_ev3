@@ -91,6 +91,7 @@ int tm_cre_Timer( S_TM_TIMERINFO* spTimerInfo );
 int tm_del_Timer( int iId );
 int tm_sta_Timer( int iId );
 int tm_stp_Timer( int iId );
+int tm_get_NowTime( S_TM_DAYTIME* spDayTime );
 int tm_get_ModuleId( int iTimerId );
 int tm_get_EventId( int iTimerId );
 

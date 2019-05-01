@@ -192,7 +192,126 @@ void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
 
 void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv )
 {
-	printf("recv:CalibrateLog\n");
+	int iLogNum = 0;
+	int iLoop = 0;
+	S_LD* spLd = (S_LD*)NULL;
+	S_TASK_LOGINFO_CALIBRATELOG* psRecvPara = (S_TASK_LOGINFO_CALIBRATELOG*)NULL;
+	S_TASK_LOGDATA_CALIBRATELOG* spLogData = (S_TASK_LOGDATA_CALIBRATELOG*)NULL;
+	
+	S_LD_LOGLISTPAGE_CALIBRATELOG* spLogListPage = (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL;
+	S_LD_LOGLISTPAGE_CALIBRATELOG* spWork = (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL;
+	
+	if( (void*)NULL == spRecv->vpPara )
+	{
+		goto ERR;
+	}
+	
+	/* グローバル領域取得 */
+	spLd = ld_get_Global();
+	if( (S_LD*)NULL == spLd )
+	{
+		goto ERR;
+	}
+	
+	/* ログ出力中はログを破棄する */
+	if( E_LD_STATUS_LOGDUMP == spLd->iStatus )
+	{
+		goto ERR;
+	}
+	
+	/* 受信データ取得 */
+	psRecvPara = (S_TASK_LOGINFO_CALIBRATELOG*)spRecv->vpPara;
+	
+	/* ログ数取得 */
+	iLogNum = psRecvPara->iLogNum;
+	if( 0 >= iLogNum )
+	{
+		goto ERR;
+	}
+	
+	/* ログデータ取得 */
+	spLogData = (S_TASK_LOGDATA_CALIBRATELOG*)malloc( sizeof(S_TASK_LOGDATA_CALIBRATELOG) * D_TASK_BUFFNUM_CALIBRATELOG );
+	if( (S_TASK_LOGDATA_CALIBRATELOG*)NULL == spLogData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogData, 0x00, sizeof( S_TASK_LOGDATA_CALIBRATELOG ) * D_TASK_BUFFNUM_CALIBRATELOG );
+	memcpy( spLogData, &(psRecvPara->stLog), sizeof( S_TASK_LOGDATA_CALIBRATELOG ) * D_TASK_BUFFNUM_CALIBRATELOG );
+	
+	/*** ページデータ作成 ***/
+	spLogListPage = (S_LD_LOGLISTPAGE_CALIBRATELOG*)malloc( sizeof(S_LD_LOGLISTPAGE_CALIBRATELOG) );
+	if( (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL == spLogListPage )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage, 0x00, sizeof( S_LD_LOGLISTPAGE_CALIBRATELOG ) );
+
+	/* ページ番号 */
+	spLogListPage->iPageNo = spLd->stLogList.stLogListInfo_CalibrateLog.iAllPageNum + 1;
+		
+	/* データ設定 */
+	spLogListPage->spData = (S_TASK_LOGINFO_CALIBRATELOG*)malloc( sizeof(S_TASK_LOGINFO_CALIBRATELOG) );
+	if( (S_TASK_LOGINFO_CALIBRATELOG*)NULL == spLogListPage->spData )
+	{
+		goto ERR;
+	}
+	
+	memset( spLogListPage->spData, 0x00, sizeof(S_TASK_LOGINFO_CALIBRATELOG) );
+	
+	spLogListPage->spData->iLogNum = iLogNum;
+	memcpy( spLogListPage->spData->stLog, spLogData, sizeof( S_TASK_LOGDATA_CALIBRATELOG ) * D_TASK_BUFFNUM_CALIBRATELOG );
+	
+	/*** ログリスト設定 ***/
+	if( (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL == spLd->stLogList.stLogListInfo_CalibrateLog.spList )
+	{
+		spLd->stLogList.stLogListInfo_CalibrateLog.spList = spLogListPage;
+	}
+	else
+	{
+		spWork = spLd->stLogList.stLogListInfo_CalibrateLog.spList;
+		for( iLoop = 0; iLoop < spLd->stLogList.stLogListInfo_CalibrateLog.iAllPageNum; iLoop++ )
+		{
+			if( (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL != spWork->spNextPage )
+			{
+				/* リスト探索継続 */
+				spWork = spWork->spNextPage;
+			}
+			else
+			{
+				/* 末尾にデータを設定 */
+				spWork->spNextPage = spLogListPage;
+				break;
+			}
+		}
+	}
+	
+	/* ページ総数更新 */
+	spLd->stLogList.stLogListInfo_CalibrateLog.iAllPageNum ++;
+	
+	return;
+
+ERR:
+	/*** 解放処理 ***/
+	if( (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL != spLogListPage )
+	{
+		if( (S_TASK_LOGINFO_CALIBRATELOG*)NULL != spLogListPage->spData )
+		{
+			free(spLogListPage->spData);
+			spLogListPage->spData = (S_TASK_LOGINFO_CALIBRATELOG*)NULL;
+		}
+		
+		free(spLogListPage);
+		spLogListPage = (S_LD_LOGLISTPAGE_CALIBRATELOG*)NULL;
+	}
+	
+	if( (S_TASK_LOGDATA_CALIBRATELOG*)NULL != spLogData )
+	{
+		free(spLogData);
+		spLogData = (S_TASK_LOGDATA_CALIBRATELOG*)NULL;
+	}
+	
 	return;
 }
 

@@ -45,31 +45,38 @@ void lt_log_set_Statuslog( void )
 
 void lt_log_set_Calibratelog( void )
 {
-//#if	(D_LT_LOGMODE_CALIBRATE)
-//	S_LT* spLt = (S_LT*)NULL;
-//	
-//	/* グローバル領域取得 */
-//	spLt = lt_get_Global();
-//	if( (S_LT*)NULL == spLt )
-//	{
-//		return;
-//	}
-//	
-//	if( (FILE*)NULL == spLt->fpCalirateLog )
-//	{
-//		return;
-//	}
-//	
-//	/* バランスコントロール */
-//	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.iGyro);
-//	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stBlack.iColor);
-//	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stBlack.iReflect);
-//	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stWhite.iColor);
-//	fprintf( spLt->fpCalirateLog, "%d,",spLt->stCalibrateInfo.stWhite.iReflect);
-//	
-//	fprintf( spLt->fpCalirateLog, "\n");
-//	fflush( spLt->fpCalirateLog );
-//#endif	/* D_LT_LOGMODE_CALIBRATE */
+	S_LT* spLt = (S_LT*)NULL;
+	S_TM_DAYTIME stDayTime;
+	S_LT_LOGINFO_CALIBRATELOG stLogData;
+	
+	/* グローバル領域取得 */
+	spLt = lt_get_Global();
+	if( (S_LT*)NULL == spLt )
+	{
+		return;
+	}
+	
+	/* 初期化 */
+	memset( &stDayTime, 0x00, sizeof(S_TM_DAYTIME) );
+	memset( &stLogData, 0x00, sizeof(S_LT_LOGINFO_CALIBRATELOG) );
+	
+	TM_get_NowTime( &stDayTime );
+	
+	/* カウンタ */
+	memcpy( &(stLogData.stLog[D_LT_BUFFNUM_CALIBRATELOG -1].stDayTime ), &stDayTime, sizeof(S_TM_DAYTIME) );
+	
+	/* 走行状態 */
+	stLogData.stLog[D_LT_BUFFNUM_CALIBRATELOG -1].iLtStatus = spLt->iStatus;
+	
+	/* キャリブレーション情報 */
+	memcpy( &(stLogData.stLog[D_LT_BUFFNUM_CALIBRATELOG -1].stCalibrateInfo), &(spLt->stCalibrateInfo), sizeof(S_LT_CALIBRATEINFO) );
+
+	/* ログ数 */
+	stLogData.iLogNum = D_LT_BUFFNUM_CALIBRATELOG;
+	stLogData.stLog[D_LT_BUFFNUM_CALIBRATELOG -1].iLogNum = D_LT_BUFFNUM_CALIBRATELOG;
+	
+	/* ログ送信 */
+	lt_send_setLog_CalibrateLog_req( &stLogData );
 	
 	return;
 }
@@ -77,7 +84,7 @@ void lt_log_set_Calibratelog( void )
 void lt_log_set_Systemlog( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
-	unsigned long ulTime = 0;
+	S_TM_DAYTIME stDayTime;
 	S_LT_LOGDATA_SYSTEMLOG stLogData;
 	
 	/* グローバル領域取得 */
@@ -88,43 +95,29 @@ void lt_log_set_Systemlog( void )
 	}
 	
 	/* 初期化 */
+	memset( &stDayTime, 0x00, sizeof(S_TM_DAYTIME) );
 	memset( &stLogData, 0x00, sizeof(S_LT_LOGDATA_SYSTEMLOG) );
 	
-#if	(__TARGET_EV3__)
-	/* 現在時刻取得 */
-	get_tim(&ulTime);
-#else	/* __TARGET_EV3__ */
-	spLt->stLogInfo.ulSystemLogCounta ++;
-	ulTime = spLt->stLogInfo.ulSystemLogCounta;
-#endif	/* __TARGET_EV3__ */
+	TM_get_NowTime( &stDayTime );
 	
 	/* カウンタ */
-	stLogData.ulTime							= ulTime;
+	memcpy( &stLogData.stDayTime, &stDayTime, sizeof(S_TM_DAYTIME) );
 	
+	/* 走行状態 */
+	stLogData.iLtStatus = spLt->iStatus;
+
 	/* バランス制御情報 */
-	stLogData.stBalanceInfo.fErr_theta			= spLt->stBalanceInfo.fErr_theta;
-	stLogData.stBalanceInfo.fPsi				= spLt->stBalanceInfo.fPsi;
-	stLogData.stBalanceInfo.fThetaLpf			= spLt->stBalanceInfo.fThetaLpf;
-	stLogData.stBalanceInfo.fThetaRef			= spLt->stBalanceInfo.fThetaRef;
-	stLogData.stBalanceInfo.fThetadotCmdLpf		= spLt->stBalanceInfo.fThetadotCmdLpf;
+	memcpy( &(stLogData.stBalanceInfo), &(spLt->stBalanceInfo), sizeof(S_LT_BALANCEINFO) );
 	
 	/* バランスコントロール */
-	stLogData.stBacanceControl.fCmdForward		= spLt->stBacanceControl.fCmdForward;
-	stLogData.stBacanceControl.fCmdTurn			= spLt->stBacanceControl.fCmdTurn;
-	stLogData.stBacanceControl.fGyro			= spLt->stBacanceControl.fGyro;
-	stLogData.stBacanceControl.fGyroOffset		= spLt->stBacanceControl.fGyroOffset;
-	stLogData.stBacanceControl.fThetaMLeft		= spLt->stBacanceControl.fThetaMLeft;
-	stLogData.stBacanceControl.fThetaMRight		= spLt->stBacanceControl.fThetaMRight;
-	stLogData.stBacanceControl.fBattery			= spLt->stBacanceControl.fBattery;
-	stLogData.stBacanceControl.scPwmLeft		= spLt->stBacanceControl.scPwmLeft;
-	stLogData.stBacanceControl.scPwmRight		= spLt->stBacanceControl.scPwmRight;
+	memcpy( &(stLogData.stBacanceControl), &(spLt->stBacanceControl), sizeof(S_LT_BALANCE_CONTROL) );
 	
 	/* データ設定 */
 	memcpy( &(spLt->stLogInfo.stSystemLog.stLog[spLt->stLogInfo.stSystemLog.iLogNum]), &stLogData, sizeof(S_LT_LOGDATA_SYSTEMLOG) );
 	
 	/* ログ数更新 */
 	spLt->stLogInfo.stSystemLog.iLogNum ++;
-	if( D_TASK_BUFFNUM_SYSTEMLOG == spLt->stLogInfo.stSystemLog.iLogNum )
+	if( D_LT_BUFFNUM_SYSTEMLOG == spLt->stLogInfo.stSystemLog.iLogNum )
 	{
 		/* ログ送信 */
 		lt_send_setLog_SystemLog_req( &(spLt->stLogInfo.stSystemLog) );
@@ -146,7 +139,7 @@ void lt_log_set_LastLog( void )
 void lt_log_set_LastLog_Systemlog( void )
 {
 	S_LT* spLt = (S_LT*)NULL;
-	unsigned long ulTime = 0;
+	S_TM_DAYTIME stDayTime;
 	S_LT_LOGDATA_SYSTEMLOG stLogData;
 	
 	/* グローバル領域取得 */
@@ -157,36 +150,22 @@ void lt_log_set_LastLog_Systemlog( void )
 	}
 	
 	/* 初期化 */
+	memset( &stDayTime, 0x00, sizeof(S_TM_DAYTIME) );
 	memset( &stLogData, 0x00, sizeof(S_LT_LOGDATA_SYSTEMLOG) );
 	
-#if	(__TARGET_EV3__)
-	/* 現在時刻取得 */
-	get_tim(&ulTime);
-#else	/* __TARGET_EV3__ */
-	spLt->stLogInfo.ulSystemLogCounta ++;
-	ulTime = spLt->stLogInfo.ulSystemLogCounta;
-#endif	/* __TARGET_EV3__ */
+	TM_get_NowTime( &stDayTime );
 	
 	/* カウンタ */
-	stLogData.ulTime							= ulTime;
+	memcpy( &stLogData.stDayTime, &stDayTime, sizeof(S_TM_DAYTIME) );
 	
+	/* 走行状態 */
+	stLogData.iLtStatus = spLt->iStatus;
+
 	/* バランス制御情報 */
-	stLogData.stBalanceInfo.fErr_theta			= spLt->stBalanceInfo.fErr_theta;
-	stLogData.stBalanceInfo.fPsi				= spLt->stBalanceInfo.fPsi;
-	stLogData.stBalanceInfo.fThetaLpf			= spLt->stBalanceInfo.fThetaLpf;
-	stLogData.stBalanceInfo.fThetaRef			= spLt->stBalanceInfo.fThetaRef;
-	stLogData.stBalanceInfo.fThetadotCmdLpf		= spLt->stBalanceInfo.fThetadotCmdLpf;
+	memcpy( &(stLogData.stBalanceInfo), &(spLt->stBalanceInfo), sizeof(S_LT_BALANCEINFO) );
 	
 	/* バランスコントロール */
-	stLogData.stBacanceControl.fCmdForward		= spLt->stBacanceControl.fCmdForward;
-	stLogData.stBacanceControl.fCmdTurn			= spLt->stBacanceControl.fCmdTurn;
-	stLogData.stBacanceControl.fGyro			= spLt->stBacanceControl.fGyro;
-	stLogData.stBacanceControl.fGyroOffset		= spLt->stBacanceControl.fGyroOffset;
-	stLogData.stBacanceControl.fThetaMLeft		= spLt->stBacanceControl.fThetaMLeft;
-	stLogData.stBacanceControl.fThetaMRight		= spLt->stBacanceControl.fThetaMRight;
-	stLogData.stBacanceControl.fBattery			= spLt->stBacanceControl.fBattery;
-	stLogData.stBacanceControl.scPwmLeft		= spLt->stBacanceControl.scPwmLeft;
-	stLogData.stBacanceControl.scPwmRight		= spLt->stBacanceControl.scPwmRight;
+	memcpy( &(stLogData.stBacanceControl), &(spLt->stBacanceControl), sizeof(S_LT_BALANCE_CONTROL) );
 	
 	/* データ設定 */
 	memcpy( &(spLt->stLogInfo.stSystemLog.stLog[spLt->stLogInfo.stSystemLog.iLogNum]), &stLogData, sizeof(S_LT_LOGDATA_SYSTEMLOG) );

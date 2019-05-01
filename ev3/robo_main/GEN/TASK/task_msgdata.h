@@ -25,6 +25,18 @@ typedef struct
 }S_TASK_SETCLIENTSEND_GYRO;
 
 /*** ログ設定通知 ***/
+/* 日時情報 */
+typedef struct
+{
+	unsigned short	usYear;
+	unsigned short	usMonth;
+	unsigned short	usDay;
+	unsigned short	usHour;
+	unsigned short	usMinute;
+	unsigned short	usSecond;
+	unsigned short	usMilliSec;
+}S_TASK_DAYTIME;
+
 /* ステータスログ */
 typedef struct
 {
@@ -51,6 +63,14 @@ typedef struct
 	int					iGyro;
 	S_TASK_COLORINFO	stBlack;
 	S_TASK_COLORINFO	stWhite;
+}S_TASK_CALIBRATEINFO;
+
+typedef struct
+{
+	S_TASK_DAYTIME				stDayTime;
+	int							iLtStatus;
+	int							iLogNum;
+	S_TASK_CALIBRATEINFO		stCalibrateInfo;
 }S_TASK_LOGDATA_CALIBRATELOG;
 
 typedef struct
@@ -86,7 +106,8 @@ typedef struct
 
 typedef struct
 {
-	unsigned long				ulTime;
+	S_TASK_DAYTIME				stDayTime;
+	int							iLtStatus;
 	S_TASK_BALANCEINFO			stBalanceInfo;
 	S_TASK_BALANCE_CONTROL		stBacanceControl;
 }S_TASK_LOGDATA_SYSTEMLOG;
