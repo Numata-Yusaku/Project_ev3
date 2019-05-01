@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "common.h"
+#include "tm.h"
 #include "task.h"
 
 /***** 定数 *****/
@@ -12,6 +13,7 @@
 
 /* ログ出力 */
 #define	D_TASK_FILENAME_MSGLOG		"OutData/[TASK]msglog.csv"
+#define	D_TASK_PRINTLINE_NUM			(512)
 
 #if	(__TARGET_EV3__)
 #define	D_TASK_LOGMODE				(D_TASK_MODE_OFF)

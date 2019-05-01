@@ -290,7 +290,7 @@ void task_msglog_open( void )
 	spTask->fpMsgLog = fpMsgLog;
 	
 	/* ヘッダ出力 */
-	fprintf( spTask->fpMsgLog, "Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
+	fprintf( spTask->fpMsgLog, "SysClock,Dir[Send/Recv],Task[Que],MsgId[Hex]\n");
 	fflush( spTask->fpMsgLog );
 #endif	/* D_TASK_LOGMODE */
 	
@@ -301,6 +301,11 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 {
 #if	(D_TASK_LOGMODE)
 	S_TASK* spTask = (S_TASK*)NULL;
+	S_TM_DAYTIME stDayTime;
+	char cPrintLine[D_TASK_PRINTLINE_NUM];
+	
+	memset( &stDayTime, 0x00, sizeof(S_TM_DAYTIME) );
+	memset( &cPrintLine, 0x00, sizeof(cPrintLine) );
 	
 	spTask = task_get_Global();
 	if( (S_TASK*)NULL == spTask )
@@ -313,14 +318,21 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 		return;
 	}
 	
+	TM_get_NowTime( &stDayTime );
+	/* 時刻 */
+	sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
+		stDayTime.usYear, stDayTime.usMonth, stDayTime.usDay,
+		stDayTime.usHour, stDayTime.usMinute, stDayTime.usSecond,
+		stDayTime.usMilliSec );
+	
 	switch( iDir )
 	{
 		case E_TASK_MSGDIR_SEND:
-			fprintf( spTask->fpMsgLog, "[SEND],0x%08x,0x%08x\n", iTask, iMsgId );
+			sprintf( cPrintLine, "%s[SEND],0x%08x,0x%08x,", cPrintLine, iTask, iMsgId );
 			break;
 		
 		case E_TASK_MSGDIR_RECV:
-			fprintf( spTask->fpMsgLog, "[RECV],0x%08x,0x%08x\n", iTask, iMsgId );
+			sprintf( cPrintLine, "%s[RECV],0x%08x,0x%08x,", cPrintLine, iTask, iMsgId );
 			break;
 		
 		default:
@@ -328,6 +340,7 @@ void task_msglog( int iDir, int iTask, int iMsgId )
 			break;
 	}
 	
+	fprintf( spTask->fpMsgLog, "%s\n", cPrintLine );
 	fflush( spTask->fpMsgLog );
 #endif	/* D_TASK_LOGMODE */
 	return;
