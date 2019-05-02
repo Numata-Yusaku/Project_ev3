@@ -6,10 +6,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if	(__VC_DEBUG__)
-#else	/* __VC_DEBUG__ */
+#if	!(__VC_DEBUG__)
 #define		__TARGET_EV3__	(1)
-#endif	/* __VC_DEBUG__ */
+#endif	/* !(__VC_DEBUG__) */
 
 #if	(__TARGET_EV3__)
 #include "ev3api.h"
@@ -30,9 +29,13 @@
 #define		D_RSI_TMAX_FILENAME_LEN (255)
 
 /* ログ出力 */
-#define	D_RSI_FILENAME_MSGLOG		"OutData/RsiLog.csv"
+#define	D_RSI_FILENAME_MSGLOG		"OutData/[RSI]RsiLog.csv"
 
+#if	(__TARGET_EV3__)
 #define	D_RSI_LOGMODE				(D_RSI_FALSE)
+#else	/* __TARGET_EV3__ */
+#define	D_RSI_LOGMODE				(D_RSI_TRUE)
+#endif	/* __TARGET_EV3__ */
 
 
 /***** 構造体 *****/

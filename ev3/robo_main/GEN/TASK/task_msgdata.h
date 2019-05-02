@@ -7,7 +7,7 @@
 #define	D_TASK_RECVDATA_SIZE			(4)
 #define	D_TASK_BUFFNUM_STATUSLOG		(16)
 #define	D_TASK_BUFFNUM_CALIBRATELOG		(1)
-#define	D_TASK_BUFFNUM_SYSTEMLOG		(256)
+#define	D_TASK_BUFFNUM_SYSTEMLOG		(526)
 
 
 /* キャリブレーションパラメータ通知 */

@@ -33,6 +33,19 @@
 #define	D_EV3_CYC_RUN_TM				(2)		/* ダミー定義 */
 #endif	/* __VC_DEBUG__ */
 
+#define	D_COMMON_FLAG_ON				(1)
+#define	D_COMMON_FLAG_OFF				(0)
+
+/* ログ出力 */
+#if	(__VC_DEBUG__)
+#define	D_COMMON_LOGMODE_STATUS			(D_COMMON_FLAG_ON)
+#define	D_COMMON_LOGMODE_CALIBRATE		(D_COMMON_FLAG_ON)
+#define	D_COMMON_LOGMODE_SYSTEM			(D_COMMON_FLAG_ON)
+#else	/* __VC_DEBUG__ */
+#define	D_COMMON_LOGMODE_STATUS			(D_COMMON_FLAG_ON)
+#define	D_COMMON_LOGMODE_CALIBRATE		(D_COMMON_FLAG_ON)
+#define	D_COMMON_LOGMODE_SYSTEM			(D_COMMON_FLAG_ON)
+#endif	/* __VC_DEBUG__ */
 
 /***** 構造体 *****/
 

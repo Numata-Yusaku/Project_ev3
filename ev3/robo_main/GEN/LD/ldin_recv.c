@@ -126,6 +126,7 @@ void ld_rcv_staRunning_req( S_MSG_DATA* spRecv )
 
 void ld_rcv_setLog_StatusLog_req( S_MSG_DATA* spRecv )
 {
+#if	D_LD_LOGMODE_STATUS
 	int iLogNum = 0;
 	int iLoop = 0;
 	S_LD* spLd = (S_LD*)NULL;
@@ -245,12 +246,13 @@ ERR:
 		free(spLogData);
 		spLogData = (S_TASK_LOGDATA_STATUSLOG*)NULL;
 	}
-	
+#endif	/* D_LD_LOGMODE_STATUS */
 	return;
 }
 
 void ld_rcv_setLog_CalibrateLog_req( S_MSG_DATA* spRecv )
 {
+#if	D_LD_LOGMODE_CALIBRATE
 	int iLogNum = 0;
 	int iLoop = 0;
 	S_LD* spLd = (S_LD*)NULL;
@@ -370,12 +372,13 @@ ERR:
 		free(spLogData);
 		spLogData = (S_TASK_LOGDATA_CALIBRATELOG*)NULL;
 	}
-	
+#endif	/* D_LD_LOGMODE_CALIBRATE */
 	return;
 }
 
 void ld_rcv_setLog_SystemLog_req( S_MSG_DATA* spRecv )
 {
+#if	D_LD_LOGMODE_SYSTEM
 	int iLogNum = 0;
 	int iLoop = 0;
 	S_LD* spLd = (S_LD*)NULL;
@@ -495,7 +498,7 @@ ERR:
 		free(spLogData);
 		spLogData = (S_TASK_LOGDATA_SYSTEMLOG*)NULL;
 	}
-	
+#endif	/* D_LD_LOGMODE_SYSTEM */
 	return;
 }
 

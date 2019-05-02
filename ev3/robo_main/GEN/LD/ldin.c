@@ -180,6 +180,7 @@ void ld_proc_Ready( void )
 
 void ld_log_set_Statuslog( void )
 {
+#if	D_LD_LOGMODE_STATUS
 	S_LD* spLd = (S_LD*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LD_LOGDATA_STATUSLOG stLogData;
@@ -219,12 +220,13 @@ void ld_log_set_Statuslog( void )
 		/* メモリクリア */
 		memset( &(spLd->stLogInfo.stStatusLog), 0x00, sizeof(S_LD_LOGINFO_STATUSLOG));
 	}
-	
+#endif	/* D_LD_LOGMODE_STATUS */
 	return;
 }
 
 void ld_log_set_LastLog_Statuslog( void )
 {
+#if	D_LD_LOGMODE_STATUS
 	S_LD* spLd = (S_LD*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LD_LOGDATA_STATUSLOG stLogData;
@@ -247,7 +249,7 @@ void ld_log_set_LastLog_Statuslog( void )
 	
 	/* メモリクリア */
 	memset( &(spLd->stLogInfo.stStatusLog), 0x00, sizeof(S_LD_LOGINFO_STATUSLOG));
-	
+#endif	/* D_LD_LOGMODE_STATUS */
 	return;
 }
 
@@ -278,18 +280,21 @@ void ld_log_Dump( void )
 	{
 		switch( spLd->stLogList.iNowWrite )
 		{
-			case E_LD_LOGKIND_SYSTEMLOG:
-				iProgress = ld_log_DumpSystemlog();
-				break;
-			
-			case E_LD_LOGKIND_CALIBRATELOG:
-				iProgress = ld_log_DumpCalibratelog();
-				break;
-			
+#if	D_LD_LOGMODE_STATUS
 			case E_LD_LOGKIND_STATUSLOG:
 				iProgress = ld_log_DumpStatuslog();
 				break;
-			
+#endif	/* D_LD_LOGMODE_STATUS */
+#if	D_LD_LOGMODE_CALIBRATE
+			case E_LD_LOGKIND_CALIBRATELOG:
+				iProgress = ld_log_DumpCalibratelog();
+				break;
+#endif	/* D_LD_LOGMODE_CALIBRATE */
+#if	D_LD_LOGMODE_SYSTEM
+			case E_LD_LOGKIND_SYSTEMLOG:
+				iProgress = ld_log_DumpSystemlog();
+				break;
+#endif	/* D_LD_LOGMODE_SYSTEM */
 			default:
 				/* フェール処理 */
 				break;
@@ -365,7 +370,6 @@ void ld_log_Statuslog_open( void )
 	
 	fprintf( spLd->stFileInfo.fpStatusLog.fpFile, "%s\n", cPrintLine );
 	fflush( spLd->stFileInfo.fpStatusLog.fpFile );
-
 #endif	/* D_LD_LOGMODE_STATUS */
 	return;
 }
@@ -479,7 +483,8 @@ void ld_log_Systemlog_open( void )
 
 int ld_log_DumpStatuslog( void )
 {
-	int iProgress = 0;			/* 進捗率 */
+	int iProgress = -1;			/* 進捗率 */
+#if	(D_LD_LOGMODE_STATUS)
 	int iAllPageNum = 0;		/* 全ページ数 */
 	int iWritePage = 0;			/* 書き込みページ */
 	int iLogNum = 0;			/* 1ページ内ログ数 */
@@ -530,7 +535,6 @@ int ld_log_DumpStatuslog( void )
 		memset( &stStatusLogData, 0x00, sizeof(S_TASK_LOGDATA_STATUSLOG) );
 		memcpy( &stStatusLogData, &(spWork->spData->stLog[iLoop]), sizeof(S_TASK_LOGDATA_STATUSLOG) );
 
-#if	(D_LD_LOGMODE_STATUS)
 		/***********************/
 		/* 時刻 */
 		sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
@@ -549,7 +553,6 @@ int ld_log_DumpStatuslog( void )
 			stStatusLogData.iStatus );
 		
 		/***********************/
-#endif	/* D_LD_LOGMODE_STATUS */
 		
 		/* ログ書き込み */
 		fprintf( spLd->stFileInfo.fpStatusLog.fpFile, "%s\n", cPrintLine );
@@ -569,13 +572,14 @@ int ld_log_DumpStatuslog( void )
 	{
 		iProgress = (spLd->stFileInfo.fpStatusLog.iWritePageNum * 100) / iAllPageNum;
 	}
-	
+#endif	/* D_LD_LOGMODE_STATUS */
 	return iProgress;
 }
 
 int ld_log_DumpCalibratelog( void )
 {
-	int iProgress = 0;			/* 進捗率 */
+	int iProgress = -1;			/* 進捗率 */
+#if	(D_LD_LOGMODE_CALIBRATE)
 	int iAllPageNum = 0;		/* 全ページ数 */
 	int iWritePage = 0;			/* 書き込みページ */
 	int iLogNum = 0;			/* 1ページ内ログ数 */
@@ -626,7 +630,6 @@ int ld_log_DumpCalibratelog( void )
 		memset( &stCalibrateLogData, 0x00, sizeof(S_TASK_LOGDATA_CALIBRATELOG) );
 		memcpy( &stCalibrateLogData, &(spWork->spData->stLog[iLoop]), sizeof(S_TASK_LOGDATA_CALIBRATELOG) );
 
-#if	(D_LD_LOGMODE_CALIBRATE)
 		/***********************/
 		/* 時刻 */
 		sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
@@ -648,7 +651,6 @@ int ld_log_DumpCalibratelog( void )
 			stCalibrateLogData.stCalibrateInfo.stWhite.iColor,
 			stCalibrateLogData.stCalibrateInfo.stWhite.iReflect );
 		/***********************/
-#endif	/* D_LD_LOGMODE_CALIBRATE */
 		
 		/* ログ書き込み */
 		fprintf( spLd->stFileInfo.fpCalibrateLog.fpFile, "%s\n", cPrintLine );
@@ -668,13 +670,14 @@ int ld_log_DumpCalibratelog( void )
 	{
 		iProgress = (spLd->stFileInfo.fpCalibrateLog.iWritePageNum * 100) / iAllPageNum;
 	}
-	
+#endif	/* D_LD_LOGMODE_CALIBRATE */
 	return iProgress;
 }
 
 int ld_log_DumpSystemlog( void )
 {
-	int iProgress = 0;			/* 進捗率 */
+	int iProgress = -1;			/* 進捗率 */
+#if	(D_LD_LOGMODE_SYSTEM)
 	int iAllPageNum = 0;		/* 全ページ数 */
 	int iWritePage = 0;			/* 書き込みページ */
 	int iLogNum = 0;			/* 1ページ内ログ数 */
@@ -725,7 +728,6 @@ int ld_log_DumpSystemlog( void )
 		memset( &stSystemLogData, 0x00, sizeof(S_TASK_LOGDATA_SYSTEMLOG) );
 		memcpy( &stSystemLogData, &(spWork->spData->stLog[iLoop]), sizeof(S_TASK_LOGDATA_SYSTEMLOG) );
 
-#if	(D_LD_LOGMODE_SYSTEM)
 		/***********************/
 		/* 時刻 */
 		sprintf( cPrintLine, "[%02d/%02d/%02d]%02d:%02d:%02d.%03d,",
@@ -764,7 +766,6 @@ int ld_log_DumpSystemlog( void )
 			stSystemLogData.stBacanceControl.scPwmRight );
 #endif	/* D_LD_LOGMODE_SYSTEM_BALANCECONTROL */
 		/***********************/
-#endif	/* D_LD_LOGMODE_SYSTEM */
 		
 		/* ログ書き込み */
 		fprintf( spLd->stFileInfo.fpSystemLog.fpFile, "%s\n", cPrintLine );
@@ -784,6 +785,6 @@ int ld_log_DumpSystemlog( void )
 	{
 		iProgress = (spLd->stFileInfo.fpSystemLog.iWritePageNum * 100) / iAllPageNum;
 	}
-	
+#endif	/* D_LD_LOGMODE_SYSTEM */
 	return iProgress;
 }

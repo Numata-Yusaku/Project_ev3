@@ -2,6 +2,7 @@
 
 void bt_log_set_Statuslog( void )
 {
+#if	D_BT_LOGMODE_STATUS
 	S_BT* spBt = (S_BT*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_BT_LOGDATA_STATUSLOG stLogData;
@@ -41,12 +42,13 @@ void bt_log_set_Statuslog( void )
 		/* メモリクリア */
 		memset( &(spBt->stLogInfo.stStatusLog), 0x00, sizeof(S_BT_LOGINFO_STATUSLOG));
 	}
-	
+#endif	/* D_BT_LOGMODE_STATUS */
 	return;
 }
 
 void bt_log_set_LastLog_Statuslog( void )
 {
+#if	D_BT_LOGMODE_STATUS
 	S_BT* spBt = (S_BT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -61,6 +63,6 @@ void bt_log_set_LastLog_Statuslog( void )
 	
 	/* メモリクリア */
 	memset( &(spBt->stLogInfo.stStatusLog), 0x00, sizeof(S_BT_LOGINFO_STATUSLOG));
-	
+#endif	/* D_BT_LOGMODE_STATUS */
 	return;
 }

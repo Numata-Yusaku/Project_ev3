@@ -37,40 +37,21 @@
 /* 転倒タイムアウト */
 #define	D_LT_FALLDOWNTIME						( 1000 / ( D_TASK_CYCLE_LT ) )
 
+#define	D_LT_PRINTLINE_NUM						(512)
+
+/*** ログ出力 ***/
+/* ログファイル */
+#define	D_LT_LOGMODE_STATUS						D_COMMON_LOGMODE_STATUS
+#define	D_LT_LOGMODE_CALIBRATE					D_COMMON_LOGMODE_CALIBRATE
+#define	D_LT_LOGMODE_SYSTEM						D_COMMON_LOGMODE_SYSTEM
+
+/* シリアルログ */
+#define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
+
 /* ログ数(1ページ内のログ数) */
 #define	D_LT_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
 #define	D_LT_BUFFNUM_CALIBRATELOG				D_TASK_BUFFNUM_CALIBRATELOG
 #define	D_LT_BUFFNUM_SYSTEMLOG					D_TASK_BUFFNUM_SYSTEMLOG
-
-/*** ログ出力 ***/
-#if	(__TARGET_EV3__)
-/* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
-
-#define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_OFF)
-
-#define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_OFF)
-#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_OFF)
-#define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
-
-/* シリアルログ */
-#define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
-#else	/* __TARGET_EV3__ */
-/* ログファイル */
-#define	D_LT_LOGMODE_STATUS						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_STATUS_TIME				(D_LT_FLAG_ON)
-
-#define	D_LT_LOGMODE_CALIBRATE					(D_LT_FLAG_ON)
-
-#define	D_LT_LOGMODE_SYSTEM						(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_SYSTEM_BALANCEINFO			(D_LT_FLAG_ON)
-#define	D_LT_LOGMODE_SYSTEM_BALANCECONTROL		(D_LT_FLAG_ON)
-
-/* シリアルログ */
-#define	D_LT_LOGMODE_GYRO						(D_LT_FLAG_OFF)
-#endif	/* __TARGET_EV3__ */
-
 
 /* 音響 */
 #define	D_LT_TONE_VOLUME				(1)						/* 音量 */
@@ -400,9 +381,16 @@ typedef struct
 /* ログ情報 */
 typedef struct
 {
+	int iDummy;
+#if	D_LT_LOGMODE_STATUS
 	S_LT_LOGINFO_STATUSLOG		stStatusLog;
+#endif	/* D_LT_LOGMODE_STATUS */
+#if	D_LT_LOGMODE_CALIBRATE
 	S_LT_LOGINFO_CALIBRATELOG	stCalibrateLog;
+#endif	/* D_LT_LOGMODE_CALIBRATE */
+#if	D_LT_LOGMODE_SYSTEM
 	S_LT_LOGINFO_SYSTEMLOG		stSystemLog;
+#endif	/* D_LT_LOGMODE_SYSTEM */
 }S_LT_LOGINFO;
 
 /* 常駐領域 */

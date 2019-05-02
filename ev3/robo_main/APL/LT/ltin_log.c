@@ -2,6 +2,7 @@
 
 void lt_log_set_Statuslog( void )
 {
+#if	D_LT_LOGMODE_STATUS
 	S_LT* spLt = (S_LT*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LT_LOGDATA_STATUSLOG stLogData;
@@ -41,12 +42,13 @@ void lt_log_set_Statuslog( void )
 		/* メモリクリア */
 		memset( &(spLt->stLogInfo.stStatusLog), 0x00, sizeof(S_LT_LOGINFO_STATUSLOG));
 	}
-	
+#endif	/* D_LT_LOGMODE_STATUS */
 	return;
 }
 
 void lt_log_set_Calibratelog( void )
 {
+#if	D_LT_LOGMODE_CALIBRATE
 	S_LT* spLt = (S_LT*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LT_LOGINFO_CALIBRATELOG stLogData;
@@ -79,12 +81,13 @@ void lt_log_set_Calibratelog( void )
 	
 	/* ログ送信 */
 	lt_send_setLog_CalibrateLog_req( &stLogData );
-	
+#endif	/* D_LT_LOGMODE_CALIBRATE */
 	return;
 }
 
 void lt_log_set_Systemlog( void )
 {
+#if	D_LT_LOGMODE_SYSTEM
 	S_LT* spLt = (S_LT*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LT_LOGDATA_SYSTEMLOG stLogData;
@@ -127,7 +130,7 @@ void lt_log_set_Systemlog( void )
 		/* メモリクリア */
 		memset( &(spLt->stLogInfo.stSystemLog), 0x00, sizeof(S_LT_LOGINFO_SYSTEMLOG));
 	}
-	
+#endif	/* D_LT_LOGMODE_SYSTEM */
 	return;
 }
 
@@ -144,6 +147,7 @@ void lt_log_set_LastLog( void )
 
 void lt_log_set_LastLog_Statuslog( void )
 {
+#if	D_LT_LOGMODE_STATUS
 	S_LT* spLt = (S_LT*)NULL;
 	
 	/* グローバル領域取得 */
@@ -160,10 +164,12 @@ void lt_log_set_LastLog_Statuslog( void )
 	memset( &(spLt->stLogInfo.stStatusLog), 0x00, sizeof(S_LT_LOGINFO_STATUSLOG));
 	
 	return;
+#endif	/* D_LT_LOGMODE_STATUS */
 }
 
 void lt_log_set_LastLog_Systemlog( void )
 {
+#if	D_LT_LOGMODE_SYSTEM
 	S_LT* spLt = (S_LT*)NULL;
 	S_TM_DAYTIME stDayTime;
 	S_LT_LOGDATA_SYSTEMLOG stLogData;
@@ -204,6 +210,6 @@ void lt_log_set_LastLog_Systemlog( void )
 	
 	/* メモリクリア */
 	memset( &(spLt->stLogInfo.stSystemLog), 0x00, sizeof(S_LT_LOGINFO_SYSTEMLOG));
-	
+#endif	/* D_LT_LOGMODE_SYSTEM */
 	return;
 }

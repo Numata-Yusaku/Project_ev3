@@ -153,6 +153,8 @@ void lt_set_Global( void )
 	
 	/*** 初期化値設定 ***/
 	spLt->iOldStatus = E_LT_STATUS_INVALID;
+	memset( &(spLt->stCalibrateInfo.stBlack), 0xFFFFFFFF, sizeof(S_LT_COLORINFO) );
+	memset( &(spLt->stCalibrateInfo.stWhite), 0xFFFFFFFF, sizeof(S_LT_COLORINFO) );
 	
 	/* グローバル設定 */
 	gspLt = spLt;

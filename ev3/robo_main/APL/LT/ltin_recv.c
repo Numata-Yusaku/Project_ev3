@@ -370,6 +370,9 @@ void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
 {
 	S_LT* spLt = (S_LT*)NULL;
 	S_TASK_CHGLOGDUMP_RES* spRecvPara = (S_TASK_CHGLOGDUMP_RES*)NULL;
+	char cPrintLine[D_LT_PRINTLINE_NUM];
+	
+	memset( &cPrintLine, 0x00, sizeof(cPrintLine) );
 	
 	if( (S_MSG_DATA*)NULL == spRecv )
 	{
@@ -395,11 +398,14 @@ void lt_rcv_chgLogDump_res( S_MSG_DATA* spRecv )
 		return;
 	}
 
-#if (__VC_DEBUG__)
-	printf("[LT]Dump:%2d /%2d %3d%%\n",
+	sprintf( cPrintLine, "[LT]Dump:%02d /%02d %03d%%",
 		spRecvPara->iNowLogNo,
 		spRecvPara->iAllLogNum,
 		spRecvPara->iProgress );
+	
+	RSI_lcd_draw_string((const char*)cPrintLine, 30, 60);
+#if (__VC_DEBUG__)
+	printf("%s\n", cPrintLine );
 #endif /* __VC_DEBUG__ */
 	
 	/* ログダンプ完了 */

@@ -23,10 +23,11 @@
 #define	D_BT_RECVDATA_SIZE	(128)
 
 /*** ログ出力 ***/
-#define	D_BT_LOGMODE_STATUS						(D_BT_FLAG_OFF)
-
 /* ログ数(1ページ内のログ数) */
 #define	D_BT_BUFFNUM_STATUSLOG					D_TASK_BUFFNUM_STATUSLOG
+/* ログファイル */
+#define	D_BT_LOGMODE_STATUS						D_COMMON_LOGMODE_STATUS
+
 
 enum EN_BT_STATUS
 {
@@ -62,7 +63,10 @@ typedef struct
 /* ログ情報 */
 typedef struct
 {
+	int iDummy;
+#if	D_BT_LOGMODE_STATUS
 	S_BT_LOGINFO_STATUSLOG		stStatusLog;
+#endif	/* D_BT_LOGMODE_STATUS */
 }S_BT_LOGINFO;
 
 /* 常駐領域 */
