@@ -150,6 +150,9 @@ void tm_set_Global( void )
 	memset( spTm, 0x00, sizeof(S_TM) );
 	
 	/* 初期化値設定 */
+#if	(__TARGET_EV3__)
+	spTm->ulStartCount = TSI_TimeMng_get_tim();
+#endif	/* __TARGET_EV3__ */
 	
 	/* グローバル設定 */
 	gspTm = spTm;
@@ -529,6 +532,33 @@ int tm_stp_Timer( int iId )
 int tm_get_NowTime( S_TM_DAYTIME* spDayTime )
 {
 #if	(__TARGET_EV3__)
+	unsigned long ulMsecCount = 0;
+	unsigned long ulNow = 172800001;
+	S_TM* spTm = (S_TM*)NULL;
+	
+	/* グローバル領域取得 */
+	spTm = tm_get_Global();
+	if( (S_TM*)NULL == spTm )
+	{
+		return D_TM_NG;
+	}
+	
+	/* 現在時刻(msecカウンタ)取得 */
+	ulMsecCount = TSI_TimeMng_get_tim();
+	
+	/* 現在の経過時刻(msec換算)取得 */
+	ulNow = ulMsecCount - spTm->ulStartCount;
+	
+	/* 出力に設定 */
+	spDayTime->usMilliSec =	(unsigned) ( ulNow % 1000 );
+	spDayTime->usSecond =	(unsigned)(  ( ulNow / 1000 ) % 60 );
+	spDayTime->usMinute =	(unsigned)(( ( ulNow / 1000 ) / 60 ) % 60 );
+	spDayTime->usHour =		(unsigned)(( ( ulNow / 1000 ) / 3600 ) % 24 );
+
+	/* 年月日(未実装) */
+	spDayTime->usYear = 1990;
+	spDayTime->usMonth = 0;
+	spDayTime->usDay =		(unsigned)(( ( ulNow / 1000 ) / 3600 ) / 24 );
 #else	/* __TARGET_EV3__ */
 	SYSTEMTIME stSysTime;
 	memset( &stSysTime, 0x00, sizeof(SYSTEMTIME) );
@@ -536,13 +566,15 @@ int tm_get_NowTime( S_TM_DAYTIME* spDayTime )
 	GetSystemTime( &stSysTime );
 
 	/* 出力に設定 */
+	spDayTime->usMilliSec = stSysTime.wMilliseconds;
+	spDayTime->usSecond = stSysTime.wSecond;
+	spDayTime->usMinute = stSysTime.wMinute;
+	spDayTime->usHour = stSysTime.wHour;
+	
+	/* 年月日 */
 	spDayTime->usYear = stSysTime.wYear;
 	spDayTime->usMonth = stSysTime.wMonth;
 	spDayTime->usDay = stSysTime.wDay;
-	spDayTime->usHour = stSysTime.wHour;
-	spDayTime->usMinute = stSysTime.wMinute;
-	spDayTime->usSecond = stSysTime.wSecond;
-	spDayTime->usMilliSec = stSysTime.wMilliseconds;
 #endif	/* __TARGET_EV3__ */
 	return D_TM_OK;
 }

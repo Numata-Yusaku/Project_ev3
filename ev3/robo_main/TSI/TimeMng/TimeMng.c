@@ -9,14 +9,10 @@ unsigned long TSI_TimeMng_get_tim( void )
 {
 	unsigned long ulTime =0;
 #if	(__TARGET_EV3__)
-	SYSTIM	stime;
-	unsigned long ulTime;
-	get_tim(&stime);
-	ulTime = stime;
-	fprintf( spLt->fpStatusLog, "%08ld,",ulTime );
+	SYSTIM	stTime;
+	get_tim(&stTime);
+	ulTime = (unsigned long)stTime;
 #endif	/* __TARGET_EV3__ */
-//	printf("%ld\n",ulTime);
-
 	return ulTime;
 }
 

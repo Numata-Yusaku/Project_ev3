@@ -49,7 +49,10 @@ typedef struct
 /* 常駐領域 */
 typedef struct
 {
-	int iStatus;					/* クラスステータス */
+	int				iStatus;		/* クラスステータス */
+#if	(__TARGET_EV3__)
+	unsigned long	ulStartCount;	/* 起動基準時刻 */
+#endif	/* __TARGET_EV3__ */
 	S_TM_SYSCOUNT	stSysCount;		/* システムカウンタ */
 	S_TM_TIMERDATA	stTimerData[E_TASK_TASKID_NUM][D_TM_TIMER_NUM];
 }S_TM;

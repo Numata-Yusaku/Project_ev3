@@ -3,6 +3,7 @@
 
 /***** インクルード *****/
 #include <stdio.h>
+#include "rsi_common.h"
 #include "tsi_common.h"
 
 /*** GEN ***/
